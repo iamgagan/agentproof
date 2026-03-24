@@ -48,7 +48,8 @@ export async function GET(
     );
   }
 
-  const domain = new URL(result.normalizedUrl).hostname;
+  let domain = 'unknown';
+  try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const gColor = resolveGradeColor(result.grade);
 
   return new ImageResponse(

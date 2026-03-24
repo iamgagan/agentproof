@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result = await getScanResult(id);
   if (!result) return { title: 'Scan not found — AgentProof' };
 
-  const domain = new URL(result.normalizedUrl).hostname;
+  let domain = 'unknown';
+  try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://agentproof.com';
 
   return {
@@ -43,7 +44,8 @@ export default async function ScanResultPage({ params }: Props) {
     notFound();
   }
 
-  const domain = new URL(result.normalizedUrl).hostname;
+  let domain = 'unknown';
+  try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const categoryEntries = Object.entries(result.categories);
 
   return (

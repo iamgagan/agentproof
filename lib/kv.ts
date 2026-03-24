@@ -2,6 +2,7 @@
 // Vercel KV wrapper with in-memory fallback for local development
 // when KV_REST_API_URL / KV_REST_API_TOKEN env vars are not set.
 
+import { cache } from 'react';
 import type { ScanResult } from './types';
 
 const TTL_SECONDS = 60 * 60 * 24; // 24 hours
@@ -34,7 +35,7 @@ export async function storeScanResult(id: string, result: ScanResult): Promise<v
   }
 }
 
-export async function getScanResult(id: string): Promise<ScanResult | null> {
+export const getScanResult = cache(async (id: string): Promise<ScanResult | null> => {
   const kv = await getKv();
   if (kv) {
     return await kv.get<ScanResult>(`scan:${id}`);
@@ -46,7 +47,7 @@ export async function getScanResult(id: string): Promise<ScanResult | null> {
     return null;
   }
   return entry.value;
-}
+});
 
 export async function storeUrlIndex(normalizedUrl: string, scanId: string): Promise<void> {
   const kv = await getKv();

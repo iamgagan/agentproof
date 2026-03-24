@@ -17,6 +17,11 @@ export function validateUrl(input: string): { valid: boolean; error?: string } {
     if (!parsed.hostname.includes('.')) {
       return { valid: false, error: 'Please enter a valid domain' };
     }
+    // Block private/loopback/link-local addresses to prevent SSRF
+    const BLOCKED_HOSTS = /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|169\.254\.|::1|0\.0\.0\.0|\[::1\])/i;
+    if (BLOCKED_HOSTS.test(parsed.hostname)) {
+      return { valid: false, error: 'Please enter a public internet address' };
+    }
     return { valid: true };
   } catch {
     return { valid: false, error: 'Please enter a valid URL' };
