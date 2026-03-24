@@ -54,6 +54,7 @@ export interface ScanMetadata {
   platform: DetectedPlatform | null;
   productPageFound: boolean;
   productPageUrl: string | null;
+  siteBlocked: boolean;
   totalRequestsTime: number;
   errors: string[];
 }

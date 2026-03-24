@@ -46,7 +46,9 @@ function checkCrawlerAccess(robotsTxt: string, agent: string): boolean {
 }
 
 export async function analyzeCrawlPolicy(
-  url: string
+  url: string,
+  homepageHtml: string,
+  productPageHtml: string | null,
 ): Promise<CategoryResult> {
   let score = 0;
   const issues: CategoryResult['issues'] = [];
@@ -88,22 +90,99 @@ export async function analyzeCrawlPolicy(
     score += 8;
   }
 
-  // --- Check 2: JavaScript dependency (5 pts) ---
-  // We check this by seeing if the homepage HTML (already fetched) contains
-  // product-related structured data in the raw response.
-  // This is handled in the main orchestrator — here we score based on
-  // whether JSON-LD was found in raw HTML (passed via the main scan).
-  // For now, award points based on presence of JSON-LD in raw HTML.
-  // TODO: The orchestrator should pass this signal
-  score += 5; // Placeholder — refined during integration
+  // --- Check 2: Product content in raw HTML, not JS-only (5 pts) ---
+  // AI agents that don't execute JS (GPTBot, ClaudeBot) see only raw HTML.
+  // If key product data only exists after JS runs, agents can't read it.
+  const htmlToCheck = productPageHtml || homepageHtml;
+  const hasJsonLd = htmlToCheck.includes('application/ld+json');
+  const hasProductKeywords = /price|product|add.{0,10}cart|buy.{0,10}now|\$[0-9]|£[0-9]|€[0-9]/i.test(htmlToCheck);
+  const hasSchemaOrgRef = htmlToCheck.includes('schema.org');
 
-  // --- Check 3: Semantic HTML (4 pts) ---
-  // TODO: Check for <main>, <article>, <nav>, <section>, heading hierarchy
-  score += 0; // Placeholder — needs homepage HTML passed in
+  if (hasJsonLd && hasProductKeywords) {
+    score += 5;
+  } else if (hasJsonLd || hasProductKeywords) {
+    score += 3;
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'warning',
+        'Product content may require JavaScript to render',
+        'Some product data is present in raw HTML but key elements appear to require JavaScript. AI crawlers like GPTBot and ClaudeBot typically do not execute JavaScript.',
+        'Products may not be indexable by AI shopping agents that rely on raw HTML.',
+        'Ensure product name, price, and availability are present in the server-rendered HTML, not only injected by JavaScript.',
+        2
+      )
+    );
+  } else {
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'critical',
+        'Product content not found in raw HTML — likely JS-rendered',
+        'No product data found in the raw HTML response. The page may rely entirely on JavaScript to render product content, making it invisible to AI crawlers.',
+        'AI shopping agents that do not execute JavaScript (GPTBot, ClaudeBot, Google-Extended) will see a blank page and cannot index your products.',
+        'Use server-side rendering (SSR) or static generation to include product name, price, and availability in the initial HTML response.',
+        5
+      )
+    );
+  }
 
-  // --- Check 4: Page size (3 pts) ---
-  // TODO: Check Content-Length of homepage response
-  score += 0; // Placeholder — needs response size passed in
+  // --- Check 3: Semantic HTML structure (3 pts) ---
+  const $ = cheerio.load(homepageHtml);
+  const hasMain = $('main').length > 0;
+  const hasNav = $('nav').length > 0;
+  const hasHeadings = $('h1, h2').length > 0;
+
+  const semanticScore = (hasMain ? 1 : 0) + (hasNav ? 1 : 0) + (hasHeadings ? 1 : 0);
+  score += semanticScore;
+
+  if (semanticScore < 2) {
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'info',
+        'Weak semantic HTML structure',
+        `Missing semantic elements: ${[!hasMain && '<main>', !hasNav && '<nav>', !hasHeadings && 'heading hierarchy (h1/h2)'].filter(Boolean).join(', ')}. AI crawlers use semantic HTML to understand page structure and identify content regions.`,
+        'Agents may misinterpret page structure, reducing the quality of product data extraction.',
+        'Use semantic HTML5 elements: <main> for primary content, <nav> for navigation, and proper heading hierarchy.',
+        3 - semanticScore
+      )
+    );
+  }
+
+  // --- Check 4: Meta description (2 pts) ---
+  const metaDesc = $('meta[name="description"]').attr('content') || '';
+  if (metaDesc.length >= 50) {
+    score += 2;
+  } else if (metaDesc.length > 0) {
+    score += 1;
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'info',
+        'Meta description too short',
+        `Meta description is ${metaDesc.length} characters. Aim for 120–160 characters describing your store.`,
+        'AI agents use meta descriptions for store-level context when there is no other summary available.',
+        'Write a meta description of 120–160 characters that describes your store, key products, and value proposition.',
+        1
+      )
+    );
+  } else {
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'info',
+        'No meta description found',
+        'No meta description tag found. AI agents use this as a store-level summary when product-level data is unavailable.',
+        'Agents may have reduced context about your store when generating shopping recommendations.',
+        'Add <meta name="description" content="..."> to your homepage with a 120–160 character store summary.',
+        2
+      )
+    );
+  }
+
+  // Ensure we don't exceed maxScore
+  score = Math.min(score, 20);
 
   return {
     score,
