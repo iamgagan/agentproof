@@ -7,9 +7,20 @@ import type { ScanResult } from './types';
 
 const TTL_SECONDS = 60 * 60 * 24; // 24 hours
 
-// Separate maps prevent type confusion between scan results and URL→id index
-const scanStore = new Map<string, { value: ScanResult; expiresAt: number }>();
-const urlIndex  = new Map<string, { scanId: string; expiresAt: number }>();
+// Use globalThis so the Maps survive Next.js module re-evaluation in dev mode.
+// In dev, API routes and page routes run in separate module instances —
+// a plain `const Map` would be re-created per instance, making stored scans invisible.
+declare global {
+  // eslint-disable-next-line no-var
+  var __agentproof_scanStore: Map<string, { value: ScanResult; expiresAt: number }> | undefined;
+  // eslint-disable-next-line no-var
+  var __agentproof_urlIndex: Map<string, { scanId: string; expiresAt: number }> | undefined;
+}
+
+const scanStore: Map<string, { value: ScanResult; expiresAt: number }> =
+  (globalThis.__agentproof_scanStore ??= new Map());
+const urlIndex: Map<string, { scanId: string; expiresAt: number }> =
+  (globalThis.__agentproof_urlIndex ??= new Map());
 
 async function getKv() {
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {

@@ -18,6 +18,22 @@ function resolveGradeColor(grade: string): string {
   }
 }
 
+function getCategoryLabel(key: string): string {
+  switch (key) {
+    case 'structuredData': return 'Schema';
+    case 'productQuality': return 'Product Data';
+    case 'protocolReadiness': return 'Protocols';
+    case 'merchantSignals': return 'Merchant';
+    default: return 'Discoverability';
+  }
+}
+
+function getBarColor(pct: number): string {
+  if (pct >= 80) return '#22C55E';
+  if (pct >= 40) return '#EAB308';
+  return '#EF4444';
+}
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -51,36 +67,23 @@ export async function GET(
   let domain = 'unknown';
   try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const gColor = resolveGradeColor(result.grade);
+  const categories = Object.entries(result.categories);
 
   return new ImageResponse(
     (
       <div
         style={{
-          width: '100%',
-          height: '100%',
+          width: '1200px',
+          height: '630px',
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: '#0A0A0F',
-          padding: '64px',
+          padding: '60px',
           fontFamily: 'sans-serif',
-          position: 'relative',
         }}
       >
-        {/* Background gradient */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background:
-              'radial-gradient(ellipse at top left, rgba(0,229,204,0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(99,102,241,0.08) 0%, transparent 50%)',
-          }}
-        />
-
-        {/* Header row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px' }}>
+        {/* Header */}
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '44px' }}>
           <div
             style={{
               width: '40px',
@@ -93,101 +96,69 @@ export async function GET(
               color: '#0A0A0F',
               fontWeight: '700',
               fontSize: '16px',
+              marginRight: '12px',
             }}
           >
             AP
           </div>
-          <span style={{ color: '#94A3B8', fontSize: '18px' }}>AgentProof</span>
+          <div style={{ display: 'flex', color: '#94A3B8', fontSize: '18px' }}>
+            AgentProof
+          </div>
         </div>
 
-        {/* Main content */}
-        <div style={{ display: 'flex', flex: 1, gap: '64px', alignItems: 'center' }}>
+        {/* Body: grade block + right column */}
+        <div style={{ display: 'flex', flexDirection: 'row', flex: 1, alignItems: 'center', gap: '60px' }}>
+
           {/* Left: grade + score */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div
-              style={{
-                fontSize: '120px',
-                fontWeight: '700',
-                color: gColor,
-                lineHeight: '1',
-                letterSpacing: '-0.04em',
-              }}
-            >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '180px' }}>
+            <div style={{ display: 'flex', fontSize: '120px', fontWeight: '700', color: gColor, lineHeight: '1', letterSpacing: '-4px' }}>
               {result.grade}
             </div>
-            <div
-              style={{
-                fontSize: '48px',
-                fontWeight: '700',
-                color: gColor,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              {result.overallScore}
-              <span style={{ fontSize: '28px', color: '#64748B' }}>/100</span>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: '4px' }}>
+              <div style={{ display: 'flex', fontSize: '48px', fontWeight: '700', color: gColor, letterSpacing: '-1px' }}>
+                {`${result.overallScore}`}
+              </div>
+              <div style={{ display: 'flex', fontSize: '28px', color: '#64748B' }}>
+                /100
+              </div>
             </div>
-            <div style={{ fontSize: '18px', color: '#94A3B8' }}>{result.gradeLabel}</div>
+            <div style={{ display: 'flex', fontSize: '18px', color: '#94A3B8' }}>
+              {result.gradeLabel}
+            </div>
           </div>
 
-          {/* Right: domain + category bars */}
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '20px' }}>
-            <div>
-              <div style={{ fontSize: '16px', color: '#64748B', marginBottom: '8px' }}>
+          {/* Right: domain + bars */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '18px' }}>
+
+            {/* Domain heading */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', fontSize: '16px', color: '#64748B' }}>
                 Agent Readiness Score for
               </div>
-              <div
-                style={{
-                  fontSize: '32px',
-                  fontWeight: '700',
-                  color: '#F8FAFC',
-                  letterSpacing: '-0.02em',
-                }}
-              >
+              <div style={{ display: 'flex', fontSize: '32px', fontWeight: '700', color: '#F8FAFC', letterSpacing: '-1px' }}>
                 {domain}
               </div>
             </div>
 
-            {/* Category mini-bars */}
-            {Object.entries(result.categories).map(([key, cat]) => (
-              <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ fontSize: '13px', color: '#64748B', width: '110px', flexShrink: 0 }}>
-                  {key === 'structuredData'
-                    ? 'Schema'
-                    : key === 'productQuality'
-                    ? 'Product Data'
-                    : key === 'protocolReadiness'
-                    ? 'Protocols'
-                    : key === 'merchantSignals'
-                    ? 'Merchant'
-                    : 'Discoverability'}
+            {/* Category bars */}
+            {categories.map(([key, cat]) => (
+              <div key={key} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', fontSize: '13px', color: '#64748B', width: '110px' }}>
+                  {getCategoryLabel(key)}
                 </div>
-                <div
-                  style={{
-                    flex: 1,
-                    height: '6px',
-                    backgroundColor: '#1E293B',
-                    borderRadius: '3px',
-                    overflow: 'hidden',
-                  }}
-                >
+                <div style={{ display: 'flex', flex: 1, height: '6px', backgroundColor: '#1E293B', borderRadius: '3px' }}>
                   <div
                     style={{
-                      height: '100%',
+                      display: 'flex',
+                      height: '6px',
                       width: `${cat.percentage}%`,
-                      backgroundColor:
-                        cat.percentage >= 80
-                          ? '#22C55E'
-                          : cat.percentage >= 40
-                          ? '#EAB308'
-                          : '#EF4444',
+                      backgroundColor: getBarColor(cat.percentage),
                       borderRadius: '3px',
                     }}
                   />
                 </div>
-                <div
-                  style={{ fontSize: '13px', color: '#94A3B8', width: '40px', textAlign: 'right' }}
-                >
-                  {cat.score}/{cat.maxScore}
+                <div style={{ display: 'flex', fontSize: '13px', color: '#94A3B8', width: '44px', justifyContent: 'flex-end' }}>
+                  {`${cat.score}/${cat.maxScore}`}
                 </div>
               </div>
             ))}
@@ -195,8 +166,8 @@ export async function GET(
         </div>
 
         {/* Footer */}
-        <div style={{ marginTop: '32px', fontSize: '14px', color: '#64748B' }}>
-          agentproof.com · Free AI Agent Readiness Scanner for Ecommerce
+        <div style={{ display: 'flex', marginTop: '28px', fontSize: '14px', color: '#64748B' }}>
+          agentproof.com
         </div>
       </div>
     ),
