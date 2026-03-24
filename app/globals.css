@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0A0A0F;
+  --color-bg-surface: #12121A;
+  --color-bg-elevated: #1A1A2E;
+  --color-accent-teal: #00E5CC;
+  --color-accent-indigo: #6366F1;
+  --color-success: #22C55E;
+  --color-warning: #EAB308;
+  --color-danger: #EF4444;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-border: #1E293B;
+}
+
+:root {
+  --bg-primary: #0A0A0F;
+  --bg-surface: #12121A;
+  --bg-elevated: #1A1A2E;
+  --accent-teal: #00E5CC;
+  --accent-indigo: #6366F1;
+  --success: #22C55E;
+  --warning: #EAB308;
+  --danger: #EF4444;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border: #1E293B;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Score gauge animation */
+@keyframes gauge-fill {
+  from { stroke-dashoffset: 283; }
+  to { stroke-dashoffset: var(--gauge-offset); }
+}
+
+.gauge-arc {
+  animation: gauge-fill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Scan progress animation */
+@keyframes scan-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.scan-pulse {
+  animation: scan-pulse 1.5s ease-in-out infinite;
+}
+
+/* Scan progress bar animation */
+@keyframes scan-progress {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(150%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Category card glow on hover */
+.category-card:hover {
+  box-shadow: 0 0 20px rgba(0, 229, 204, 0.08);
+  border-color: rgba(0, 229, 204, 0.2);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
