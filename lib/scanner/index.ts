@@ -64,7 +64,7 @@ const SITEMAP_PRODUCT_PATTERNS = [
   /\/dp\//i,
 ];
 
-function findProductPageInHtml(html: string, baseUrl: string): string | null {
+export function findProductPageInHtml(html: string, baseUrl: string): string | null {
   for (const pattern of PRODUCT_URL_PATTERNS) {
     pattern.lastIndex = 0;
     const match = pattern.exec(html);
