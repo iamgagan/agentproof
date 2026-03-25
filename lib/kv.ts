@@ -87,3 +87,50 @@ export async function getScanResultByUrl(normalizedUrl: string): Promise<ScanRes
   }
   return await getScanResult(entry.scanId);
 }
+
+// --- Waitlist ---
+
+declare global {
+  // eslint-disable-next-line no-var
+  var __agentproof_waitlist: Set<string> | undefined;
+}
+const waitlistStore: Set<string> = (globalThis.__agentproof_waitlist ??= new Set());
+
+export async function storeWaitlistEmail(email: string): Promise<void> {
+  const kv = await getKv();
+  if (kv) {
+    await kv.sadd('waitlist:emails', email);
+  } else {
+    waitlistStore.add(email);
+  }
+}
+
+export async function isEmailOnWaitlist(email: string): Promise<boolean> {
+  const kv = await getKv();
+  if (kv) {
+    return (await kv.sismember('waitlist:emails', email)) === 1;
+  }
+  return waitlistStore.has(email);
+}
+
+export async function getWaitlistCount(): Promise<number> {
+  const kv = await getKv();
+  if (kv) {
+    return await kv.scard('waitlist:emails');
+  }
+  return waitlistStore.size;
+}
+
+// --- Rate limiting ---
+// Returns true if the caller is over the limit (should be blocked).
+// Uses KV incr + expire when available; always allows in dev (no KV).
+export async function getKvRateLimiter(key: string, max: number, windowSeconds: number): Promise<boolean> {
+  const kv = await getKv();
+  if (!kv) return false; // dev mode — no rate limiting
+  const count = await kv.incr(key);
+  if (count === 1) {
+    // First request in window — set expiry
+    await kv.expire(key, windowSeconds);
+  }
+  return count > max;
+}

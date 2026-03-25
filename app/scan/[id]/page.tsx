@@ -7,6 +7,7 @@ import ScoreGauge from '@/components/ScoreGauge';
 import CategoryCard from '@/components/CategoryCard';
 import IssueList from '@/components/IssueList';
 import ShareBanner from '@/components/ShareBanner';
+import WaitlistForm from '@/components/WaitlistForm';
 import { getScanResult } from '@/lib/kv';
 import { formatScanTime, gradeColor } from '@/lib/utils';
 
@@ -173,24 +174,9 @@ export default async function ScanResultPage({ params }: Props) {
                 Want auto-generated fixes?
               </h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '20px' }}>
-                AgentProof Pro will generate the exact code changes to fix every issue. Join the waitlist.
+                AgentProof Pro generates the exact code to fix every issue. Join the waitlist.
               </p>
-              <a
-                href="mailto:waitlist@agentproof.com"
-                style={{
-                  display: 'inline-block',
-                  padding: '12px 28px',
-                  backgroundColor: 'var(--accent-teal)',
-                  color: '#0A0A0F',
-                  borderRadius: '10px',
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: '600',
-                  fontSize: '14px',
-                  textDecoration: 'none',
-                }}
-              >
-                Join the Pro waitlist →
-              </a>
+              <WaitlistForm />
             </div>
           </div>
 
