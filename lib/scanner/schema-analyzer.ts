@@ -71,7 +71,7 @@ function getImageUrl(val: unknown): string {
 }
 
 /** Returns 0 (missing), 0.5 (present but poor quality), or 1 (good quality) */
-function scoreAttrQuality(product: JsonLdData, key: string): { points: number; issue: string | null } {
+export function scoreAttrQuality(product: JsonLdData, key: string): { points: number; issue: string | null } {
   switch (key) {
     case 'name': {
       const name = getStringValue(product.name);
@@ -92,7 +92,8 @@ function scoreAttrQuality(product: JsonLdData, key: string): { points: number; i
     case 'image': {
       const imgUrl = getImageUrl(product.image);
       if (!imgUrl) return { points: 0, issue: null };
-      const isAbsolute = imgUrl.startsWith('http://') || imgUrl.startsWith('https://');
+      const isHttps = imgUrl.startsWith('https://');
+      const isAbsolute = isHttps || imgUrl.startsWith('http://');
       const isDataUri = imgUrl.startsWith('data:');
       const isPlaceholder = /placeholder|noimage|default|blank|dummy/i.test(imgUrl);
       if (isDataUri || isPlaceholder) {
@@ -101,14 +102,21 @@ function scoreAttrQuality(product: JsonLdData, key: string): { points: number; i
       if (!isAbsolute) {
         return { points: 0.5, issue: `Product image URL "${imgUrl}" is relative. Schema.org requires absolute URLs for images.` };
       }
+      if (!isHttps) {
+        return { points: 0.5, issue: `Product image uses http:// instead of https://. Serve images over HTTPS to avoid mixed content warnings.` };
+      }
       return { points: 1, issue: null };
     }
     case 'offers': {
       const offers = product.offers;
       if (!offers) return { points: 0, issue: null };
       const rawPrice = offers.price ?? offers.lowPrice;
-      const price = parseFloat(String(rawPrice));
       const currency = getStringValue(offers.priceCurrency);
+      // Completely absent → 0 points (not even present)
+      if (!rawPrice || !currency) {
+        return { points: 0, issue: 'Incomplete price/currency information in schema offers.' };
+      }
+      const price = parseFloat(String(rawPrice));
       const isValidPrice = !isNaN(price) && price > 0;
       const isValidCurrency = /^[A-Z]{3}$/.test(currency);
       if (!isValidPrice) {
@@ -347,114 +355,3 @@ export async function analyzeStructuredData(
   };
 }
 
-export function scoreAttrQuality(
-  product: JsonLdData,
-  key: string
-): { points: number; issue: string | null } {
-  const ISO_CURRENCY_REGEX = /^[A-Z]{3}$/;
-  const PLACEHOLDER_PATTERNS = [/placeholder/i, /n\/a/i, /n\/a/i, /undefined/i, /null/i];
-
-  const isPlaceholder = (value: string): boolean => {
-    return PLACEHOLDER_PATTERNS.some((pattern) => pattern.test(value));
-  };
-
-  const isAbsoluteUrl = (url: string): boolean => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  const isHttpsUrl = (url: string): boolean => {
-    return url.startsWith('https://');
-  };
-
-  switch (key) {
-    case 'offers': {
-      const offers = product.offers as Record<string, unknown> | undefined;
-      if (!offers || typeof offers !== 'object') {
-        return { points: 0, issue: 'Missing offers/price information' };
-      }
-
-      const price = offers.price;
-      const currency = offers.priceCurrency as string | undefined;
-
-      // Check if price is numeric (1pt) or string (0.5pt)
-      const isNumericPrice = typeof price === 'number';
-      const pricePoints = isNumericPrice ? 1 : 0.5;
-
-      // Check if currency is ISO format (1pt for valid, 0.5pt for non-ISO)
-      const isIsoCurrency = currency && ISO_CURRENCY_REGEX.test(currency);
-      const currencyPoints = isIsoCurrency ? 1 : 0.5;
-
-      // If we have both, give 1pt. If one is missing, penalize
-      if (!price || !currency) {
-        return { points: 0, issue: 'Incomplete price/currency information' };
-      }
-
-      // Return the lower score between price and currency quality
-      const finalPoints = Math.min(pricePoints, currencyPoints);
-      return { points: finalPoints, issue: finalPoints < 1 ? 'Price/currency format could be improved' : null };
-    }
-
-    case 'description': {
-      const description = product.description as string | undefined;
-      if (!description) {
-        return { points: 0, issue: 'Missing product description' };
-      }
-
-      if (isPlaceholder(description)) {
-        return { points: 0.5, issue: 'Description appears to be a placeholder' };
-      }
-
-      if (description.length < 50) {
-        return { points: 0.5, issue: 'Description is too short (less than 50 characters)' };
-      }
-
-      return { points: 1, issue: null };
-    }
-
-    case 'image': {
-      const image = product.image as string | undefined;
-      if (!image) {
-        return { points: 0, issue: 'Missing product image' };
-      }
-
-      if (isPlaceholder(image)) {
-        return { points: 0.5, issue: 'Image URL appears to be a placeholder' };
-      }
-
-      if (!isAbsoluteUrl(image)) {
-        return { points: 0.5, issue: 'Image URL is relative; absolute URLs are preferred' };
-      }
-
-      if (!isHttpsUrl(image)) {
-        return { points: 0.5, issue: 'Image URL should use HTTPS' };
-      }
-
-      return { points: 1, issue: null };
-    }
-
-    case 'availability': {
-      const offers = product.offers as Record<string, unknown> | undefined;
-      const availability = offers?.availability as string | undefined;
-
-      if (!availability) {
-        return { points: 0, issue: 'Missing availability information' };
-      }
-
-      const isSchemaOrgUrl = typeof availability === 'string' && availability.startsWith('https://schema.org/');
-
-      if (isSchemaOrgUrl) {
-        return { points: 1, issue: null };
-      }
-
-      return { points: 0.5, issue: 'Availability should use schema.org URL (e.g., https://schema.org/InStock)' };
-    }
-
-    default:
-      return { points: 0, issue: `Unknown attribute: ${key}` };
-  }
-}
