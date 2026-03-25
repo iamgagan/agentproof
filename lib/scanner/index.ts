@@ -67,9 +67,11 @@ const SITEMAP_PRODUCT_PATTERNS = [
 export function findProductPageInHtml(html: string, baseUrl: string): string | null {
   for (const pattern of PRODUCT_URL_PATTERNS) {
     pattern.lastIndex = 0;
-    const match = pattern.exec(html);
-    if (match?.[1]) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
       const path = match[1];
+      // Skip Liquid/template placeholders (e.g. {{ product.handle }})
+      if (path.includes('{{') || path.includes('{%')) continue;
       try {
         return path.startsWith('http') ? path : new URL(path, baseUrl).toString();
       } catch { continue; }
@@ -98,7 +100,7 @@ async function findProductPageViaSitemap(baseUrl: string): Promise<string | null
       if (xml.includes('<sitemapindex')) {
         const productSitemapMatch = xml.match(/<loc>([^<]*product[^<]*)<\/loc>/i);
         if (productSitemapMatch?.[1]) {
-          const childRes = await fetch(productSitemapMatch[1], {
+          const childRes = await fetch(productSitemapMatch[1].replace(/&amp;/g, '&'), {
             headers: { 'User-Agent': BROWSER_UA },
             signal: AbortSignal.timeout(5000),
           });
@@ -111,7 +113,7 @@ async function findProductPageViaSitemap(baseUrl: string): Promise<string | null
         // Fall through to first child sitemap
         const firstChild = xml.match(/<loc>([^<]+)<\/loc>/);
         if (firstChild?.[1] && firstChild[1] !== sitemapUrl) {
-          const childRes = await fetch(firstChild[1], {
+          const childRes = await fetch(firstChild[1].replace(/&amp;/g, '&'), {
             headers: { 'User-Agent': BROWSER_UA },
             signal: AbortSignal.timeout(5000),
           });

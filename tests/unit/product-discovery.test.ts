@@ -10,22 +10,17 @@ describe('findProductPageInHtml', () => {
     expect(findProductPageInHtml(html, BASE)).toBe(`${BASE}/products/red-widget`);
   });
 
-  it('matches Liquid template placeholders (returns encoded URL)', () => {
+  it('skips Liquid template placeholders', () => {
     const html = `<a href="/products/{{ product.handle }}">Item</a>`;
-    const result = findProductPageInHtml(html, BASE);
-    // The regex matches {{ product.handle }} because it's 21 characters > 5 char minimum
-    // The URL constructor encodes the curly braces as %7B%7B and %7D%7D
-    expect(result).toBe('https://www.example.com/products/%7B%7B%20product.handle%20%7D%7D');
+    expect(findProductPageInHtml(html, BASE)).toBeNull();
   });
 
-  it('finds first matching product URL, even with Liquid placeholders', () => {
+  it('skips Liquid placeholder and finds the next real URL', () => {
     const html = `
       <a href="/products/{{ product.handle }}">Template</a>
       <a href="/products/real-product-name">Real Product</a>
     `;
-    const result = findProductPageInHtml(html, BASE);
-    // Returns first match (the Liquid placeholder), not the real product
-    expect(result).toBe('https://www.example.com/products/%7B%7B%20product.handle%20%7D%7D');
+    expect(findProductPageInHtml(html, BASE)).toBe(`${BASE}/products/real-product-name`);
   });
 
   it('returns null when no product URLs found', () => {
