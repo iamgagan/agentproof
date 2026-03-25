@@ -120,3 +120,17 @@ export async function getWaitlistCount(): Promise<number> {
   }
   return waitlistStore.size;
 }
+
+// --- Rate limiting ---
+// Returns true if the caller is over the limit (should be blocked).
+// Uses KV incr + expire when available; always allows in dev (no KV).
+export async function getKvRateLimiter(key: string, max: number, windowSeconds: number): Promise<boolean> {
+  const kv = await getKv();
+  if (!kv) return false; // dev mode — no rate limiting
+  const count = await kv.incr(key);
+  if (count === 1) {
+    // First request in window — set expiry
+    await kv.expire(key, windowSeconds);
+  }
+  return count > max;
+}

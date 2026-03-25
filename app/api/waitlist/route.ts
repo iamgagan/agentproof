@@ -1,19 +1,32 @@
 // app/api/waitlist/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { storeWaitlistEmail, isEmailOnWaitlist } from '@/lib/kv';
+import { storeWaitlistEmail, isEmailOnWaitlist, getKvRateLimiter } from '@/lib/kv';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum
+const RATE_LIMIT_WINDOW = 60; // seconds
+const RATE_LIMIT_MAX = 5; // max submissions per IP per window
 
 export async function POST(req: NextRequest) {
-  let body: { email?: string };
+  // Rate limiting — keyed by IP, 5 requests per 60 seconds
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+  const limited = await getKvRateLimiter(`waitlist:rl:${ip}`, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW);
+  if (limited) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const email = body.email?.trim().toLowerCase();
-  if (!email || !EMAIL_RE.test(email)) {
+  const body = rawBody as Record<string, unknown>;
+  const rawEmail = typeof body.email === 'string' ? body.email : undefined;
+  const email = rawEmail?.trim().toLowerCase();
+
+  if (!email || email.length > MAX_EMAIL_LENGTH || !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
   }
 
