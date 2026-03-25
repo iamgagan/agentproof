@@ -4,9 +4,7 @@ import { scoreAttrQuality } from '@/lib/scanner/schema-analyzer';
 
 describe('scoreAttrQuality - price/offers', () => {
   it('gives 1pt for valid numeric price + ISO currency', () => {
-    const product = {
-      offers: { price: 29.99, priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
-    };
+    const product = { offers: { price: 29.99, priceCurrency: 'USD' } };
     expect(scoreAttrQuality(product, 'offers').points).toBe(1);
   });
 
@@ -22,6 +20,16 @@ describe('scoreAttrQuality - price/offers', () => {
 
   it('gives 0pt when offers is missing', () => {
     expect(scoreAttrQuality({}, 'offers').points).toBe(0);
+  });
+
+  it('gives 0pt when price is missing from offers', () => {
+    const product = { offers: { priceCurrency: 'USD' } };
+    expect(scoreAttrQuality(product, 'offers').points).toBe(0);
+  });
+
+  it('gives 0pt when currency is missing from offers', () => {
+    const product = { offers: { price: 19.99 } };
+    expect(scoreAttrQuality(product, 'offers').points).toBe(0);
   });
 });
 
@@ -55,6 +63,11 @@ describe('scoreAttrQuality - image', () => {
 
   it('gives 0.5pt for placeholder URL', () => {
     const product = { image: 'https://cdn.store.com/placeholder.jpg' };
+    expect(scoreAttrQuality(product, 'image').points).toBe(0.5);
+  });
+
+  it('gives 0.5pt for http (non-HTTPS) absolute URL', () => {
+    const product = { image: 'http://cdn.store.com/products/img.jpg' };
     expect(scoreAttrQuality(product, 'image').points).toBe(0.5);
   });
 });
