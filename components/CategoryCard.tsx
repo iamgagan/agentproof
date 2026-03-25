@@ -17,6 +17,7 @@ export default function CategoryCard({ categoryKey, result }: CategoryCardProps)
   return (
     <div
       className="category-card"
+      data-testid={`category-card-${categoryKey}`}
       style={{
         backgroundColor: 'var(--bg-surface)',
         border: '1px solid var(--border)',

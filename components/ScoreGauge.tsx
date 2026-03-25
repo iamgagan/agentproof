@@ -20,7 +20,7 @@ export default function ScoreGauge({
   const color = scoreColor(score);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+    <div data-testid="score-gauge" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
       <div style={{ position: 'relative', width: size, height: size }}>
         <svg
           width={size}
@@ -65,6 +65,7 @@ export default function ScoreGauge({
           }}
         >
           <span
+            data-testid="score-value"
             style={{
               fontFamily: 'var(--font-heading)',
               fontWeight: '700',
@@ -99,6 +100,7 @@ export default function ScoreGauge({
         }}
       >
         <span
+          data-testid="grade-value"
           style={{
             fontFamily: 'var(--font-heading)',
             fontWeight: '700',

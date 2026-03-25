@@ -135,17 +135,18 @@ export async function analyzeProductQuality(
     score += 1;
   }
 
-  // --- Check 5: Price clarity (4 pts) ---
+  // --- Check 5: Price accuracy — schema vs DOM consistency (4 pts) ---
+  // 2pts for having price/currency/availability in schema, 2pts for schema price matching visible DOM price
   const hasPrice = product?.offers?.price || product?.offers?.lowPrice;
   const hasCurrency = product?.offers?.priceCurrency;
   const hasAvailability = product?.offers?.availability;
 
-  if (hasPrice) score += 2;
-  if (hasCurrency) score += 1;
-  if (hasAvailability) score += 1;
+  if (hasPrice) score += 1;
+  if (hasCurrency) score += 0.5;
+  if (hasAvailability) score += 0.5;
 
-  const priceScore = (hasPrice ? 2 : 0) + (hasCurrency ? 1 : 0) + (hasAvailability ? 1 : 0);
-  if (priceScore < 4) {
+  const presenceScore = (hasPrice ? 1 : 0) + (hasCurrency ? 0.5 : 0) + (hasAvailability ? 0.5 : 0);
+  if (presenceScore < 2) {
     const missing: string[] = [];
     if (!hasPrice) missing.push('price');
     if (!hasCurrency) missing.push('currency');
@@ -156,8 +157,57 @@ export async function analyzeProductQuality(
         `Missing from your Product schema: ${missing.join(', ')}. AI agents need explicit, machine-readable pricing to include your products in comparisons and purchases.`,
         'Agents cannot show your price in shopping comparisons or complete checkout without this data.',
         `Add ${missing.join(', ')} to the "offers" object in your JSON-LD Product markup.`,
-        4 - priceScore)
+        2 - presenceScore)
     );
+  }
+
+  // Schema-DOM price consistency check (2 pts)
+  // Extract the visible price from the DOM and compare to schema price
+  if (hasPrice) {
+    const schemaPrice = parseFloat(String(product?.offers?.price ?? product?.offers?.lowPrice ?? '0'));
+    // Look for price patterns in the visible HTML text
+    const pricePattern = /\$\s*([\d,]+(?:\.\d{2})?)|(?:USD|EUR|GBP)\s*([\d,]+(?:\.\d{2})?)/g;
+    const pageText = $.text();
+    const domPrices: number[] = [];
+    let match;
+    while ((match = pricePattern.exec(pageText)) !== null) {
+      const raw = (match[1] || match[2]).replace(/,/g, '');
+      const val = parseFloat(raw);
+      if (val > 0 && val < 100000) domPrices.push(val);
+    }
+
+    if (domPrices.length > 0 && !isNaN(schemaPrice) && schemaPrice > 0) {
+      // Check if schema price is within 5% of any visible DOM price
+      const priceMatches = domPrices.some((domPrice) => Math.abs(domPrice - schemaPrice) / schemaPrice <= 0.05);
+      if (priceMatches) {
+        score += 2;
+      } else {
+        // Schema price doesn't match any visible price — potential stale/wrong data
+        const closestDom = domPrices.sort((a, b) => Math.abs(a - schemaPrice) - Math.abs(b - schemaPrice))[0];
+        issues.push(
+          createIssue(CATEGORY, 'critical',
+            'Schema price does not match visible page price',
+            `Your JSON-LD schema shows $${schemaPrice}, but the visible page price appears to be $${closestDom}. AI agents read schema data and may display the wrong price to shoppers.`,
+            'Shoppers clicking through from an AI recommendation may see a different price than expected, breaking trust and abandoning purchase.',
+            'Sync your JSON-LD price with your displayed price. This is often a caching issue — regenerate your schema on price changes.',
+            2)
+        );
+      }
+    } else if (domPrices.length === 0 && !isNaN(schemaPrice) && schemaPrice > 0) {
+      // Schema has price but no visible price found — JS-rendered price
+      score += 1;
+      issues.push(
+        createIssue(CATEGORY, 'warning',
+          'Page price may be JavaScript-rendered only',
+          `Your schema has a price ($${schemaPrice}) but no price was found in the raw HTML. If your price is rendered by JavaScript, AI crawlers that don't execute JS may not see it.`,
+          'AI agents may display your schema price correctly, but shoppers landing on your page may see no price until JS loads.',
+          'Ensure the price is present in the initial HTML response, not only added by JavaScript.',
+          1)
+      );
+    } else {
+      // No DOM prices to compare — give benefit of the doubt
+      score += 2;
+    }
   }
 
   return {

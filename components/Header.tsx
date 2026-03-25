@@ -2,6 +2,7 @@
 export default function Header() {
   return (
     <header
+      data-testid="site-header"
       style={{
         borderBottom: '1px solid var(--border)',
         backgroundColor: 'rgba(10, 10, 15, 0.8)',

@@ -21,7 +21,7 @@ export default function IssueList({ issues }: IssueListProps) {
   };
 
   return (
-    <ol style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <ol data-testid="issue-list" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {issues.map((issue, i) => {
         const cfg = severityConfig[issue.severity];
         return (

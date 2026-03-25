@@ -80,6 +80,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
           onChange={(e) => { setUrl(e.target.value); setError(''); }}
           placeholder={placeholder}
           disabled={isPending}
+          data-testid="url-input"
           style={{
             flex: '1',
             minWidth: '280px',
@@ -103,6 +104,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
         <button
           type="submit"
           disabled={isPending || !url.trim()}
+          data-testid="scan-button"
           style={{
             padding: '16px 28px',
             borderRadius: '12px',
@@ -126,6 +128,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
       {/* Loading animation */}
       {isPending && scanStage && (
         <div
+          data-testid="scan-status"
           style={{
             marginTop: '16px',
             display: 'flex',
@@ -181,6 +184,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
       {/* Error message */}
       {error && (
         <p
+          data-testid="scan-error"
           style={{
             marginTop: '10px',
             fontSize: '13px',

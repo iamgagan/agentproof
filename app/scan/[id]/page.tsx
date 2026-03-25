@@ -54,7 +54,7 @@ export default async function ScanResultPage({ params }: Props) {
 
       <main style={{ flex: 1, padding: '48px 24px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
         {/* Page header */}
-        <div style={{ marginBottom: '48px', textAlign: 'center' }}>
+        <div data-testid="results-header" style={{ marginBottom: '48px', textAlign: 'center' }}>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px' }}>
             Agent Readiness Report
           </p>
@@ -96,7 +96,7 @@ export default async function ScanResultPage({ params }: Props) {
           {/* Left column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Category cards */}
-            <section>
+            <section data-testid="categories-section">
               <h2
                 style={{
                   fontFamily: 'var(--font-heading)',
@@ -116,7 +116,7 @@ export default async function ScanResultPage({ params }: Props) {
             </section>
 
             {/* Top Issues */}
-            <section>
+            <section data-testid="issues-section">
               <h2
                 style={{
                   fontFamily: 'var(--font-heading)',
