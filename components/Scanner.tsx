@@ -102,7 +102,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
         />
         <button
           type="submit"
-          disabled={isPending || !url.trim()}
+          disabled={isPending || !url.trim() || !validateUrl(url).valid}
           style={{
             padding: '16px 28px',
             borderRadius: '12px',
