@@ -1,7 +1,11 @@
 'use client';
 import { useState } from 'react';
 
-export default function WaitlistForm() {
+interface WaitlistFormProps {
+  onSuccess?: (email: string) => void;
+}
+
+export default function WaitlistForm({ onSuccess }: WaitlistFormProps = {}) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'duplicate' | 'error'>('idle');
 
@@ -18,6 +22,7 @@ export default function WaitlistForm() {
       const data = await res.json();
       if (!res.ok) { setStatus('error'); return; }
       setStatus(data.alreadyRegistered ? 'duplicate' : 'success');
+      onSuccess?.(email); // unlock Pro gate regardless of duplicate status
     } catch {
       setStatus('error');
     }
