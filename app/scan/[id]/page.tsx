@@ -182,24 +182,6 @@ export default async function ScanResultPage({ params }: Props) {
               </div>
             )}
 
-            {/* Pro waitlist CTA */}
-            <div
-              style={{
-                padding: '28px',
-                backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                textAlign: 'center',
-              }}
-            >
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: '600', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '8px' }}>
-                Want auto-generated fixes?
-              </h3>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '20px' }}>
-                AgentProof Pro generates the exact code to fix every issue. Join the waitlist.
-              </p>
-              <WaitlistForm />
-            </div>
           </div>
 
           {/* Right sidebar — sticky score */}

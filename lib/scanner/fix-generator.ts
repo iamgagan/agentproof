@@ -129,6 +129,34 @@ const FIX_TEMPLATES: Record<string, FixFn> = {
     docsUrl: 'https://schema.org/AggregateOffer',
   }),
 
+  structuredData_no_organization_schema_found: (platform) => ({
+    title: 'Add Organization Schema',
+    instruction: platform === 'shopify'
+      ? 'Add this to your `layout/theme.liquid` inside a `<script type="application/ld+json">` tag in the `<head>` section.'
+      : 'Add this inside a `<script type="application/ld+json">` tag in your homepage `<head>` section.',
+    code: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Your Brand Name",
+      "url": "https://yourstore.com",
+      "logo": "https://yourstore.com/logo.png",
+      "sameAs": [
+        "https://www.instagram.com/yourbrand",
+        "https://www.facebook.com/yourbrand"
+      ]
+    }, null, 2),
+    language: 'json',
+    docsUrl: 'https://developers.google.com/search/docs/appearance/structured-data/organization',
+  }),
+
+  'aiDiscoverability_claudebot_/_anthropic-ai_is_blocked_by_robots_txt': () => ({
+    title: 'Allow ClaudeBot in robots.txt',
+    instruction: 'Add these lines to your `/robots.txt` to allow Anthropic\'s AI crawler. If on Shopify, you cannot edit robots.txt directly — use a redirect or contact Shopify support.',
+    code: `User-agent: ClaudeBot\nAllow: /\n\nUser-agent: anthropic-ai\nAllow: /`,
+    language: 'text',
+    docsUrl: 'https://www.anthropic.com/research/claude-character',
+  }),
+
   merchantSignals_no_canonical_url_tag_found: (platform) => ({
     title: 'Add Canonical URL Tag',
     instruction: platform === 'shopify'
