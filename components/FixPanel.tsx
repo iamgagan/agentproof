@@ -1,6 +1,6 @@
 // components/FixPanel.tsx
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { GeneratedFix } from '@/lib/scanner/fix-generator';
 
 interface FixPanelProps {
@@ -10,25 +10,40 @@ interface FixPanelProps {
 export default function FixPanel({ scanId }: FixPanelProps) {
   const [fixes, setFixes] = useState<GeneratedFix[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    fetch(`/api/fixes/${scanId}`)
-      .then(r => r.json())
+    fetch(`/api/fixes/${encodeURIComponent(scanId)}`)
+      .then(r => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
       .then(d => { setFixes(d.fixes ?? []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch(() => { setError(true); setLoading(false); });
   }, [scanId]);
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, []);
 
   function copyCode(fix: GeneratedFix) {
     navigator.clipboard.writeText(fix.code).then(() => {
       setCopiedId(fix.issueId);
-      setTimeout(() => setCopiedId(null), 2000);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopiedId(null), 2000);
+    }).catch(() => {
+      // Clipboard API unavailable — select the text as fallback (no-op for now)
     });
   }
 
   if (loading) return (
     <div style={{ padding: '20px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
       Generating fixes...
+    </div>
+  );
+
+  if (error) return (
+    <div style={{ padding: '20px', color: 'var(--danger)', fontFamily: 'var(--font-body)', fontSize: '14px' }}>
+      Could not load fixes. Please try refreshing the page.
     </div>
   );
 
@@ -60,7 +75,7 @@ export default function FixPanel({ scanId }: FixPanelProps) {
                 {fix.instruction}
               </p>
             </div>
-            {fix.docsUrl && (
+            {fix.docsUrl?.startsWith('https://') && (
               <a href={fix.docsUrl} target="_blank" rel="noopener noreferrer"
                 style={{ fontSize: '12px', color: 'var(--accent-teal)', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 Docs ↗
