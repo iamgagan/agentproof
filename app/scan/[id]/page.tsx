@@ -8,6 +8,8 @@ import CategoryCard from '@/components/CategoryCard';
 import IssueList from '@/components/IssueList';
 import ShareBanner from '@/components/ShareBanner';
 import WaitlistForm from '@/components/WaitlistForm';
+import ProGate from '@/components/ProGate';
+import FixPanel from '@/components/FixPanel';
 import { getScanResult } from '@/lib/kv';
 import { formatScanTime, gradeColor } from '@/lib/utils';
 
@@ -131,6 +133,26 @@ export default async function ScanResultPage({ params }: Props) {
               </h2>
               <IssueList issues={result.topIssues} />
             </section>
+
+            {/* Auto-fix panel (Pro) */}
+            <div>
+              <h2 style={{
+                fontFamily: 'var(--font-heading)', fontWeight: '700',
+                fontSize: '20px', color: 'var(--text-primary)', marginBottom: '16px',
+              }}>
+                Auto-Generated Fixes
+                <span style={{
+                  marginLeft: '8px', padding: '2px 8px',
+                  backgroundColor: 'rgba(99, 102, 241, 0.15)',
+                  border: '1px solid rgba(99, 102, 241, 0.4)',
+                  borderRadius: '100px', fontSize: '11px',
+                  fontFamily: 'var(--font-mono)', color: '#818CF8',
+                }}>PRO</span>
+              </h2>
+              <ProGate label="Auto-Fix Generation">
+                <FixPanel scanId={result.id} />
+              </ProGate>
+            </div>
 
             <ShareBanner
               score={result.overallScore}
