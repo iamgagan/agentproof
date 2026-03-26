@@ -89,9 +89,9 @@ export default async function ScanResultPage({ params }: Props) {
         </div>
 
         <div
+          className="results-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1fr) 300px',
             gap: '32px',
             alignItems: 'start',
           }}
