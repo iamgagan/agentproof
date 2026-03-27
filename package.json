@@ -14,10 +14,10 @@
   "dependencies": {
     "@vercel/kv": "^3.0.0",
     "@vercel/og": "^0.6.0",
-    "@vercel/postgres": "^0.10.0",
     "cheerio": "^1.0.0",
     "nanoid": "^5.0.0",
     "next": "^15.1.0",
+    "pg": "^8.20.0",
     "pino": "^10.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -26,6 +26,7 @@
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.1",
