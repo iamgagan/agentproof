@@ -7,6 +7,7 @@ import { checkProtocols } from './protocol-checker';
 import { analyzeCrawlPolicy } from './crawl-policy';
 import { analyzeMerchantSignals } from './merchant-signals';
 import { calculateScore, generateGrade, rankIssues } from './scoring';
+import { simulateAgentDiscovery } from './agent-simulation';
 import type {
   ScanResult,
   CategoryResult,
@@ -250,6 +251,9 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
     errors,
   };
 
+  // Step 7: AI Agent Simulation
+  const agentSimulation = simulateAgentDiscovery(url, categories, metadata);
+
   return {
     id: scanId,
     url: inputUrl,
@@ -260,6 +264,7 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
     gradeLabel: label,
     categories,
     topIssues,
+    agentSimulation,
     metadata,
   };
 }

@@ -8,6 +8,11 @@ import CategoryCard from '@/components/CategoryCard';
 import IssueList from '@/components/IssueList';
 import ShareBanner from '@/components/ShareBanner';
 import ConciergeCTA from '@/components/ConciergeCTA';
+import AgentSimulation from '@/components/AgentSimulation';
+import FixPanel from '@/components/FixPanel';
+import ProtocolPanel from '@/components/ProtocolPanel';
+import PixelSetup from '@/components/PixelSetup';
+import BenchmarkComparison from '@/components/BenchmarkComparison';
 import { getScanResult } from '@/lib/kv';
 import { formatScanTime, gradeColor } from '@/lib/utils';
 
@@ -96,6 +101,11 @@ export default async function ScanResultPage({ params }: Props) {
         >
           {/* Left column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* AI Agent Simulation */}
+            {result.agentSimulation && (
+              <AgentSimulation simulation={result.agentSimulation} />
+            )}
+
             {/* Category cards */}
             <section>
               <h2
@@ -132,11 +142,23 @@ export default async function ScanResultPage({ params }: Props) {
               <IssueList issues={result.topIssues} />
             </section>
 
+            {/* Auto-Generated Fixes */}
+            <FixPanel scanId={result.id} />
+
+            {/* Protocol Files */}
+            <ProtocolPanel scanId={result.id} />
+
             <ShareBanner
               score={result.overallScore}
               grade={result.grade}
               url={result.url}
               scanId={result.id}
+            />
+
+            {/* Pixel Setup */}
+            <PixelSetup
+              siteId={Buffer.from(result.normalizedUrl).toString('base64').slice(0, 20)}
+              domain={domain}
             />
 
             {/* Scan errors (if any) */}
@@ -184,6 +206,12 @@ export default async function ScanResultPage({ params }: Props) {
               grade={result.grade}
               gradeLabel={result.gradeLabel}
               size={220}
+            />
+
+            {/* Benchmark Comparison */}
+            <BenchmarkComparison
+              score={result.overallScore}
+              platform={result.metadata.platform}
             />
 
             {/* Score summary table */}
