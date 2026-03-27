@@ -1,7 +1,7 @@
 // app/api/scan/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { runScan } from '@/lib/scanner/index';
-import { storeScanResult, getScanResultByUrl, storeUrlIndex } from '@/lib/kv';
+import { storeScanResult, getScanResultByUrl } from '@/lib/kv';
 import { validateUrl, normalizeUrlForCache } from '@/lib/utils';
 
 export const maxDuration = 30;
@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
   // Store results
   try {
     await storeScanResult(result.id, result);
-    await storeUrlIndex(normalizedUrl, result.id);
   } catch {
     // Storage failure is non-fatal — return results anyway
   }
