@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Mock KV module before importing the route
-vi.mock('@/lib/kv', () => ({
+vi.mock('@/lib/db', () => ({
   storeWaitlistEntry: vi.fn(),
   getWaitlistEntry: vi.fn(),
 }));
 
 import { POST } from '@/app/api/waitlist/route';
-import { storeWaitlistEntry, getWaitlistEntry } from '@/lib/kv';
+import { storeWaitlistEntry, getWaitlistEntry } from '@/lib/db';
 import { NextRequest } from 'next/server';
 
 function makeRequest(body: unknown): NextRequest {

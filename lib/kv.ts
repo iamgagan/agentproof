@@ -1,38 +1,25 @@
 // lib/kv.ts
-// Vercel KV wrapper with in-memory fallback for local development
-// when KV_REST_API_URL / KV_REST_API_TOKEN env vars are not set.
+// Vercel KV wrapper for scan result caching (ephemeral, 24h TTL).
+// Waitlist storage has moved to lib/db.ts (persistent Postgres).
 
 import { cache } from 'react';
 import type { ScanResult } from './types';
+import logger from './logger';
 
 const TTL_SECONDS = 60 * 60 * 24; // 24 hours
 
 // Use globalThis so the Maps survive Next.js module re-evaluation in dev mode.
-// In dev, API routes and page routes run in separate module instances —
-// a plain `const Map` would be re-created per instance, making stored scans invisible.
 declare global {
   // eslint-disable-next-line no-var
   var __agentproof_scanStore: Map<string, { value: ScanResult; expiresAt: number }> | undefined;
   // eslint-disable-next-line no-var
   var __agentproof_urlIndex: Map<string, { scanId: string; expiresAt: number }> | undefined;
-  // eslint-disable-next-line no-var
-  var __agentproof_waitlist: Map<string, { value: WaitlistEntry; storedAt: number }> | undefined;
-}
-
-export interface WaitlistEntry {
-  email: string;
-  scanId: string;
-  score: number;
-  url: string;
-  timestamp: string;
 }
 
 const scanStore: Map<string, { value: ScanResult; expiresAt: number }> =
   (globalThis.__agentproof_scanStore ??= new Map());
 const urlIndex: Map<string, { scanId: string; expiresAt: number }> =
   (globalThis.__agentproof_urlIndex ??= new Map());
-const waitlistStore: Map<string, { value: WaitlistEntry; storedAt: number }> =
-  (globalThis.__agentproof_waitlist ??= new Map());
 
 async function getKv() {
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
@@ -58,7 +45,7 @@ export async function storeScanResult(id: string, result: ScanResult): Promise<v
       });
     }
   } catch (err) {
-    console.error('[kv] storeScanResult failed:', err);
+    logger.error({ err, id }, 'storeScanResult failed');
   }
 }
 
@@ -76,7 +63,7 @@ export const getScanResult = cache(async (id: string): Promise<ScanResult | null
     }
     return entry.value;
   } catch (err) {
-    console.error('[kv] getScanResult failed:', err);
+    logger.error({ err, id }, 'getScanResult failed');
     return null;
   }
 });
@@ -93,7 +80,7 @@ export async function storeUrlIndex(normalizedUrl: string, scanId: string): Prom
       });
     }
   } catch (err) {
-    console.error('[kv] storeUrlIndex failed:', err);
+    logger.error({ err, normalizedUrl }, 'storeUrlIndex failed');
   }
 }
 
@@ -113,39 +100,9 @@ export async function getScanResultByUrl(normalizedUrl: string): Promise<ScanRes
     }
     return await getScanResult(entry.scanId);
   } catch (err) {
-    console.error('[kv] getScanResultByUrl failed:', err);
+    logger.error({ err, normalizedUrl }, 'getScanResultByUrl failed');
     return null;
   }
 }
 
-export async function storeWaitlistEntry(entry: WaitlistEntry): Promise<void> {
-  try {
-    const kv = await getKv();
-    if (kv) {
-      await kv.set(`waitlist:${entry.email}`, entry);
-    } else {
-      waitlistStore.set(entry.email, {
-        value: entry,
-        storedAt: Date.now(),
-      });
-    }
-    console.log(`[waitlist] signup: ${entry.email} (scan: ${entry.scanId}, score: ${entry.score})`);
-  } catch (err) {
-    console.error('[kv] storeWaitlistEntry failed:', err);
-  }
-}
-
-export async function getWaitlistEntry(email: string): Promise<WaitlistEntry | null> {
-  try {
-    const kv = await getKv();
-    if (kv) {
-      return await kv.get<WaitlistEntry>(`waitlist:${email}`);
-    }
-    const entry = waitlistStore.get(email);
-    if (!entry) return null;
-    return entry.value;
-  } catch (err) {
-    console.error('[kv] getWaitlistEntry failed:', err);
-    return null;
-  }
-}
+// Waitlist storage has moved to lib/db.ts (persistent Postgres).
