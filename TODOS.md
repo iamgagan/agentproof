@@ -29,3 +29,6 @@ Add Playwright E2E tests covering: (1) homepage → enter URL → see results, (
 ---
 
 ## Completed
+
+### E2E tests for critical user flows
+Added 18 Playwright E2E tests covering: homepage rendering + scanner validation, full scan-to-results flow, waitlist email signup, 404 error pages, cached results loading from share URLs. PR #2 merged.
