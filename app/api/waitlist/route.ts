@@ -1,6 +1,6 @@
 // app/api/waitlist/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { storeWaitlistEntry, getWaitlistEntry } from '@/lib/kv';
+import { storeWaitlistEntry, getWaitlistEntry } from '@/lib/db';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
