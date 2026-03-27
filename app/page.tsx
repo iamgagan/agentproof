@@ -56,7 +56,7 @@ export default function HomePage() {
           >
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--accent-teal)', display: 'inline-block' }} />
             <span style={{ fontSize: '13px', color: 'var(--accent-teal)', fontFamily: 'var(--font-mono)' }}>
-              Free · Agent Readiness Scanner
+              Free scan · No signup · 15 seconds
             </span>
           </div>
 
@@ -71,8 +71,9 @@ export default function HomePage() {
               marginBottom: '20px',
             }}
           >
-            How do AI shopping agents<br />
-            <span style={{ color: 'var(--accent-teal)' }}>see your store?</span>
+            ChatGPT is recommending products<br />
+            to your customers right now.<br />
+            <span style={{ color: 'var(--accent-teal)' }}>Can it find yours?</span>
           </h1>
 
           <p
@@ -86,8 +87,8 @@ export default function HomePage() {
               margin: '0 auto 48px',
             }}
           >
-            ChatGPT, Gemini, and Copilot are the new storefront.
-            Find out if you&apos;re invisible to them.
+            AI shopping agents are the new storefront — and most stores are invisible to them.
+            Find out where you stand in 15 seconds.
           </p>
 
           <div style={{ maxWidth: '640px', margin: '0 auto' }}>
@@ -115,8 +116,8 @@ export default function HomePage() {
                 lineHeight: '1.7',
               }}
             >
-              Google organic traffic is down 20–50% for ecommerce brands.
-              AI agents are replacing search — and most stores are invisible to them.
+              Your Google traffic is shrinking because AI agents are answering shopping queries directly.
+              When a customer asks ChatGPT for a recommendation, does your store show up?
             </p>
 
             <div
@@ -176,10 +177,10 @@ export default function HomePage() {
               marginBottom: '12px',
             }}
           >
-            What we check
+            Why your store might be invisible
           </h2>
           <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', marginBottom: '48px', fontSize: '15px' }}>
-            5 categories · 100 points total
+            We check 5 areas where AI agents decide whether to recommend you — or your competitor.
           </p>
 
           <div
@@ -304,10 +305,10 @@ export default function HomePage() {
               marginBottom: '12px',
             }}
           >
-            Ready to see your score?
+            Find out if AI agents can find your store
           </h2>
           <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '40px', fontSize: '15px' }}>
-            Trusted by merchants on WooCommerce, BigCommerce, Magento, and Shopify.
+            Works with Shopify, WooCommerce, BigCommerce, Magento, and custom stores.
           </p>
           <Scanner />
         </section>

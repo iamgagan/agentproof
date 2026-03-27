@@ -7,6 +7,7 @@ import ScoreGauge from '@/components/ScoreGauge';
 import CategoryCard from '@/components/CategoryCard';
 import IssueList from '@/components/IssueList';
 import ShareBanner from '@/components/ShareBanner';
+import ConciergeCTA from '@/components/ConciergeCTA';
 import { getScanResult } from '@/lib/kv';
 import { formatScanTime, gradeColor } from '@/lib/utils';
 
@@ -159,39 +160,12 @@ export default async function ScanResultPage({ params }: Props) {
               </div>
             )}
 
-            {/* Pro waitlist CTA */}
-            <div
-              style={{
-                padding: '28px',
-                backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                textAlign: 'center',
-              }}
-            >
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: '600', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '8px' }}>
-                Want auto-generated fixes?
-              </h3>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '20px' }}>
-                AgentProof Pro will generate the exact code changes to fix every issue. Join the waitlist.
-              </p>
-              <a
-                href="mailto:waitlist@agentproof.com"
-                style={{
-                  display: 'inline-block',
-                  padding: '12px 28px',
-                  backgroundColor: 'var(--accent-teal)',
-                  color: '#0A0A0F',
-                  borderRadius: '10px',
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: '600',
-                  fontSize: '14px',
-                  textDecoration: 'none',
-                }}
-              >
-                Join the Pro waitlist →
-              </a>
-            </div>
+            {/* Concierge fix CTA */}
+            <ConciergeCTA
+              scanId={result.id}
+              score={result.overallScore}
+              url={result.url}
+            />
           </div>
 
           {/* Right sidebar — sticky score */}
