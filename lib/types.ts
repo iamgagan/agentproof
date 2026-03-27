@@ -20,6 +20,7 @@ export interface ScanResult {
     aiDiscoverability: CategoryResult;
   };
   topIssues: Issue[];
+  agentSimulation: AgentSimulationResult | null;
   metadata: ScanMetadata;
 }
 
@@ -154,3 +155,97 @@ export const CATEGORY_MAX_SCORES: Record<CategoryName, number> = {
   merchantSignals: 15,
   aiDiscoverability: 20,
 };
+
+// ── AI Agent Simulation ──
+
+export interface AgentSimulationResult {
+  visibilityScore: number;
+  sampleQueries: SimulatedQuery[];
+  competitiveGaps: string[];
+  recommendations: string[];
+}
+
+export interface SimulatedQuery {
+  query: string;
+  wouldSurface: boolean;
+  reason: string;
+  confidence: 'high' | 'medium' | 'low';
+}
+
+// ── Fix Generation ──
+
+export interface FixSuggestion {
+  issueId: string;
+  category: string;
+  title: string;
+  severity: 'critical' | 'warning' | 'info';
+  codeSnippet: string;
+  language: 'html' | 'json' | 'javascript' | 'text';
+  instructions: string;
+  platform?: string;
+}
+
+// ── Agent Traffic Pixel ──
+
+export interface AgentVisit {
+  siteId: string;
+  pageUrl: string;
+  userAgent: string;
+  agentType: string;
+  referrer: string | null;
+  timestamp: string;
+}
+
+export interface AgentVisitStats {
+  totalVisits: number;
+  uniqueAgents: string[];
+  visitsByAgent: Record<string, number>;
+  visitsByDay: { date: string; count: number }[];
+  topPages: { url: string; count: number }[];
+}
+
+// ── Protocol Generation ──
+
+export interface ProtocolFile {
+  filename: string;
+  path: string;
+  content: string;
+  description: string;
+  deployInstructions: string;
+}
+
+export interface ProtocolFiles {
+  ucp: ProtocolFile | null;
+  mcp: ProtocolFile | null;
+  robotsTxt: ProtocolFile | null;
+}
+
+// ── Benchmark Dataset ──
+
+export interface BenchmarkEntry {
+  domain: string;
+  normalizedUrl: string;
+  platform: string | null;
+  category: string | null;
+  overallScore: number;
+  categoryScores: {
+    structuredData: number;
+    productQuality: number;
+    protocolReadiness: number;
+    merchantSignals: number;
+    aiDiscoverability: number;
+  };
+  scanId: string;
+  scannedAt: string;
+}
+
+export interface BenchmarkStats {
+  totalScanned: number;
+  averageScore: number;
+  medianScore: number;
+  scoreDistribution: { range: string; count: number }[];
+  byPlatform: { platform: string; avgScore: number; count: number }[];
+  byCategory: { category: string; avgScore: number; count: number }[];
+  topPerformers: { domain: string; score: number; platform: string | null }[];
+  bottomPerformers: { domain: string; score: number; platform: string | null }[];
+}
