@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -39,20 +40,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: '#00E5CC',
+          colorBackground: '#12121A',
+          colorInputBackground: '#1A1A2E',
+          colorText: '#F8FAFC',
+          colorTextSecondary: '#94A3B8',
+          borderRadius: '10px',
+        },
+      }}
     >
-      <body
-        style={{
-          fontFamily: 'var(--font-body), system-ui, sans-serif',
-          backgroundColor: 'var(--bg-primary)',
-          color: 'var(--text-primary)',
-          minHeight: '100vh',
-        }}
+      <html
+        lang="en"
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
       >
-        {children}
-      </body>
-    </html>
+        <body
+          style={{
+            fontFamily: 'var(--font-body), system-ui, sans-serif',
+            backgroundColor: 'var(--bg-primary)',
+            color: 'var(--text-primary)',
+            minHeight: '100vh',
+          }}
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
