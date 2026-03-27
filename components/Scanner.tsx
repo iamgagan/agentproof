@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@clerk/nextjs';
 import { validateUrl } from '@/lib/utils';
 
 export default function Scanner({ placeholder = 'https://yourstore.com' }: { placeholder?: string }) {
@@ -10,6 +11,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
   const [isPending, startTransition] = useTransition();
   const [scanStage, setScanStage] = useState('');
   const router = useRouter();
+  const { isSignedIn } = useAuth();
 
   const stages = [
     'Fetching homepage…',
@@ -26,6 +28,11 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
     const validation = validateUrl(url);
     if (!validation.valid) {
       setError(validation.error ?? 'Invalid URL');
+      return;
+    }
+
+    if (!isSignedIn) {
+      router.push('/sign-up');
       return;
     }
 
@@ -119,7 +126,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
             transition: 'opacity 0.2s',
           }}
         >
-          {isPending ? 'Scanning…' : 'Scan My Store →'}
+          {isPending ? 'Scanning…' : isSignedIn ? 'Scan My Store →' : 'Sign Up to Scan →'}
         </button>
       </div>
 
@@ -201,7 +208,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
           textAlign: 'center',
         }}
       >
-        Free · No signup · Results in ~15 seconds
+        {isSignedIn ? 'Free · Results in ~15 seconds' : 'Free · Sign up in 10 seconds · Results in ~15 seconds'}
       </p>
     </form>
   );

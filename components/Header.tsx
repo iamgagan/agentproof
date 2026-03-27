@@ -1,4 +1,6 @@
 // components/Header.tsx
+import { UserButton } from '@clerk/nextjs';
+
 export default function Header() {
   return (
     <header
@@ -76,6 +78,13 @@ export default function Header() {
           >
             What we check
           </a>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: { width: '32px', height: '32px' },
+              },
+            }}
+          />
         </nav>
       </div>
     </header>

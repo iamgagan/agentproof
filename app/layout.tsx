@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -39,20 +40,73 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: '#00E5CC',
+          colorBackground: '#12121A',
+          colorInputBackground: '#1A1A2E',
+          colorInputText: '#F8FAFC',
+          colorText: '#F8FAFC',
+          colorTextOnPrimaryBackground: '#0A0A0F',
+          colorTextSecondary: '#94A3B8',
+          colorNeutral: '#F8FAFC',
+          borderRadius: '10px',
+        },
+        elements: {
+          formFieldInput: {
+            backgroundColor: '#1A1A2E',
+            borderColor: '#2D3748',
+            color: '#F8FAFC',
+          },
+          formFieldLabel: { color: '#94A3B8' },
+          formFieldInput__identifier: {
+            backgroundColor: '#1A1A2E',
+            borderColor: '#2D3748',
+            color: '#F8FAFC',
+          },
+          card: { backgroundColor: '#12121A', boxShadow: 'none' },
+          cardBox: { backgroundColor: '#12121A', boxShadow: 'none' },
+          headerTitle: { color: '#F8FAFC' },
+          headerSubtitle: { color: '#94A3B8' },
+          socialButtonsBlockButton: {
+            backgroundColor: '#1A1A2E',
+            borderColor: '#2D3748',
+            color: '#F8FAFC',
+          },
+          socialButtonsBlockButtonText: { color: '#F8FAFC' },
+          dividerLine: { backgroundColor: '#2D3748' },
+          dividerText: { color: '#64748B' },
+          footerActionLink: { color: '#00E5CC' },
+          footerActionText: { color: '#94A3B8' },
+          formButtonPrimary: {
+            backgroundColor: '#00E5CC',
+            color: '#0A0A0F',
+            fontWeight: '600',
+          },
+          identityPreviewText: { color: '#F8FAFC' },
+          identityPreviewEditButtonIcon: { color: '#00E5CC' },
+          formFieldInputPlaceholder: { color: '#64748B' },
+          badge: { backgroundColor: '#1A1A2E', color: '#94A3B8' },
+          developmentModeChip: { display: 'none' },
+        },
+      }}
     >
-      <body
-        style={{
-          fontFamily: 'var(--font-body), system-ui, sans-serif',
-          backgroundColor: 'var(--bg-primary)',
-          color: 'var(--text-primary)',
-          minHeight: '100vh',
-        }}
+      <html
+        lang="en"
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
       >
-        {children}
-      </body>
-    </html>
+        <body
+          style={{
+            fontFamily: 'var(--font-body), system-ui, sans-serif',
+            backgroundColor: 'var(--bg-primary)',
+            color: 'var(--text-primary)',
+            minHeight: '100vh',
+          }}
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
