@@ -150,7 +150,40 @@ export async function analyzeCrawlPolicy(
     );
   }
 
-  // --- Check 4: Meta description (2 pts) ---
+  // --- Check 4: llms.txt presence (2 pts) ---
+  let llmsTxtFound = false;
+  for (const path of ['/llms.txt', '/.well-known/llms.txt']) {
+    try {
+      const res = await fetch(`${url}${path}`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (res.ok) {
+        const body = await res.text();
+        // Verify it's actual text content, not an HTML error page
+        if (body.length > 10 && !body.trimStart().startsWith('<!') && !body.trimStart().toLowerCase().startsWith('<html')) {
+          llmsTxtFound = true;
+          score += 2;
+          break;
+        }
+      }
+    } catch { /* try next */ }
+  }
+
+  if (!llmsTxtFound) {
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'info',
+        'No llms.txt file found',
+        'llms.txt is an emerging standard that provides AI-friendly content summaries for LLMs. It helps AI agents quickly understand your site without crawling every page.',
+        'AI agents may take longer to understand your store or miss key context about your products and brand.',
+        'Create a /llms.txt file that summarizes your store, key product categories, policies, and value proposition in plain text.',
+        2
+      )
+    );
+  }
+
+  // --- Check 5: Meta description (2 pts) ---
   const metaDesc = $('meta[name="description"]').attr('content') || '';
   if (metaDesc.length >= 50) {
     score += 2;

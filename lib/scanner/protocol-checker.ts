@@ -26,7 +26,8 @@ async function checkEndpoint(url: string): Promise<{ found: boolean; status: num
 
 export async function checkProtocols(
   baseUrl: string,
-  platform: DetectedPlatform | null
+  platform: DetectedPlatform | null,
+  homepageHtml?: string,
 ): Promise<CategoryResult> {
   let score = 0;
   const issues: CategoryResult['issues'] = [];
@@ -126,9 +127,50 @@ export async function checkProtocols(
     );
   }
 
-  // --- Check 4: Product feed indicators (4 pts) ---
-  // This is checked via merchant signals — placeholder here
-  // to maintain score consistency
+  // --- Check 4: A2A Agent Card (2 pts) ---
+  const agentCardResult = await checkEndpoint(`${baseUrl}/.well-known/agent.json`);
+  if (agentCardResult.found) {
+    score += 2;
+  } else {
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'info',
+        'No A2A Agent Card found',
+        'The Agent-to-Agent (A2A) protocol uses agent.json at /.well-known/agent.json to describe your store\'s agent capabilities. This enables AI agents to discover how to interact with your store programmatically.',
+        'AI agents using the A2A protocol cannot discover your store\'s capabilities for automated purchasing.',
+        'Create a /.well-known/agent.json file describing your store\'s agent interaction capabilities. See the Google A2A specification.',
+        2
+      )
+    );
+  }
+
+  // --- Check 5: Agent-related link tags in HTML (2 pts) ---
+  let agentLinkFound = false;
+  if (homepageHtml) {
+    const linkPatterns = [
+      /rel\s*=\s*["'][^"']*mcp[^"']*["']/i,
+      /rel\s*=\s*["'][^"']*agent[^"']*["']/i,
+      /rel\s*=\s*["'][^"']*ai-plugin[^"']*["']/i,
+    ];
+    agentLinkFound = linkPatterns.some((p) => p.test(homepageHtml));
+  }
+
+  if (agentLinkFound) {
+    score += 2;
+  } else {
+    issues.push(
+      createIssue(
+        CATEGORY,
+        'info',
+        'No agent-related link tags found in HTML',
+        'Modern agentic protocols use <link> tags (e.g., rel="mcp", rel="agent") to advertise agent endpoints. These help AI agents discover how to interact with your store without guessing endpoint URLs.',
+        'AI agents must rely on well-known URL conventions rather than explicit discovery, which reduces the chance of successful interaction.',
+        'Add <link rel="mcp" href="/.well-known/mcp.json"> or similar agent discovery link tags to your HTML <head>.',
+        2
+      )
+    );
+  }
 
   return {
     score,

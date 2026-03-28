@@ -13,7 +13,10 @@ import FixPanel from '@/components/FixPanel';
 import ProtocolPanel from '@/components/ProtocolPanel';
 import PixelSetup from '@/components/PixelSetup';
 import BenchmarkComparison from '@/components/BenchmarkComparison';
+import ProGate from '@/components/ProGate';
+import LiveAITest from '@/components/LiveAITest';
 import { getScanResult } from '@/lib/kv';
+import { isProUser } from '@/lib/pro';
 import { formatScanTime, gradeColor } from '@/lib/utils';
 
 interface Props {
@@ -50,9 +53,16 @@ export default async function ScanResultPage({ params }: Props) {
     notFound();
   }
 
+  const isPro = await isProUser();
   let domain = 'unknown';
   try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const categoryEntries = Object.entries(result.categories);
+
+  // Mega-brands that appear in AI agent responses due to training data and
+  // direct partnerships, regardless of technical readiness signals.
+  const megaBrands = ['amazon.com', 'walmart.com', 'target.com', 'ebay.com', 'bestbuy.com', 'costco.com', 'homedepot.com', 'lowes.com', 'macys.com', 'nordstrom.com', 'wayfair.com', 'etsy.com'];
+  const cleanDomain = domain.replace('www.', '');
+  const isMegaBrand = megaBrands.includes(cleanDomain);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -90,6 +100,27 @@ export default async function ScanResultPage({ params }: Props) {
             </span>
           </div>
         </div>
+
+        {/* Mega-brand context note */}
+        {isMegaBrand && (
+          <div
+            style={{
+              padding: '14px 20px',
+              backgroundColor: 'rgba(99, 102, 241, 0.08)',
+              border: '1px solid rgba(99, 102, 241, 0.25)',
+              borderRadius: '10px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+            }}
+          >
+            <span style={{ fontSize: '16px', flexShrink: 0 }}>*</span>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+              <strong style={{ color: 'var(--accent-indigo)' }}>Note:</strong> {domain} may still appear in AI agent responses due to massive brand recognition in training data and direct partnerships with AI platforms. This score measures <em>technical readiness</em> — the structured data, protocols, and crawler access that smaller brands need to be discoverable. Major retailers can afford low technical readiness; most brands cannot.
+            </p>
+          </div>
+        )}
 
         <div
           className="results-grid"
@@ -142,11 +173,22 @@ export default async function ScanResultPage({ params }: Props) {
               <IssueList issues={result.topIssues} />
             </section>
 
-            {/* Auto-Generated Fixes */}
-            <FixPanel scanId={result.id} />
+            {/* Live AI Query Test (Pro) */}
+            {result.liveAITest && (
+              <ProGate isPro={isPro} featureName="Live AI Query Test">
+                <LiveAITest result={result.liveAITest} />
+              </ProGate>
+            )}
 
-            {/* Protocol Files */}
-            <ProtocolPanel scanId={result.id} />
+            {/* Auto-Generated Fixes (Pro) */}
+            <ProGate isPro={isPro} featureName="Auto-Generated Fixes">
+              <FixPanel scanId={result.id} />
+            </ProGate>
+
+            {/* Protocol Files (Pro) */}
+            <ProGate isPro={isPro} featureName="Protocol File Generator">
+              <ProtocolPanel scanId={result.id} />
+            </ProGate>
 
             <ShareBanner
               score={result.overallScore}
@@ -155,11 +197,13 @@ export default async function ScanResultPage({ params }: Props) {
               scanId={result.id}
             />
 
-            {/* Pixel Setup */}
-            <PixelSetup
-              siteId={Buffer.from(result.normalizedUrl).toString('base64').slice(0, 20)}
-              domain={domain}
-            />
+            {/* Pixel Setup (Pro) */}
+            <ProGate isPro={isPro} featureName="Agent Traffic Pixel">
+              <PixelSetup
+                siteId={Buffer.from(result.normalizedUrl).toString('base64').slice(0, 20)}
+                domain={domain}
+              />
+            </ProGate>
 
             {/* Scan errors (if any) */}
             {result.metadata.errors.length > 0 && (
@@ -205,14 +249,16 @@ export default async function ScanResultPage({ params }: Props) {
               score={result.overallScore}
               grade={result.grade}
               gradeLabel={result.gradeLabel}
-              size={220}
+              size={200}
             />
 
-            {/* Benchmark Comparison */}
-            <BenchmarkComparison
-              score={result.overallScore}
-              platform={result.metadata.platform}
-            />
+            {/* Benchmark Comparison (Pro) */}
+            <ProGate isPro={isPro} featureName="Industry Benchmarks" compact>
+              <BenchmarkComparison
+                score={result.overallScore}
+                platform={result.metadata.platform}
+              />
+            </ProGate>
 
             {/* Score summary table */}
             <div

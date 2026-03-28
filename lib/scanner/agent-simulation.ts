@@ -55,25 +55,33 @@ function buildSampleQueries(input: SimulationInput): SimulatedQuery[] {
   );
 
   // Query 1: Direct brand search
+  // For a direct brand query ("What does X sell?"), AI agents can often answer
+  // if they can crawl the site at all — even without structured data, the
+  // homepage usually has enough visible content for a brand-level answer.
+  const hasAnyContent = productQuality.percentage > 0;
+  const brandQuerySurfaces = crawlersAllowed && (hasSchema || hasAnyContent);
   queries.push({
     query: `What products does ${domainName(input.url)} sell?`,
-    wouldSurface: crawlersAllowed && hasSchema,
-    reason: crawlersAllowed && hasSchema
-      ? 'AI crawlers can access your site and structured data describes your products.'
+    wouldSurface: brandQuerySurfaces,
+    reason: brandQuerySurfaces
+      ? hasSchema
+        ? 'AI crawlers can access your site and structured data describes your products.'
+        : 'AI crawlers can access your site and find some product information, but adding structured data would significantly improve accuracy.'
       : !crawlersAllowed
         ? 'AI crawlers are blocked by robots.txt — agents cannot index your content.'
-        : 'Missing structured data means agents cannot parse your product catalog.',
-    confidence: crawlersAllowed && hasSchema ? 'high' : 'high',
+        : 'No product content found on your site for agents to parse.',
+    confidence: crawlersAllowed && hasSchema ? 'high' : crawlersAllowed ? 'medium' : 'high',
   });
 
   // Query 2: Category search
+  const categoryQuerySurfaces = (hasSchema || hasGoodContent) && crawlersAllowed;
   queries.push({
     query: `Best ${input.productCategory ?? 'products'} to buy online`,
-    wouldSurface: hasSchema && hasGoodContent && crawlersAllowed,
-    reason: hasSchema && hasGoodContent && crawlersAllowed
+    wouldSurface: categoryQuerySurfaces,
+    reason: categoryQuerySurfaces
       ? 'Rich product data and accessible content make you competitive for category queries.'
       : 'Incomplete product data or blocked crawlers reduce your visibility for category searches.',
-    confidence: hasSchema && hasGoodContent ? 'medium' : 'low',
+    confidence: hasSchema && hasGoodContent ? 'medium' : hasGoodContent ? 'low' : 'low',
   });
 
   // Query 3: Price comparison

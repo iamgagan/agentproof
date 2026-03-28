@@ -41,6 +41,10 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
       appearance={{
         variables: {
           colorPrimary: '#00E5CC',
@@ -89,6 +93,18 @@ export default function RootLayout({
           formFieldInputPlaceholder: { color: '#64748B' },
           badge: { backgroundColor: '#1A1A2E', color: '#94A3B8' },
           developmentModeChip: { display: 'none' },
+          userButtonPopoverCard: { backgroundColor: '#12121A', borderColor: '#2D3748' },
+          userButtonPopoverMain: { backgroundColor: '#12121A' },
+          userButtonPopoverFooter: { backgroundColor: '#12121A', borderColor: '#2D3748' },
+          userButtonPopoverActionButton: { color: '#F8FAFC' },
+          userButtonPopoverActionButtonText: { color: '#F8FAFC' },
+          userButtonPopoverActionButtonIcon: { color: '#94A3B8' },
+          userPreviewMainIdentifier: { color: '#F8FAFC' },
+          userPreviewSecondaryIdentifier: { color: '#94A3B8' },
+          userButtonPopoverActions: { backgroundColor: '#12121A' },
+          menuButton: { color: '#F8FAFC' },
+          menuItem: { color: '#F8FAFC' },
+          menuList: { backgroundColor: '#12121A' },
         },
       }}
     >
