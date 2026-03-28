@@ -21,6 +21,7 @@ export interface ScanResult {
   };
   topIssues: Issue[];
   agentSimulation: AgentSimulationResult | null;
+  liveAITest: LiveAITestResult | null;
   metadata: ScanMetadata;
 }
 
@@ -169,6 +170,22 @@ export interface SimulatedQuery {
   query: string;
   wouldSurface: boolean;
   reason: string;
+  confidence: 'high' | 'medium' | 'low';
+}
+
+// ── Live AI Query Test ──
+
+export interface LiveAITestResult {
+  queriesTested: number;
+  mentionedIn: number;
+  queries: LiveAIQuery[];
+}
+
+export interface LiveAIQuery {
+  query: string;
+  aiResponse: string;
+  mentionsBrand: boolean;
+  mentionsUrl: boolean;
   confidence: 'high' | 'medium' | 'low';
 }
 

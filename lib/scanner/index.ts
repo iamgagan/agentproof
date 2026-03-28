@@ -8,6 +8,7 @@ import { analyzeCrawlPolicy } from './crawl-policy';
 import { analyzeMerchantSignals } from './merchant-signals';
 import { calculateScore, generateGrade, rankIssues } from './scoring';
 import { simulateAgentDiscovery } from './agent-simulation';
+import { runLiveAITest } from './live-ai-test';
 import type {
   ScanResult,
   CategoryResult,
@@ -54,6 +55,11 @@ const PRODUCT_URL_PATTERNS = [
   /href=["'](\/p\/[^"'?#]{5,})/gi,
   /href=["']([^"']*\/dp\/[^"'?#]+)/gi,
   /href=["'](\/catalog\/product\/[^"'?#]+)/gi,
+  /href=["'](\/pricing[^"'?#]*)/gi,
+  /href=["'](\/plans[^"'?#]*)/gi,
+  /href=["'](\/services\/[^"'?#]{3,})/gi,
+  /href=["'](\/channels\/[^"'?#]{3,})/gi,
+  /href=["'](\/browse\/[^"'?#]{3,})/gi,
 ];
 
 const SITEMAP_PRODUCT_PATTERNS = [
@@ -212,7 +218,7 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
       errors.push(`Product quality analysis error: ${e.message}`);
       return { score: 0, maxScore: 20, percentage: 0, issues: [] } as CategoryResult;
     }),
-    checkProtocols(url, platform).catch((e) => {
+    checkProtocols(url, platform, homepageHtml).catch((e) => {
       errors.push(`Protocol check error: ${e.message}`);
       return { score: 0, maxScore: 20, percentage: 0, issues: [] } as CategoryResult;
     }),
@@ -254,6 +260,9 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
   // Step 7: AI Agent Simulation
   const agentSimulation = simulateAgentDiscovery(url, categories, metadata);
 
+  // Step 8: Live AI Query Test (only if OpenAI key is configured)
+  const liveAITest = await runLiveAITest(url).catch(() => null);
+
   return {
     id: scanId,
     url: inputUrl,
@@ -265,6 +274,7 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
     categories,
     topIssues,
     agentSimulation,
+    liveAITest,
     metadata,
   };
 }

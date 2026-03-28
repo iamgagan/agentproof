@@ -14,6 +14,7 @@ import ProtocolPanel from '@/components/ProtocolPanel';
 import PixelSetup from '@/components/PixelSetup';
 import BenchmarkComparison from '@/components/BenchmarkComparison';
 import ProGate from '@/components/ProGate';
+import LiveAITest from '@/components/LiveAITest';
 import { getScanResult } from '@/lib/kv';
 import { isProUser } from '@/lib/pro';
 import { formatScanTime, gradeColor } from '@/lib/utils';
@@ -171,6 +172,13 @@ export default async function ScanResultPage({ params }: Props) {
               </h2>
               <IssueList issues={result.topIssues} />
             </section>
+
+            {/* Live AI Query Test (Pro) */}
+            {result.liveAITest && (
+              <ProGate isPro={isPro} featureName="Live AI Query Test">
+                <LiveAITest result={result.liveAITest} />
+              </ProGate>
+            )}
 
             {/* Auto-Generated Fixes (Pro) */}
             <ProGate isPro={isPro} featureName="Auto-Generated Fixes">
