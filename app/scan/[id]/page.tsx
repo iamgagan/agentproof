@@ -57,6 +57,12 @@ export default async function ScanResultPage({ params }: Props) {
   try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const categoryEntries = Object.entries(result.categories);
 
+  // Mega-brands that appear in AI agent responses due to training data and
+  // direct partnerships, regardless of technical readiness signals.
+  const megaBrands = ['amazon.com', 'walmart.com', 'target.com', 'ebay.com', 'bestbuy.com', 'costco.com', 'homedepot.com', 'lowes.com', 'macys.com', 'nordstrom.com', 'wayfair.com', 'etsy.com'];
+  const cleanDomain = domain.replace('www.', '');
+  const isMegaBrand = megaBrands.includes(cleanDomain);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />
@@ -93,6 +99,27 @@ export default async function ScanResultPage({ params }: Props) {
             </span>
           </div>
         </div>
+
+        {/* Mega-brand context note */}
+        {isMegaBrand && (
+          <div
+            style={{
+              padding: '14px 20px',
+              backgroundColor: 'rgba(99, 102, 241, 0.08)',
+              border: '1px solid rgba(99, 102, 241, 0.25)',
+              borderRadius: '10px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+            }}
+          >
+            <span style={{ fontSize: '16px', flexShrink: 0 }}>*</span>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+              <strong style={{ color: 'var(--accent-indigo)' }}>Note:</strong> {domain} may still appear in AI agent responses due to massive brand recognition in training data and direct partnerships with AI platforms. This score measures <em>technical readiness</em> — the structured data, protocols, and crawler access that smaller brands need to be discoverable. Major retailers can afford low technical readiness; most brands cannot.
+            </p>
+          </div>
+        )}
 
         <div
           className="results-grid"
@@ -214,7 +241,7 @@ export default async function ScanResultPage({ params }: Props) {
               score={result.overallScore}
               grade={result.grade}
               gradeLabel={result.gradeLabel}
-              size={220}
+              size={200}
             />
 
             {/* Benchmark Comparison (Pro) */}
