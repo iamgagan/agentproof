@@ -79,84 +79,64 @@ export default function ProGate({ isPro, featureName, children, compact }: ProGa
   }
 
   return (
-    <div style={{ position: 'relative', marginBottom: '2rem', overflow: 'hidden', borderRadius: '12px', minHeight: '180px' }}>
-      {/* Blurred preview */}
+    <div
+      style={{
+        padding: '2rem',
+        backgroundColor: 'var(--bg-surface)',
+        border: '1px solid var(--border)',
+        borderRadius: '12px',
+        textAlign: 'center',
+        marginBottom: '1rem',
+      }}
+    >
       <div
         style={{
-          filter: 'blur(6px)',
-          pointerEvents: 'none',
-          userSelect: 'none',
-          opacity: 0.4,
-          height: '180px',
-          overflow: 'hidden',
+          fontSize: '0.75rem',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          color: '#6366F1',
+          marginBottom: '0.5rem',
         }}
       >
-        {children}
+        Pro Feature
       </div>
-
-      {/* Overlay CTA */}
-      <div
+      <h3
         style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(10, 10, 15, 0.85)',
-          borderRadius: '12px',
-          padding: '2rem',
-          textAlign: 'center',
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          color: '#F8FAFC',
+          marginBottom: '0.5rem',
         }}
       >
-        <div
-          style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            color: '#6366F1',
-            marginBottom: '0.5rem',
-          }}
-        >
-          Pro Feature
-        </div>
-        <h3
-          style={{
-            fontSize: '1.25rem',
-            fontWeight: 600,
-            color: '#F8FAFC',
-            marginBottom: '0.5rem',
-          }}
-        >
-          {featureName}
-        </h3>
-        <p
-          style={{
-            fontSize: '0.875rem',
-            color: '#94A3B8',
-            marginBottom: '1.5rem',
-            maxWidth: '320px',
-          }}
-        >
-          Upgrade to Pro to unlock auto-generated fixes, protocol files, benchmarks, and more.
-        </p>
-        <button
-          onClick={() => router.push('/pricing')}
-          style={{
-            background: 'linear-gradient(135deg, #00E5CC, #6366F1)',
-            color: '#0A0A0F',
-            border: 'none',
-            padding: '0.75rem 2rem',
-            borderRadius: '8px',
-            fontWeight: 600,
-            fontSize: '0.875rem',
-            cursor: 'pointer',
-          }}
-        >
-          Upgrade to Pro — $200/mo
-        </button>
-      </div>
+        {featureName}
+      </h3>
+      <p
+        style={{
+          fontSize: '0.875rem',
+          color: '#94A3B8',
+          marginBottom: '1.5rem',
+          maxWidth: '320px',
+          margin: '0 auto 1.5rem',
+        }}
+      >
+        Upgrade to Pro to unlock auto-generated fixes, protocol files, benchmarks, and more.
+      </p>
+      <button
+        onClick={() => router.push('/pricing')}
+        style={{
+          background: 'linear-gradient(135deg, #00E5CC, #6366F1)',
+          color: '#0A0A0F',
+          border: 'none',
+          padding: '0.75rem 2rem',
+          borderRadius: '8px',
+          fontWeight: 600,
+          fontSize: '0.875rem',
+          cursor: 'pointer',
+        }}
+      >
+        Upgrade to Pro — $200/mo
+      </button>
     </div>
   );
 }
