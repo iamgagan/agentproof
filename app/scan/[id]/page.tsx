@@ -218,7 +218,7 @@ export default async function ScanResultPage({ params }: Props) {
             />
 
             {/* Benchmark Comparison (Pro) */}
-            <ProGate isPro={isPro} featureName="Industry Benchmarks">
+            <ProGate isPro={isPro} featureName="Industry Benchmarks" compact>
               <BenchmarkComparison
                 score={result.overallScore}
                 platform={result.metadata.platform}
