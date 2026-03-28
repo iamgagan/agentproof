@@ -97,24 +97,48 @@ Every failing check comes with a specific fix recommendation and severity rating
 ## The ROI of AI Agent Readiness
 
 ### Revenue Generation
-- Brands that optimize for AI agents see an average **15-25% increase in referral traffic** from AI platforms within 90 days of implementing fixes (early AgentProof user data)
-- A single product becoming AI-discoverable can drive **$5,000-$50,000 in incremental annual revenue** depending on category and price point
-- DTC brands appearing in ChatGPT Shopping recommendations report **3-5x higher conversion rates** compared to organic search traffic, because AI recommendations carry implicit trust
 
-### Cost Savings
-- **$2,000-$10,000/year saved** vs. hiring an agency to audit and fix structured data manually — AgentProof automates the diagnosis and generates copy-paste fixes
-- **80% reduction in audit time** — manual structured data audits take 20-40 hours; AgentProof does it in 30 seconds
-- **Zero ongoing monitoring cost** — AgentProof tracks score changes over time instead of requiring monthly manual re-audits
-- **Protocol generation included** — UCP, MCP, and robots.txt files that would cost $500-$2,000 from a consultant are auto-generated
+The data is clear — AI-referred traffic is more valuable than any other channel:
+
+- **AI-referred visitors convert 4.4x higher** than average organic search visitors (Semrush, June 2025)
+- **Perplexity and Claude referrals convert at 14.2%** vs 2.8% for Google organic — because these are decision-ready shoppers (Alhena.ai)
+- **AI-referred shoppers are 33% less likely to bounce** compared to other channels (Adobe)
+- **Brands deploying AI shopping agents saw 59% higher sales growth** (6.2% vs 3.9%) during the 2025 holiday season (Salesforce)
+- **AI influenced $262 billion** of global online holiday spend in 2025 alone (Salesforce)
+- **Shops with complete schema markup achieve 58.3% more clicks and 31.8% higher conversion rates** (Amra & Elma)
+- **Schema-compliant pages are cited 3.1x more frequently** in AI-generated answers
+
+For a $5M/year DTC brand, even capturing 1% of AI-referred traffic at 4.4x conversion could mean **$200,000+ in incremental annual revenue**.
+
+### Cost Savings with AgentProof
+
+| What You'd Pay | Agency / Manual | AgentProof |
+|----------------|----------------|------------|
+| Structured data audit | $1,500-$10,000 per engagement | $200/mo (unlimited) |
+| Protocol file generation (UCP, MCP, robots.txt) | $500-$2,000 from a consultant | Included in Pro |
+| Ongoing monitoring | $2,500-$5,000/quarter for re-audits | Continuous, included |
+| Time to complete | 20-40 hours manual review | 30 seconds |
+
+**Total first-year savings: $5,000-$25,000** vs. agency-based auditing and implementation — while getting continuous monitoring instead of one-time snapshots.
 
 ### Marketing Validation
+
 - Every scan generates a shareable score card — brands that score well use it as a trust signal ("AgentProof Score: A")
-- Agencies use AgentProof to identify and pitch optimization services to clients — the score is the conversation starter
+- Agencies use AgentProof to identify and pitch AI optimization services to clients — the score is the conversation starter
 - The benchmark dataset (41+ brands scanned) provides industry context: "You scored 45/100 — that's top 20% of all scanned stores"
+- **34% of U.S. online shoppers** have used an AI agent for purchase decisions in 2026, up from 9% in 2024 — your customers are already there
 
 ## What Happens If You Do Nothing
 
-The window is 12-18 months. Once major platforms bake AI readiness into their native dashboards (Shopify, BigCommerce, Magento), the first-mover advantage disappears.
+The cost of inaction is measurable and growing:
+
+- **Organic CTR has plummeted 61%** for queries where AI Overviews appear (Seer Interactive, Sep 2025)
+- **Gartner projects organic CTR will decline 25% by 2026** due to AI-assisted search
+- **Zero-click searches are now at 60%**, heading toward 70% — mobile is already at 77%
+- **Organic click share dropped 11-23 percentage points** across ecommerce verticals in the past year (Graphite)
+- Headphones category saw organic click share drop from **73% to 50%** in just one year
+
+The window is 12-18 months. Once major platforms bake AI readiness into their native dashboards, the first-mover advantage disappears.
 
 Right now, the average ecommerce store scores 31/100. The bar is low. The brands that optimize now will be the ones AI agents recommend in 2027.
 

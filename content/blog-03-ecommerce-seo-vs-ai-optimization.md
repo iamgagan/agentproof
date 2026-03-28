@@ -67,7 +67,13 @@ Google penalizes slow sites. AI crawlers can't read JavaScript-only content. Bot
 
 **AEO competition:** AI agents typically recommend 2-3 products per query. The competition is smaller (most stores aren't optimizing for AI yet) and the conversion rate is higher (AI recommendations carry implicit trust).
 
-**Revenue implication:** Early data suggests AI-referred traffic converts at **3-5x the rate** of organic search traffic. The implicit endorsement from "ChatGPT recommends this product" is more powerful than appearing on page 1 of Google.
+**Revenue implication:** The data is unambiguous:
+- AI-referred visitors convert at **4.4x the rate** of organic search visitors (Semrush, June 2025)
+- Perplexity and Claude referrals convert at **14.2%** vs 2.8% for Google organic (Alhena.ai)
+- AI-referred shoppers during Black Friday converted **38% higher** than non-AI traffic (Adobe)
+- AI-referred visitors from Salesforce data converted at **9x the rate of social media traffic** during holidays
+
+The implicit endorsement from "ChatGPT recommends this product" is more powerful than appearing on page 1 of Google.
 
 ### 5. The Amazon Factor
 
@@ -92,21 +98,28 @@ Google penalizes slow sites. AI crawlers can't read JavaScript-only content. Bot
 
 ### Revenue at Risk
 
-If AI agents are driving 4,700% more traffic to ecommerce YoY, and your store is invisible to them, you're losing an exponentially growing revenue channel.
+The data paints a clear picture of accelerating loss:
 
-**Conservative estimate for a $5M/year brand:**
-- Year 1 loss: $50,000-$100,000 in missed AI-referred revenue
-- Year 2 loss: $200,000-$500,000 (as AI agent adoption accelerates)
-- Year 3 loss: $500,000-$1,000,000+ (as AI becomes a primary shopping channel)
+- **Organic CTR has plummeted 61%** for queries where AI Overviews appear (Seer Interactive, Sep 2025)
+- **Organic click share dropped 11-23 percentage points** across ecommerce verticals in the past year (Graphite)
+- Headphones category: organic share fell from **73% to 50%** in one year. Jeans: **73% to 56%**.
+- **Zero-click searches now at 60%**, mobile at **77%** — heading toward 70%+ overall
+- AI Overviews now appear on **48% of all tracked queries** (Feb 2026), up 58% from a year earlier
 
-These aren't hypothetical numbers — they're based on the trajectory of AI agent traffic growth and conversion rates from early adopters.
+Meanwhile, the AI channel is exploding:
+- **AI influenced $262 billion** in global online holiday spend (Salesforce, 2025)
+- **AI-driven revenue per visit up 254% YoY** during 2025 holidays (Adobe)
+- Morgan Stanley projects AI agents will capture **10-20% of U.S. ecommerce by 2030** ($190-385 billion)
+
+**For a $5M brand:** If AI-referred traffic grows at even half the projected rate and you're invisible to it, the missed revenue compounds to **$500,000+ annually by 2028**.
 
 ### Competitive Risk
 
 Every month you wait, competitors who are optimizing for AI agents are building advantages that compound:
-- Their product data is being ingested and remembered by AI models
-- Their protocol implementations are being indexed
-- Their structured data is training the next generation of models
+- **GPTBot's market share grew from 4.7% to 11.7%** of all bot traffic in one year (Cloudflare) — AI crawlers are indexing your competitors right now
+- **AI bots crawl retail sites 198x more than Google** — for every 1 visit OpenAI delivers, its systems perform 198 crawls (HUMAN Security)
+- Their structured data is being ingested. Their protocols are being indexed. Their brand associations are being embedded in model weights.
+- **Only 31.3% of websites** implement any schema markup — early movers face almost no competition
 
 ## The Practical Playbook: Both SEO and AEO
 

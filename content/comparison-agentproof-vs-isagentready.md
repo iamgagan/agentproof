@@ -124,7 +124,15 @@ IsAgentReady wins on price (everything is free). AgentProof's free tier gives yo
 - Industry benchmarking for competitive context
 - **Time investment:** 2-5 hours to implement generated fixes
 - **Cost:** $200/mo, $500-$1,000 in developer time
-- **Net savings:** $1,500-$4,000 in implementation time + ongoing monitoring
+- **Net savings:** $5,000-$25,000/year vs agency auditing + ongoing monitoring
+
+### Why the Investment Pays for Itself
+
+The market data makes the case:
+- **AI-referred visitors convert at 4.4x** the rate of organic search (Semrush) — even a small increase in AI visibility has outsized revenue impact
+- **Schema-compliant pages are cited 3.1x more frequently** in AI-generated answers — the fixes AgentProof generates directly increase citation rates
+- **AI influenced $262 billion** in holiday spend in 2025 (Salesforce) — this channel is already massive and growing 4,700% YoY
+- **Organic CTR dropped 61%** where AI Overviews appear (Seer Interactive) — the traffic you're losing from SEO is going to AI agents
 
 ## When to Use Each
 

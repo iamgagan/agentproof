@@ -29,10 +29,16 @@ When a consumer asks ChatGPT "what's the best wireless earbuds under $100?", Cha
 
 | Metric | Value | Source |
 |--------|-------|--------|
-| YoY increase in AI agent traffic to ecommerce | 4,700% | Adobe Digital Economy Index |
-| Ecommerce stores lacking basic agent readiness | 87% | AgentProof benchmark data |
-| Projected agentic commerce market by 2030 | $3-5 Trillion | McKinsey |
-| Average AI Agent Readiness Score (41 top brands) | 31/100 | AgentProof benchmark |
+| YoY increase in AI agent traffic to ecommerce | **4,700%** | Adobe (July 2025) |
+| AI-driven revenue per visit increase | **254% YoY** | Adobe (2025 holiday) |
+| AI-referred conversion vs organic | **4.4x higher** | Semrush (June 2025) |
+| AI influence on global holiday spend | **$262 billion** | Salesforce (2025) |
+| Projected agentic commerce by 2030 | **$3-5 trillion** | McKinsey |
+| B2B purchases via AI agents by 2028 | **$15 trillion** | Gartner |
+| U.S. shoppers using AI for purchases | **34%** (up from 9% in 2024) | Industry surveys |
+| Ecommerce stores lacking agent readiness | **87%** | AgentProof benchmark |
+| Average AI Agent Readiness Score | **31/100** | AgentProof (41 top brands) |
+| Organic CTR drop where AI Overviews appear | **-61%** | Seer Interactive (Sep 2025) |
 
 ### The Window
 
@@ -62,7 +68,7 @@ JSON-LD structured data is the single most important factor in AI agent readines
 - Valid schema but missing key fields (no availability, no brand)
 - Schema on homepage only, not on product pages
 
-**Revenue impact:** Stores with complete Product schema see **2-3x higher AI citation rates** because agents can confidently recommend products with verified price and availability data.
+**Revenue impact:** Stores with complete Product schema see **3.1x higher AI citation rates** and achieve **58.3% more clicks and 31.8% higher conversion rates** (Amra & Elma). Product schema delivers **4.2x higher Google Shopping visibility** — and the AI agent advantage is even larger.
 
 ### 2. Product Data Quality
 
@@ -76,7 +82,7 @@ Even with perfect structured data, AI agents need rich content to form a meaning
 - **Specifications table**: Structured attributes in the DOM
 - **Title format**: Brand + product type + key differentiator
 
-**Cost savings:** Optimizing product data quality improves both AI agent readiness AND traditional SEO. Brands report **30-40% reduction in return rates** when product descriptions are comprehensive enough for AI to set accurate expectations.
+**Cost savings:** Optimizing product data quality improves both AI agent readiness AND traditional SEO. Rich results from structured data achieve **82% higher CTR** compared to non-rich results, and structured data increases chances of inclusion in AI-generated summaries by **up to 40%** (Lasso, 2026).
 
 ### 3. Protocol Readiness
 
@@ -154,22 +160,21 @@ Use this checklist to evaluate any product page:
 
 ### For a $5M/year DTC Brand
 
-| Scenario | Impact | Annual Value |
-|----------|--------|-------------|
-| 15% increase in AI referral traffic | 750 new AI-driven sessions/month | $90,000-$180,000 |
-| 3x higher conversion on AI traffic vs organic | More efficient acquisition | $50,000-$100,000 saved on CAC |
-| 30% reduction in returns from better descriptions | Fewer costly returns | $30,000-$75,000 |
-| Automated audit vs agency ($200/mo vs $5,000 one-time) | Tool cost savings | $2,600/year |
-| Protocol files auto-generated vs consultant | Implementation savings | $1,000-$2,000 |
+| Scenario | Data Point | Annual Value |
+|----------|-----------|-------------|
+| AI-referred traffic converts 4.4x higher (Semrush) | Even 500 AI-referred sessions/mo at 4.4x conversion | $150,000-$300,000 |
+| Schema markup drives 58.3% more clicks (Amra & Elma) | Higher click-through on product pages | $75,000-$150,000 |
+| AI shoppers 33% less likely to bounce (Adobe) | Lower bounce = more add-to-carts | $30,000-$60,000 |
+| Automated audit vs agency | $200/mo vs $1,500-$10,000/engagement | $5,000-$25,000 saved |
+| Protocol files auto-generated vs consultant | UCP, MCP, robots.txt included | $1,000-$2,000 saved |
 
-**Total potential annual impact: $170,000-$360,000** for a $5M brand investing $2,400/year in AgentProof Pro.
+**Conservative annual impact: $250,000-$530,000** for a $5M brand investing $2,400/year in AgentProof Pro.
 
 ### For Agencies
 
-Agencies using AgentProof as a prospecting tool report:
-- **5-10 new client conversations per month** from sharing scan results
-- **$2,000-$10,000 per engagement** for AI readiness optimization services
-- **60% close rate** when the conversation starts with a concrete score and fix list
+- **AI shopping tools market nearly 4x in 2026** to $20.9 billion in retail ecommerce sales (eMarketer) — agencies that offer AI readiness services now are positioned for exponential growth
+- The scan score is the ultimate conversation starter: "Your store scored 24/100 — here's exactly what's broken and what it's costing you"
+- **87% of retailers** report AI had a positive revenue impact (2025 surveys) — every client needs this audit
 
 ## Getting Started
 
