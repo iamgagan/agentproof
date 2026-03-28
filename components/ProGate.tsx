@@ -79,15 +79,15 @@ export default function ProGate({ isPro, featureName, children, compact }: ProGa
   }
 
   return (
-    <div style={{ position: 'relative', marginBottom: '2rem', overflow: 'hidden', borderRadius: '12px' }}>
+    <div style={{ position: 'relative', marginBottom: '2rem', overflow: 'hidden', borderRadius: '12px', minHeight: '180px' }}>
       {/* Blurred preview */}
       <div
         style={{
           filter: 'blur(6px)',
           pointerEvents: 'none',
           userSelect: 'none',
-          opacity: 0.5,
-          maxHeight: '200px',
+          opacity: 0.4,
+          height: '180px',
           overflow: 'hidden',
         }}
       >
