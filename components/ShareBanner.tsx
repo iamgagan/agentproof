@@ -70,7 +70,7 @@ export default function ShareBanner({ score, grade, url, scanId }: ShareBannerPr
         Challenge your competitors to beat your score
       </p>
 
-      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '10px' }}>
         <a
           href={twitterUrl}
           target="_blank"
@@ -78,6 +78,8 @@ export default function ShareBanner({ score, grade, url, scanId }: ShareBannerPr
           style={{
             display: 'inline-flex',
             alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
             padding: '10px 20px',
             backgroundColor: '#1DA1F2',
             color: '#fff',
@@ -97,6 +99,8 @@ export default function ShareBanner({ score, grade, url, scanId }: ShareBannerPr
           style={{
             display: 'inline-flex',
             alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
             padding: '10px 20px',
             backgroundColor: '#0A66C2',
             color: '#fff',
@@ -114,6 +118,8 @@ export default function ShareBanner({ score, grade, url, scanId }: ShareBannerPr
           style={{
             display: 'inline-flex',
             alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
             padding: '10px 20px',
             backgroundColor: copied ? 'rgba(0,229,204,0.15)' : 'var(--bg-elevated)',
             color: copied ? '#00E5CC' : 'var(--text-secondary)',
