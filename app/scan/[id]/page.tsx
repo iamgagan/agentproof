@@ -13,7 +13,9 @@ import FixPanel from '@/components/FixPanel';
 import ProtocolPanel from '@/components/ProtocolPanel';
 import PixelSetup from '@/components/PixelSetup';
 import BenchmarkComparison from '@/components/BenchmarkComparison';
+import ProGate from '@/components/ProGate';
 import { getScanResult } from '@/lib/kv';
+import { isProUser } from '@/lib/pro';
 import { formatScanTime, gradeColor } from '@/lib/utils';
 
 interface Props {
@@ -50,6 +52,7 @@ export default async function ScanResultPage({ params }: Props) {
     notFound();
   }
 
+  const isPro = await isProUser();
   let domain = 'unknown';
   try { domain = new URL(result.normalizedUrl).hostname; } catch { /* fallback */ }
   const categoryEntries = Object.entries(result.categories);
@@ -142,11 +145,15 @@ export default async function ScanResultPage({ params }: Props) {
               <IssueList issues={result.topIssues} />
             </section>
 
-            {/* Auto-Generated Fixes */}
-            <FixPanel scanId={result.id} />
+            {/* Auto-Generated Fixes (Pro) */}
+            <ProGate isPro={isPro} featureName="Auto-Generated Fixes">
+              <FixPanel scanId={result.id} />
+            </ProGate>
 
-            {/* Protocol Files */}
-            <ProtocolPanel scanId={result.id} />
+            {/* Protocol Files (Pro) */}
+            <ProGate isPro={isPro} featureName="Protocol File Generator">
+              <ProtocolPanel scanId={result.id} />
+            </ProGate>
 
             <ShareBanner
               score={result.overallScore}
@@ -155,11 +162,13 @@ export default async function ScanResultPage({ params }: Props) {
               scanId={result.id}
             />
 
-            {/* Pixel Setup */}
-            <PixelSetup
-              siteId={Buffer.from(result.normalizedUrl).toString('base64').slice(0, 20)}
-              domain={domain}
-            />
+            {/* Pixel Setup (Pro) */}
+            <ProGate isPro={isPro} featureName="Agent Traffic Pixel">
+              <PixelSetup
+                siteId={Buffer.from(result.normalizedUrl).toString('base64').slice(0, 20)}
+                domain={domain}
+              />
+            </ProGate>
 
             {/* Scan errors (if any) */}
             {result.metadata.errors.length > 0 && (
@@ -208,11 +217,13 @@ export default async function ScanResultPage({ params }: Props) {
               size={220}
             />
 
-            {/* Benchmark Comparison */}
-            <BenchmarkComparison
-              score={result.overallScore}
-              platform={result.metadata.platform}
-            />
+            {/* Benchmark Comparison (Pro) */}
+            <ProGate isPro={isPro} featureName="Industry Benchmarks">
+              <BenchmarkComparison
+                score={result.overallScore}
+                platform={result.metadata.platform}
+              />
+            </ProGate>
 
             {/* Score summary table */}
             <div
