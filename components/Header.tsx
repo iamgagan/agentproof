@@ -78,6 +78,17 @@ export default function Header() {
           >
             What we check
           </a>
+          <a
+            href="/blog"
+            style={{
+              color: 'var(--text-secondary)',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontFamily: 'var(--font-body)',
+            }}
+          >
+            Blog
+          </a>
           <UserButton
             appearance={{
               elements: {

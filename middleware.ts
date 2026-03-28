@@ -12,6 +12,7 @@ const isPublicRoute = createRouteMatcher([
   '/api/og/(.*)',        // OG images are public for social sharing
   '/api/webhooks/(.*)',  // Stripe webhooks must be public (no auth)
   '/pricing',            // Pricing page is public
+  '/blog(.*)',           // Blog is public for SEO and AEO
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
