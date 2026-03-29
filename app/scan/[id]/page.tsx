@@ -1,7 +1,7 @@
 // app/scan/[id]/page.tsx
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import Header from '@/components/Header';
+import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScoreGauge from '@/components/ScoreGauge';
 import CategoryCard from '@/components/CategoryCard';
@@ -67,7 +67,7 @@ export default async function ScanResultPage({ params }: Props) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Header />
+      <Navbar />
 
       <main style={{ flex: 1, padding: '48px 24px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
         {/* Page header */}
