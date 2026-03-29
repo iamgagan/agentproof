@@ -52,7 +52,13 @@ function BackgroundVideoInner() {
       loop
       muted
       playsInline
-      className="absolute inset-0 w-full h-full object-cover -z-10"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+      }}
     />
   );
 }

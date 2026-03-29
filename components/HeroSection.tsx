@@ -38,14 +38,31 @@ function Navbar() {
   ];
 
   return (
-    <nav className="relative z-50">
+    <nav className="relative z-30">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2.5 no-underline">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent-teal to-accent-indigo font-mono text-sm font-medium text-[#0A0A0F]">
+          <div
+            className="flex h-8 w-8 items-center justify-center rounded-lg"
+            style={{
+              background: 'linear-gradient(135deg, var(--accent-teal), var(--accent-indigo))',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: '#0A0A0F',
+            }}
+          >
             AP
           </div>
-          <span className="text-lg font-bold tracking-tight text-text-primary" style={{ fontFamily: 'var(--font-heading)' }}>
+          <span
+            style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '18px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.02em',
+            }}
+          >
             AgentProof
           </span>
         </a>
@@ -56,8 +73,13 @@ function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-sm text-text-secondary transition-colors hover:text-text-primary no-underline"
-              style={{ fontFamily: 'var(--font-body)' }}
+              className="no-underline"
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '14px',
+                color: 'var(--text-secondary)',
+                transition: 'color 0.2s',
+              }}
             >
               {link.label}
             </Link>
@@ -72,15 +94,30 @@ function Navbar() {
             <>
               <Link
                 href="/sign-in"
-                className="rounded-lg px-4 py-2 text-sm text-text-secondary transition-colors hover:text-text-primary no-underline"
-                style={{ fontFamily: 'var(--font-body)' }}
+                className="no-underline"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '14px',
+                  color: 'var(--text-secondary)',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                }}
               >
                 Sign In
               </Link>
               <Link
                 href="/sign-up"
-                className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm text-text-primary backdrop-blur-sm transition-all hover:bg-white/10 no-underline"
-                style={{ fontFamily: 'var(--font-body)' }}
+                className="no-underline"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '14px',
+                  color: 'var(--text-primary)',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  backdropFilter: 'blur(8px)',
+                }}
               >
                 Sign Up
               </Link>
@@ -91,7 +128,18 @@ function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="flex items-center justify-center rounded-lg p-2 text-text-secondary md:hidden"
+          className="md:hidden"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '8px',
+            borderRadius: '8px',
+            color: 'var(--text-secondary)',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -106,29 +154,40 @@ function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute left-0 right-0 top-16 z-50 border-b border-border bg-bg-primary/95 px-6 py-6 backdrop-blur-xl md:hidden"
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: '64px',
+              zIndex: 50,
+              borderBottom: '1px solid var(--border)',
+              backgroundColor: 'rgba(10, 10, 15, 0.95)',
+              backdropFilter: 'blur(20px)',
+              padding: '24px',
+            }}
+            className="md:hidden"
           >
-            <div className="flex flex-col gap-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-base text-text-secondary transition-colors hover:text-text-primary no-underline"
-                  style={{ fontFamily: 'var(--font-body)' }}
+                  className="no-underline"
+                  style={{ fontFamily: 'var(--font-body)', fontSize: '16px', color: 'var(--text-secondary)' }}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="mt-2 flex gap-3 border-t border-border pt-4">
+              <div style={{ marginTop: '8px', display: 'flex', gap: '12px', borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
                 {isSignedIn ? (
                   <UserButton />
                 ) : (
                   <>
-                    <Link href="/sign-in" className="rounded-lg px-4 py-2 text-sm text-text-secondary no-underline">
+                    <Link href="/sign-in" className="no-underline" style={{ fontSize: '14px', color: 'var(--text-secondary)', padding: '8px 16px' }}>
                       Sign In
                     </Link>
-                    <Link href="/sign-up" className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm text-text-primary no-underline">
+                    <Link href="/sign-up" className="no-underline" style={{ fontSize: '14px', color: 'var(--text-primary)', padding: '8px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'rgba(255,255,255,0.05)' }}>
                       Sign Up
                     </Link>
                   </>
@@ -145,26 +204,54 @@ function Navbar() {
 /* ── Primary CTA Button ── */
 function PrimaryButton({ children, href }: { children: React.ReactNode; href: string }) {
   return (
-    <motion.a
-      href={href}
-      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-7 py-3.5 text-[15px] font-semibold text-[#0A0A0F] no-underline"
-      style={{ fontFamily: 'var(--font-heading)' }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
-    >
-      {/* Glow */}
-      <div className="absolute inset-0 -z-10 rounded-xl bg-[#00B8A3] opacity-20 blur-lg transition-opacity group-hover:opacity-60" />
-      {/* Background gradient */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent-teal to-[#00B8A3]" />
-      {/* Inner stroke overlay */}
-      <div className="absolute inset-0 rounded-xl border-[1.5px] border-white/20" />
-      {/* Content */}
-      <span className="relative z-10">{children}</span>
-      <ArrowRight
-        size={16}
-        className="relative z-10 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+    <div style={{ position: 'relative', display: 'inline-flex' }}>
+      {/* Glow behind button */}
+      <div
+        className="group-hover-glow"
+        style={{
+          position: 'absolute',
+          inset: '-8px',
+          borderRadius: '20px',
+          background: 'var(--accent-teal)',
+          opacity: 0.15,
+          filter: 'blur(20px)',
+          transition: 'opacity 0.3s',
+          pointerEvents: 'none',
+        }}
       />
-    </motion.a>
+      <motion.a
+        href={href}
+        className="no-underline"
+        style={{
+          position: 'relative',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '14px 28px',
+          borderRadius: '12px',
+          background: 'linear-gradient(135deg, var(--accent-teal), #00B8A3)',
+          border: '1.5px solid rgba(255,255,255,0.2)',
+          fontFamily: 'var(--font-heading)',
+          fontWeight: 600,
+          fontSize: '15px',
+          color: '#0A0A0F',
+          cursor: 'pointer',
+        }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.97 }}
+        onHoverStart={(e) => {
+          const glow = (e.target as HTMLElement).parentElement?.querySelector('.group-hover-glow') as HTMLElement;
+          if (glow) glow.style.opacity = '0.5';
+        }}
+        onHoverEnd={(e) => {
+          const glow = (e.target as HTMLElement).parentElement?.querySelector('.group-hover-glow') as HTMLElement;
+          if (glow) glow.style.opacity = '0.15';
+        }}
+      >
+        {children}
+        <ArrowRight size={16} />
+      </motion.a>
+    </div>
   );
 }
 
@@ -173,10 +260,25 @@ function SecondaryButton({ children, href }: { children: React.ReactNode; href: 
   return (
     <motion.a
       href={href}
-      className="group relative inline-flex items-center gap-2 rounded-xl border-[1.5px] border-white/10 bg-white/5 px-7 py-3.5 text-[15px] font-semibold text-text-primary no-underline backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/10"
-      style={{ fontFamily: 'var(--font-heading)' }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
+      className="no-underline"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '14px 28px',
+        borderRadius: '12px',
+        border: '1.5px solid rgba(255,255,255,0.12)',
+        backgroundColor: 'rgba(255,255,255,0.06)',
+        backdropFilter: 'blur(12px)',
+        fontFamily: 'var(--font-heading)',
+        fontWeight: 600,
+        fontSize: '15px',
+        color: 'var(--text-primary)',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+      }}
+      whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.12)' }}
+      whileTap={{ scale: 0.97 }}
     >
       {children}
     </motion.a>
@@ -186,31 +288,44 @@ function SecondaryButton({ children, href }: { children: React.ReactNode; href: 
 /* ── Social Proof Avatars ── */
 function SocialProof() {
   const avatars = [
-    { bg: 'bg-gradient-to-br from-violet-500 to-fuchsia-500', initials: 'JK' },
-    { bg: 'bg-gradient-to-br from-emerald-500 to-teal-500', initials: 'SM' },
-    { bg: 'bg-gradient-to-br from-amber-500 to-orange-500', initials: 'AR' },
+    { bg: 'linear-gradient(135deg, #8B5CF6, #D946EF)', initials: 'JK' },
+    { bg: 'linear-gradient(135deg, #10B981, #14B8A6)', initials: 'SM' },
+    { bg: 'linear-gradient(135deg, #F59E0B, #F97316)', initials: 'AR' },
   ];
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex -space-x-2.5">
-        {avatars.map((avatar) => (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ display: 'flex' }}>
+        {avatars.map((avatar, i) => (
           <div
             key={avatar.initials}
-            className={`flex h-9 w-9 items-center justify-center rounded-full border-2 border-bg-primary text-xs font-medium text-white ${avatar.bg}`}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              background: avatar.bg,
+              border: '2px solid var(--bg-primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '11px',
+              fontWeight: 500,
+              color: 'white',
+              marginLeft: i > 0 ? '-10px' : 0,
+            }}
           >
             {avatar.initials}
           </div>
         ))}
       </div>
-      <span className="text-sm text-text-secondary" style={{ fontFamily: 'var(--font-body)' }}>
-        Trusted by <span className="font-medium text-text-primary">210k+</span> businesses worldwide
+      <span style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: 'var(--text-secondary)' }}>
+        Trusted by <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>210k+</span> businesses worldwide
       </span>
     </div>
   );
 }
 
-/* ── Feature Pill ── */
+/* ── Feature Pills ── */
 function FeaturePills() {
   const features = [
     { icon: Shield, label: 'AI Agent Readiness' },
@@ -219,14 +334,23 @@ function FeaturePills() {
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px' }}>
       {features.map((f) => (
         <div
           key={f.label}
-          className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            borderRadius: '100px',
+            border: '1px solid rgba(255,255,255,0.08)',
+            backgroundColor: 'rgba(255,255,255,0.04)',
+            backdropFilter: 'blur(8px)',
+          }}
         >
-          <f.icon size={14} className="text-accent-teal" />
-          <span className="text-xs font-medium text-text-secondary" style={{ fontFamily: 'var(--font-body)' }}>
+          <f.icon size={14} style={{ color: 'var(--accent-teal)' }} />
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>
             {f.label}
           </span>
         </div>
@@ -238,83 +362,144 @@ function FeaturePills() {
 /* ── Main Hero Section ── */
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-bg-primary">
+    <section style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
       {/* Top gradient bar */}
-      <div className="h-[5px] w-full bg-gradient-to-r from-[#ccf] via-[#e7d04c] to-[#31fb78]" />
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 20,
+          height: '5px',
+          width: '100%',
+          background: 'linear-gradient(90deg, #ccf, #e7d04c, #31fb78)',
+        }}
+      />
 
-      {/* Background video */}
-      <BackgroundVideo />
+      {/* Background video — z-index 0, sits above nothing */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+        <BackgroundVideo />
+      </div>
 
-      {/* Very subtle gradient overlay for text readability — NOT a dark overlay */}
-      <div className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-b from-bg-primary/40 via-transparent to-bg-primary/80" />
+      {/* Gradient overlay for readability — sits above video */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          background: 'linear-gradient(180deg, rgba(10,10,15,0.6) 0%, rgba(10,10,15,0.3) 40%, rgba(10,10,15,0.5) 70%, rgba(10,10,15,0.85) 100%)',
+          pointerEvents: 'none',
+        }}
+      />
 
-      {/* Navbar */}
-      <Navbar />
+      {/* All content sits above overlay */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        {/* Navbar */}
+        <Navbar />
 
-      {/* Hero content */}
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-84px)] max-w-7xl flex-col items-center justify-center px-6 py-20 text-center">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="flex max-w-4xl flex-col items-center gap-8"
+        {/* Hero content */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 'calc(100vh - 84px)',
+            maxWidth: '960px',
+            margin: '0 auto',
+            padding: '80px 24px',
+            textAlign: 'center',
+          }}
         >
-          {/* Badge */}
-          <motion.div variants={fadeUp}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent-teal/30 bg-accent-teal/5 px-4 py-1.5">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-teal" />
-              <span className="text-[13px] text-accent-teal" style={{ fontFamily: 'var(--font-mono)' }}>
-                Free scan &middot; No signup &middot; 15 seconds
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}
+          >
+            {/* Badge */}
+            <motion.div variants={fadeUp}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '6px 14px',
+                  borderRadius: '100px',
+                  border: '1px solid rgba(0, 229, 204, 0.3)',
+                  backgroundColor: 'rgba(0, 229, 204, 0.05)',
+                }}
+              >
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--accent-teal)', display: 'inline-block' }} />
+                <span style={{ fontSize: '13px', color: 'var(--accent-teal)', fontFamily: 'var(--font-mono)' }}>
+                  Free scan &middot; No signup &middot; 15 seconds
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1
+              variants={fadeUp}
+              style={{
+                fontFamily: 'var(--font-heading)',
+                fontWeight: 700,
+                fontSize: 'clamp(36px, 7vw, 72px)',
+                lineHeight: 1.08,
+                letterSpacing: '-0.03em',
+                color: 'var(--text-primary)',
+              }}
+            >
+              AI agents are answering
+              <br />
+              your customers right now.
+              <br />
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, var(--accent-teal), #00B8A3)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Can they find you?
               </span>
-            </div>
+            </motion.h1>
+
+            {/* Subhead */}
+            <motion.p
+              variants={fadeUp}
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(16px, 2.5vw, 20px)',
+                lineHeight: 1.6,
+                color: 'rgba(255,255,255,0.7)',
+                maxWidth: '560px',
+              }}
+            >
+              ChatGPT, Gemini, and Copilot are the new discovery layer — and most
+              businesses are invisible to them. Find out where you stand.
+            </motion.p>
+
+            {/* Feature pills */}
+            <motion.div variants={fadeUp}>
+              <FeaturePills />
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div variants={fadeUp} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '16px' }}>
+              <PrimaryButton href="#scan">Scan My Site</PrimaryButton>
+              <SecondaryButton href="#how-it-works">See How It Works</SecondaryButton>
+            </motion.div>
+
+            {/* Scanner */}
+            <motion.div variants={fadeUp} style={{ width: '100%', maxWidth: '560px' }} id="scan">
+              <Scanner placeholder="https://yourbusiness.com" />
+            </motion.div>
+
+            {/* Social proof */}
+            <motion.div variants={fadeUp}>
+              <SocialProof />
+            </motion.div>
           </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            variants={fadeUp}
-            className="text-4xl font-bold leading-[1.08] tracking-tight text-text-primary sm:text-5xl md:text-6xl lg:text-7xl"
-            style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.03em' }}
-          >
-            AI agents are answering
-            <br />
-            your customers right now.
-            <br />
-            <span className="bg-gradient-to-r from-accent-teal to-[#00B8A3] bg-clip-text text-transparent">
-              Can they find you?
-            </span>
-          </motion.h1>
-
-          {/* Subhead */}
-          <motion.p
-            variants={fadeUp}
-            className="max-w-xl text-base leading-relaxed text-white/70 sm:text-lg md:text-xl"
-            style={{ fontFamily: 'var(--font-body)' }}
-          >
-            ChatGPT, Gemini, and Copilot are the new discovery layer — and most
-            businesses are invisible to them. Find out where you stand.
-          </motion.p>
-
-          {/* Feature pills */}
-          <motion.div variants={fadeUp}>
-            <FeaturePills />
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4">
-            <PrimaryButton href="#scan">Scan My Site</PrimaryButton>
-            <SecondaryButton href="#how-it-works">See How It Works</SecondaryButton>
-          </motion.div>
-
-          {/* Scanner (inline) */}
-          <motion.div variants={fadeUp} className="w-full max-w-xl" id="scan">
-            <Scanner placeholder="https://yourbusiness.com" />
-          </motion.div>
-
-          {/* Social proof */}
-          <motion.div variants={fadeUp}>
-            <SocialProof />
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
