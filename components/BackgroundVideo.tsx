@@ -3,7 +3,7 @@
 import { useEffect, useRef, memo } from 'react';
 import Hls from 'hls.js';
 
-const VIDEO_SRC = 'https://stream.mux.com/hUT6X11m1Vkw1QMxPOLgI761x2cfpi9bHFbi5cNg4014.m3u8';
+const VIDEO_SRC = 'https://stream.mux.com/s8pMcOvMQXc4GD6AX4e1o01xFogFxipmuKltNfSYza0200.m3u8';
 
 function playVideo(video: HTMLVideoElement) {
   video.play().catch((err) => {

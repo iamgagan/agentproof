@@ -2,8 +2,9 @@
 
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navbar from './Navbar';
+import BlurIn from './BlurIn';
 import { FadeInUp } from './AnimatedSection';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -29,147 +30,62 @@ export default function BlogPostLayout({ post, children }: { post: Post; childre
     <>
       <Navbar />
       <main style={{ flex: 1 }}>
-        {/* Hero header area */}
-        <div
-          className="section-divider-top dot-grid-bg"
-          style={{
-            padding: '48px 24px 40px',
-            backgroundColor: 'var(--bg-surface)',
-          }}
-        >
+        {/* Hero header */}
+        <div className="section-divider-top" style={{ padding: '48px 24px 40px', backgroundColor: 'var(--bg-surface)' }}>
           <div style={{ maxWidth: '760px', margin: '0 auto' }}>
-            <FadeInUp>
-              <Link
-                href="/blog"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: 'var(--text-muted)',
-                  fontSize: '14px',
-                  textDecoration: 'none',
-                  marginBottom: '28px',
-                  fontFamily: 'var(--font-body)',
-                  transition: 'color 0.2s',
-                }}
-              >
-                <ArrowLeft size={14} />
-                Back to blog
+            <BlurIn delay={0} duration={0.4}>
+              <Link href="/blog" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.4)', fontSize: '14px', textDecoration: 'none', marginBottom: '28px', fontFamily: 'var(--font-body)' }}>
+                <ArrowLeft size={14} /> Back to blog
               </Link>
+            </BlurIn>
 
-              {/* Meta */}
+            <BlurIn delay={0.1} duration={0.5}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
-                <span
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    fontFamily: 'var(--font-mono)',
-                    color: catColor,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
-                    padding: '4px 10px',
-                    borderRadius: '6px',
-                    backgroundColor: `${catColor}11`,
-                    border: `1px solid ${catColor}33`,
-                  }}
-                >
+                <span style={{ fontSize: '11px', fontWeight: 600, fontFamily: 'var(--font-mono)', color: catColor, textTransform: 'uppercase', letterSpacing: '0.06em', padding: '4px 10px', borderRadius: '6px', backgroundColor: `${catColor}11`, border: `1px solid ${catColor}33` }}>
                   {post.category}
                 </span>
-                <span style={{ color: 'var(--text-muted)', fontSize: '13px', fontFamily: 'var(--font-mono)' }}>
-                  {post.readTime}
-                </span>
-                <span style={{ color: 'var(--text-muted)', fontSize: '13px', fontFamily: 'var(--font-mono)' }}>
-                  {new Date(post.date).toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
+                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px', fontFamily: 'var(--font-mono)' }}>{post.readTime}</span>
+                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px', fontFamily: 'var(--font-mono)' }}>
+                  {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
+            </BlurIn>
 
-              {/* Title */}
-              <h1
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: 'clamp(28px, 5vw, 42px)',
-                  fontWeight: 700,
-                  letterSpacing: '-0.03em',
-                  lineHeight: 1.15,
-                  marginBottom: '14px',
-                  color: 'var(--text-primary)',
-                }}
-              >
+            <BlurIn delay={0.2} duration={0.5}>
+              <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 500, letterSpacing: '-0.03em', lineHeight: 1.15, marginBottom: '14px', color: 'white' }}>
                 {post.title}
               </h1>
+            </BlurIn>
 
-              <p
-                style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '18px',
-                  lineHeight: 1.6,
-                }}
-              >
+            <BlurIn delay={0.3} duration={0.5}>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '18px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
                 {post.subtitle}
               </p>
-            </FadeInUp>
+            </BlurIn>
           </div>
         </div>
 
-        {/* Article content */}
+        {/* Article */}
         <div style={{ maxWidth: '760px', margin: '0 auto', padding: '40px 24px 80px' }}>
           <FadeInUp delay={0.15}>
             <article>{children}</article>
           </FadeInUp>
 
-          {/* Bottom CTA */}
           <FadeInUp delay={0.25}>
-            <div
-              className="glow-card"
-              style={{
-                marginTop: '48px',
-                padding: '36px',
-                textAlign: 'center',
-              }}
-            >
-              <h3
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '22px',
-                  fontWeight: 600,
-                  marginBottom: '8px',
-                  color: 'var(--text-primary)',
-                }}
-              >
+            <div className="glow-card" style={{ marginTop: '48px', padding: '36px', textAlign: 'center' }}>
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 500, marginBottom: '8px', color: 'white' }}>
                 Check your site&apos;s AI readiness
               </h3>
-              <p
-                style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '15px',
-                  marginBottom: '20px',
-                  lineHeight: 1.6,
-                }}
-              >
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '15px', marginBottom: '20px', lineHeight: 1.6, fontFamily: 'var(--font-body)' }}>
                 Free scan. 15 seconds. See exactly what AI agents see.
               </p>
-              <Link
-                href="/"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '14px 28px',
-                  background: 'linear-gradient(135deg, var(--accent-teal), #00B8A3)',
-                  color: '#0A0A0F',
-                  borderRadius: '12px',
-                  fontWeight: 600,
-                  fontSize: '15px',
-                  textDecoration: 'none',
-                  fontFamily: 'var(--font-heading)',
-                  border: '1.5px solid rgba(255,255,255,0.2)',
-                }}
-              >
-                Scan My Site &rarr;
+              <Link href="/" style={{
+                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                padding: '12px 24px', borderRadius: '9999px',
+                backgroundColor: 'white', color: 'var(--bg-primary)',
+                fontWeight: 600, fontSize: '14px', textDecoration: 'none', fontFamily: 'var(--font-heading)',
+              }}>
+                Scan My Site <ArrowRight size={14} />
               </Link>
             </div>
           </FadeInUp>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
+import { Space_Grotesk, DM_Sans, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 
@@ -19,6 +19,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
   weight: ['400', '500'],
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -48,33 +55,33 @@ export default function RootLayout({
       appearance={{
         variables: {
           colorPrimary: '#00E5CC',
-          colorBackground: '#12121A',
-          colorInputBackground: '#1A1A2E',
+          colorBackground: '#0e0c1d',
+          colorInputBackground: '#16132e',
           colorInputText: '#F8FAFC',
           colorText: '#F8FAFC',
-          colorTextOnPrimaryBackground: '#0A0A0F',
+          colorTextOnPrimaryBackground: '#070612',
           colorTextSecondary: '#94A3B8',
           colorNeutral: '#F8FAFC',
           borderRadius: '10px',
         },
         elements: {
           formFieldInput: {
-            backgroundColor: '#1A1A2E',
+            backgroundColor: '#16132e',
             borderColor: '#2D3748',
             color: '#F8FAFC',
           },
           formFieldLabel: { color: '#94A3B8' },
           formFieldInput__identifier: {
-            backgroundColor: '#1A1A2E',
+            backgroundColor: '#16132e',
             borderColor: '#2D3748',
             color: '#F8FAFC',
           },
-          card: { backgroundColor: '#12121A', boxShadow: 'none' },
-          cardBox: { backgroundColor: '#12121A', boxShadow: 'none' },
+          card: { backgroundColor: '#0e0c1d', boxShadow: 'none' },
+          cardBox: { backgroundColor: '#0e0c1d', boxShadow: 'none' },
           headerTitle: { color: '#F8FAFC' },
           headerSubtitle: { color: '#94A3B8' },
           socialButtonsBlockButton: {
-            backgroundColor: '#1A1A2E',
+            backgroundColor: '#16132e',
             borderColor: '#2D3748',
             color: '#F8FAFC',
           },
@@ -91,11 +98,11 @@ export default function RootLayout({
           identityPreviewText: { color: '#F8FAFC' },
           identityPreviewEditButtonIcon: { color: '#00E5CC' },
           formFieldInputPlaceholder: { color: '#64748B' },
-          badge: { backgroundColor: '#1A1A2E', color: '#94A3B8' },
+          badge: { backgroundColor: '#16132e', color: '#94A3B8' },
           developmentModeChip: { display: 'none' },
-          userButtonPopoverCard: { backgroundColor: '#12121A', borderColor: '#2D3748' },
+          userButtonPopoverCard: { backgroundColor: '#0e0c1d', borderColor: '#2D3748' },
           userButtonPopoverMain: { backgroundColor: '#12121A' },
-          userButtonPopoverFooter: { backgroundColor: '#12121A', borderColor: '#2D3748' },
+          userButtonPopoverFooter: { backgroundColor: '#0e0c1d', borderColor: '#2D3748' },
           userButtonPopoverActionButton: { color: '#F8FAFC' },
           userButtonPopoverActionButtonText: { color: '#F8FAFC' },
           userButtonPopoverActionButtonIcon: { color: '#94A3B8' },
@@ -110,7 +117,7 @@ export default function RootLayout({
     >
       <html
         lang="en"
-        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${playfair.variable}`}
       >
         <body
           style={{

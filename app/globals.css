@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #0A0A0F;
-  --color-bg-surface: #12121A;
-  --color-bg-elevated: #1A1A2E;
+  --color-bg-primary: #070612;
+  --color-bg-surface: #0e0c1d;
+  --color-bg-elevated: #16132e;
   --color-accent-teal: #00E5CC;
   --color-accent-indigo: #6366F1;
   --color-success: #22C55E;
@@ -16,9 +16,9 @@
 }
 
 :root {
-  --bg-primary: #0A0A0F;
-  --bg-surface: #12121A;
-  --bg-elevated: #1A1A2E;
+  --bg-primary: #070612;
+  --bg-surface: #0e0c1d;
+  --bg-elevated: #16132e;
   --accent-teal: #00E5CC;
   --accent-indigo: #6366F1;
   --success: #22C55E;

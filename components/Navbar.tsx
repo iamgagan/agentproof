@@ -38,7 +38,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
         top: 0,
         zIndex: 50,
         borderBottom: transparent ? 'none' : '1px solid var(--border)',
-        backgroundColor: transparent ? 'transparent' : 'rgba(10, 10, 15, 0.85)',
+        backgroundColor: transparent ? 'transparent' : 'rgba(7, 6, 18, 0.85)',
         backdropFilter: transparent ? 'none' : 'blur(16px)',
       }}>
         <div style={{
@@ -138,7 +138,7 @@ export default function Navbar({ transparent = false }: NavbarProps) {
               style={{
                 position: 'absolute', left: 0, right: 0, top: '64px', zIndex: 50,
                 borderBottom: '1px solid var(--border)',
-                backgroundColor: 'rgba(10, 10, 15, 0.95)',
+                backgroundColor: 'rgba(7, 6, 18, 0.95)',
                 backdropFilter: 'blur(20px)', padding: '24px',
               }}
             >
