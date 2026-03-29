@@ -7,9 +7,10 @@ import { categoryLabel, categoryDescription } from '@/lib/utils';
 interface CategoryCardProps {
   categoryKey: string;
   result: CategoryResult;
+  vertical?: string;
 }
 
-export default function CategoryCard({ categoryKey, result }: CategoryCardProps) {
+export default function CategoryCard({ categoryKey, result, vertical }: CategoryCardProps) {
   const [expanded, setExpanded] = useState(false);
   const percentage = result.percentage;
   const color = percentage >= 80 ? 'var(--success)' : percentage >= 40 ? 'var(--warning)' : 'var(--danger)';
@@ -50,10 +51,10 @@ export default function CategoryCard({ categoryKey, result }: CategoryCardProps)
                 marginBottom: '4px',
               }}
             >
-              {categoryLabel(categoryKey)}
+              {categoryLabel(categoryKey, vertical)}
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-body)' }}>
-              {categoryDescription(categoryKey)}
+              {categoryDescription(categoryKey, vertical)}
             </p>
           </div>
           <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '16px' }}>

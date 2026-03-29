@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { validateUrl } from '@/lib/utils';
 
-export default function Scanner({ placeholder = 'https://yourstore.com' }: { placeholder?: string }) {
+export default function Scanner({ placeholder = 'https://yourbusiness.com' }: { placeholder?: string }) {
   const [url, setUrl] = useState('');
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
@@ -15,7 +15,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
 
   const stages = [
     'Fetching homepage…',
-    'Discovering product pages…',
+    'Detecting business type…',
     'Analyzing structured data…',
     'Checking AI crawler access…',
     'Calculating readiness score…',
@@ -126,7 +126,7 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
             transition: 'opacity 0.2s',
           }}
         >
-          {isPending ? 'Scanning…' : isSignedIn ? 'Scan My Store →' : 'Sign Up to Scan →'}
+          {isPending ? 'Scanning…' : isSignedIn ? 'Scan My Site →' : 'Sign Up to Scan →'}
         </button>
       </div>
 

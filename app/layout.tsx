@@ -22,9 +22,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AgentProof — AI Agent Readiness Scanner for Ecommerce',
+  title: 'AgentProof — AI Agent Readiness Scanner',
   description:
-    'Scan your store and get an Agent Readiness Score. See how AI shopping agents like ChatGPT, Gemini, and Perplexity discover and recommend your products.',
+    'Scan any website and get an Agent Readiness Score. See how AI agents like ChatGPT, Gemini, and Perplexity discover and recommend your business.',
   openGraph: {
     type: 'website',
     siteName: 'AgentProof',

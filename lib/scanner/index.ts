@@ -15,7 +15,9 @@ import type {
   Issue,
   DetectedPlatform,
   ScanMetadata,
+  VerticalType,
 } from '../types';
+import { VERTICAL_SIGNALS } from '../types';
 
 function normalizeUrl(input: string): string {
   let url = input.trim();
@@ -45,6 +47,63 @@ function detectPlatform(html: string, headers: Headers): DetectedPlatform | null
   if (htmlLower.includes('squarespace')) return 'squarespace';
   if (htmlLower.includes('wix.com') || htmlLower.includes('wixsite')) return 'wix';
   return 'custom';
+}
+
+function detectVertical(html: string): VerticalType {
+  const htmlLower = html.toLowerCase();
+
+  // Extract JSON-LD schema types
+  const schemaTypeMatches = html.match(/"@type"\s*:\s*"([^"]+)"/gi) ?? [];
+  const foundSchemaTypes = schemaTypeMatches.map((m) =>
+    m.replace(/"@type"\s*:\s*"/i, '').replace(/"$/, '')
+  );
+
+  // Score each vertical
+  const scores: Record<string, number> = {};
+
+  for (const [vertical, signals] of Object.entries(VERTICAL_SIGNALS)) {
+    if (vertical === 'general') continue;
+    let score = 0;
+
+    // Schema types (strongest signal — 3 pts each)
+    for (const schemaType of signals.schemaTypes) {
+      if (foundSchemaTypes.some((t) => t.toLowerCase() === schemaType.toLowerCase())) {
+        score += 3;
+      }
+    }
+
+    // DOM keywords (2 pts each)
+    for (const kw of signals.domKeywords) {
+      if (htmlLower.includes(kw.toLowerCase())) {
+        score += 2;
+      }
+    }
+
+    // URL patterns in href links (1 pt each)
+    for (const pattern of signals.urlPatterns) {
+      if (htmlLower.includes(`href="${pattern}`) || htmlLower.includes(`href='${pattern}`)) {
+        score += 1;
+      }
+    }
+
+    // Meta keywords (1 pt each)
+    for (const kw of signals.metaKeywords) {
+      if (htmlLower.includes(kw.toLowerCase())) {
+        score += 1;
+      }
+    }
+
+    scores[vertical] = score;
+  }
+
+  // Find the highest-scoring vertical with a minimum threshold
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const [topVertical, topScore] = sorted[0] ?? ['general', 0];
+
+  // Require at least 3 points to classify (prevents false positives)
+  if (topScore < 3) return 'general';
+
+  return topVertical as VerticalType;
 }
 
 const PRODUCT_URL_PATTERNS = [
@@ -176,8 +235,9 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
     throw new Error(`Could not reach ${url}. Please check the URL and try again.`);
   }
 
-  // Step 2: Detect platform
+  // Step 2: Detect platform and business vertical
   const platform = detectPlatform(homepageHtml, homepageHeaders);
+  const vertical = detectVertical(homepageHtml);
 
   // Step 3: Find and fetch a product page — HTML links first, sitemap fallback
   let productPageUrl = findProductPageInHtml(homepageHtml, url);
@@ -273,6 +333,7 @@ export async function runScan(inputUrl: string): Promise<ScanResult> {
     gradeLabel: label,
     categories,
     topIssues,
+    vertical,
     agentSimulation,
     liveAITest,
     metadata,
