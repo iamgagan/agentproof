@@ -20,6 +20,7 @@ export interface ScanResult {
     aiDiscoverability: CategoryResult;
   };
   topIssues: Issue[];
+  vertical: VerticalType;
   agentSimulation: AgentSimulationResult | null;
   liveAITest: LiveAITestResult | null;
   metadata: ScanMetadata;
@@ -69,6 +70,88 @@ export type DetectedPlatform =
   | 'squarespace'
   | 'wix'
   | 'custom';
+
+// ── Business Vertical Detection ──
+
+export type VerticalType =
+  | 'ecommerce'
+  | 'saas'
+  | 'local_business'
+  | 'travel'
+  | 'healthcare'
+  | 'real_estate'
+  | 'b2b_services'
+  | 'general';
+
+export const VERTICAL_LABELS: Record<VerticalType, string> = {
+  ecommerce: 'Ecommerce',
+  saas: 'SaaS / Software',
+  local_business: 'Local Business',
+  travel: 'Travel & Hospitality',
+  healthcare: 'Healthcare',
+  real_estate: 'Real Estate',
+  b2b_services: 'B2B Services',
+  general: 'Business',
+};
+
+/** Signals used by detectVertical() to classify a site */
+export interface VerticalSignals {
+  schemaTypes: string[];
+  metaKeywords: string[];
+  urlPatterns: string[];
+  domKeywords: string[];
+}
+
+export const VERTICAL_SIGNALS: Record<VerticalType, VerticalSignals> = {
+  ecommerce: {
+    schemaTypes: ['Product', 'ProductGroup', 'Offer', 'AggregateOffer', 'ShoppingCenter'],
+    metaKeywords: ['shop', 'store', 'buy', 'cart', 'checkout', 'add to cart', 'shopify', 'woocommerce', 'bigcommerce', 'magento'],
+    urlPatterns: ['/products/', '/product/', '/shop/', '/cart', '/collections/', '/catalog/'],
+    domKeywords: ['add to cart', 'buy now', 'shop now', 'free shipping', 'in stock', 'out of stock', 'shopify'],
+  },
+  saas: {
+    schemaTypes: ['SoftwareApplication', 'WebApplication', 'MobileApplication'],
+    metaKeywords: ['saas', 'software', 'platform', 'api', 'dashboard', 'integration', 'workflow', 'automation'],
+    urlPatterns: ['/pricing', '/plans', '/features', '/integrations', '/docs', '/api', '/changelog'],
+    domKeywords: ['start free trial', 'get started', 'sign up free', 'request demo', 'book a demo', 'per month', 'per user', 'enterprise plan'],
+  },
+  local_business: {
+    schemaTypes: ['LocalBusiness', 'Restaurant', 'Store', 'AutoRepair', 'HealthAndBeautyBusiness', 'LodgingBusiness', 'FoodEstablishment'],
+    metaKeywords: ['near me', 'local', 'visit us', 'hours', 'directions', 'appointment'],
+    urlPatterns: ['/locations', '/contact', '/hours', '/menu', '/reservations', '/book-appointment'],
+    domKeywords: ['open hours', 'visit us', 'get directions', 'book appointment', 'call us', 'walk-in'],
+  },
+  travel: {
+    schemaTypes: ['Hotel', 'TouristAttraction', 'LodgingBusiness', 'TravelAction', 'Flight', 'BusTrip', 'TouristDestination'],
+    metaKeywords: ['hotel', 'travel', 'booking', 'resort', 'vacation', 'flight', 'tours', 'destination'],
+    urlPatterns: ['/rooms', '/booking', '/destinations', '/tours', '/flights', '/hotels'],
+    domKeywords: ['book now', 'check availability', 'check-in', 'check-out', 'guests', 'rooms available', 'per night'],
+  },
+  healthcare: {
+    schemaTypes: ['MedicalOrganization', 'Physician', 'Hospital', 'MedicalClinic', 'Dentist', 'MedicalBusiness'],
+    metaKeywords: ['health', 'medical', 'clinic', 'doctor', 'patient', 'telehealth', 'wellness', 'therapy'],
+    urlPatterns: ['/patients', '/providers', '/services', '/conditions', '/appointments', '/telehealth'],
+    domKeywords: ['schedule appointment', 'patient portal', 'find a doctor', 'book visit', 'insurance accepted', 'telehealth'],
+  },
+  real_estate: {
+    schemaTypes: ['RealEstateAgent', 'Residence', 'Apartment', 'House', 'RealEstateListing'],
+    metaKeywords: ['real estate', 'property', 'homes', 'listing', 'mortgage', 'rent', 'buy home'],
+    urlPatterns: ['/listings', '/properties', '/homes', '/rentals', '/agents', '/mortgage'],
+    domKeywords: ['for sale', 'for rent', 'bedrooms', 'bathrooms', 'sq ft', 'mls', 'open house', 'schedule tour'],
+  },
+  b2b_services: {
+    schemaTypes: ['ProfessionalService', 'FinancialService', 'LegalService', 'AccountingService', 'EmploymentAgency'],
+    metaKeywords: ['consulting', 'enterprise', 'solutions', 'services', 'b2b', 'agency', 'partner'],
+    urlPatterns: ['/solutions', '/case-studies', '/industries', '/partners', '/resources', '/whitepaper'],
+    domKeywords: ['request a quote', 'contact sales', 'schedule consultation', 'enterprise', 'roi', 'case study'],
+  },
+  general: {
+    schemaTypes: [],
+    metaKeywords: [],
+    urlPatterns: [],
+    domKeywords: [],
+  },
+};
 
 // Schema.org types we look for
 export interface JsonLdData {

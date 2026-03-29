@@ -17,7 +17,8 @@ import ProGate from '@/components/ProGate';
 import LiveAITest from '@/components/LiveAITest';
 import { getScanResult } from '@/lib/kv';
 import { isProUser } from '@/lib/pro';
-import { formatScanTime, gradeColor } from '@/lib/utils';
+import { formatScanTime, gradeColor, categoryLabel } from '@/lib/utils';
+import { VERTICAL_LABELS } from '@/lib/types';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${domain} scored ${result.overallScore}/100 — AgentProof`,
-    description: `Agent Readiness Score for ${domain}: ${result.overallScore}/100 (Grade ${result.grade} — ${result.gradeLabel}). See what AI shopping agents can and can't see.`,
+    description: `Agent Readiness Score for ${domain}: ${result.overallScore}/100 (Grade ${result.grade} — ${result.gradeLabel}). See what AI agents can and can't see about your business.`,
     openGraph: {
       images: [`${appUrl}/api/og/${id}`],
     },
@@ -87,6 +88,11 @@ export default async function ScanResultPage({ params }: Props) {
             {domain}
           </h1>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            {result.vertical && (
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--accent-teal)', backgroundColor: 'rgba(0,229,204,0.08)', padding: '4px 10px', borderRadius: '6px', border: '1px solid rgba(0,229,204,0.2)' }}>
+                {VERTICAL_LABELS[result.vertical] ?? 'Business'}
+              </span>
+            )}
             {result.metadata.platform && (
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)', backgroundColor: 'var(--bg-elevated)', padding: '4px 10px', borderRadius: '6px', border: '1px solid var(--border)', textTransform: 'capitalize' }}>
                 {result.metadata.platform}
@@ -152,7 +158,7 @@ export default async function ScanResultPage({ params }: Props) {
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {categoryEntries.map(([key, cat]) => (
-                  <CategoryCard key={key} categoryKey={key} result={cat} />
+                  <CategoryCard key={key} categoryKey={key} result={cat} vertical={result.vertical} />
                 ))}
               </div>
             </section>
@@ -283,10 +289,9 @@ export default async function ScanResultPage({ params }: Props) {
                 >
                   <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}>
                     {key === 'structuredData' ? 'Schema' :
-                     key === 'productQuality' ? 'Product Data' :
                      key === 'protocolReadiness' ? 'Protocols' :
-                     key === 'merchantSignals' ? 'Merchant' :
-                     'Discoverability'}
+                     key === 'aiDiscoverability' ? 'Discoverability' :
+                     categoryLabel(key, result.vertical).split(' ').slice(0, 2).join(' ')}
                   </span>
                   <span
                     style={{
@@ -333,7 +338,7 @@ export default async function ScanResultPage({ params }: Props) {
                 backgroundColor: 'var(--bg-surface)',
               }}
             >
-              ← Scan another store
+              ← Scan another site
             </a>
           </div>
         </div>
