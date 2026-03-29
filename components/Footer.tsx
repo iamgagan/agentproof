@@ -4,8 +4,8 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer
+      className="footer-gradient"
       style={{
-        borderTop: '1px solid var(--border)',
         padding: '48px 24px',
         backgroundColor: 'var(--bg-surface)',
         marginTop: 'auto',

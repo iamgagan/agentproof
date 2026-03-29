@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { FadeInUp, StaggerContainer, StaggerItem, GlowCard } from './AnimatedSection';
+import { FadeInUp, StaggerContainer, StaggerItem } from './AnimatedSection';
 import Scanner from './Scanner';
 import { categoryLabel, categoryDescription } from '@/lib/utils';
 
@@ -38,14 +38,13 @@ export default function HomeSections() {
     <>
       {/* ── PROBLEM / STATS ── */}
       <section
+        className="section-divider-top dot-grid-bg ambient-glow"
         style={{
           padding: '80px 24px',
           backgroundColor: 'var(--bg-surface)',
-          borderTop: '1px solid var(--border)',
-          borderBottom: '1px solid var(--border)',
         }}
       >
-        <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
           <FadeInUp>
             <p
               style={{
@@ -71,8 +70,9 @@ export default function HomeSections() {
           >
             {STATS.map((stat) => (
               <StaggerItem key={stat.value}>
-                <GlowCard>
+                <div className="glow-card" style={{ padding: '32px 24px' }}>
                   <div
+                    className="stat-value"
                     style={{
                       fontFamily: 'var(--font-heading)',
                       fontWeight: 700,
@@ -90,7 +90,7 @@ export default function HomeSections() {
                   <p style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '8px' }}>
                     \u2014 {stat.source}
                   </p>
-                </GlowCard>
+                </div>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -100,9 +100,23 @@ export default function HomeSections() {
       {/* ── WHAT WE CHECK ── */}
       <section
         id="what-we-check"
-        style={{ padding: '80px 24px', maxWidth: '1100px', margin: '0 auto' }}
+        className="ambient-glow"
+        style={{ padding: '80px 24px', maxWidth: '1100px', margin: '0 auto', position: 'relative' }}
       >
         <FadeInUp>
+          <p
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '12px',
+              color: 'var(--accent-teal)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              textAlign: 'center',
+              marginBottom: '10px',
+            }}
+          >
+            5 Critical Areas
+          </p>
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
@@ -116,7 +130,7 @@ export default function HomeSections() {
           >
             Why your business might be invisible
           </h2>
-          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', marginBottom: '48px', fontSize: '15px' }}>
+          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', marginBottom: '48px', fontSize: '15px', maxWidth: '540px', margin: '0 auto 48px' }}>
             We check 5 areas where AI agents decide whether to recommend you \u2014 or your competitor.
           </p>
         </FadeInUp>
@@ -130,13 +144,21 @@ export default function HomeSections() {
         >
           {CATEGORY_KEYS.map((key) => (
             <StaggerItem key={key}>
-              <GlowCard>
+              <div className="glow-card" style={{ padding: '28px 24px', height: '100%' }}>
                 <div
                   style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    backgroundColor: 'rgba(0, 229, 204, 0.08)',
+                    border: '1px solid rgba(0, 229, 204, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '22px',
+                    fontSize: '18px',
                     color: 'var(--accent-teal)',
-                    marginBottom: '12px',
+                    marginBottom: '16px',
                   }}
                 >
                   {CATEGORY_ICONS[key]}
@@ -155,7 +177,7 @@ export default function HomeSections() {
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', lineHeight: '1.6' }}>
                   {categoryDescription(key)}
                 </p>
-              </GlowCard>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -164,15 +186,27 @@ export default function HomeSections() {
       {/* ── HOW IT WORKS ── */}
       <section
         id="how-it-works"
+        className="section-divider-top dot-grid-bg"
         style={{
           padding: '80px 24px',
           backgroundColor: 'var(--bg-surface)',
-          borderTop: '1px solid var(--border)',
-          borderBottom: '1px solid var(--border)',
         }}
       >
         <div style={{ maxWidth: '760px', margin: '0 auto' }}>
           <FadeInUp>
+            <p
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '12px',
+                color: 'var(--accent-teal)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                textAlign: 'center',
+                marginBottom: '10px',
+              }}
+            >
+              3 Simple Steps
+            </p>
             <h2
               style={{
                 fontFamily: 'var(--font-heading)',
@@ -188,30 +222,28 @@ export default function HomeSections() {
             </h2>
           </FadeInUp>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', textAlign: 'left' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
             {STEPS.map((step, i) => (
               <FadeInUp key={step.n} delay={i * 0.15}>
-                <motion.div
-                  style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}
-                  whileHover={{ x: 6 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <div className="timeline-step" style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', padding: '12px 0' }}>
                   <div
                     style={{
                       fontFamily: 'var(--font-mono)',
                       fontSize: '13px',
+                      fontWeight: 700,
                       color: 'var(--accent-teal)',
                       backgroundColor: 'rgba(0, 229, 204, 0.08)',
                       padding: '10px 14px',
                       borderRadius: '10px',
                       border: '1px solid rgba(0, 229, 204, 0.2)',
                       flexShrink: 0,
-                      fontWeight: 600,
+                      width: '47px',
+                      textAlign: 'center',
                     }}
                   >
                     {step.n}
                   </div>
-                  <div>
+                  <div style={{ paddingTop: '4px' }}>
                     <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: '18px', color: 'var(--text-primary)', marginBottom: '6px' }}>
                       {step.title}
                     </h3>
@@ -219,7 +251,7 @@ export default function HomeSections() {
                       {step.desc}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               </FadeInUp>
             ))}
           </div>
@@ -229,6 +261,18 @@ export default function HomeSections() {
       {/* ── BOTTOM CTA ── */}
       <section style={{ padding: '80px 24px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
         <FadeInUp>
+          <p
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '12px',
+              color: 'var(--accent-teal)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              marginBottom: '14px',
+            }}
+          >
+            Ready?
+          </p>
           <h2
             style={{
               fontFamily: 'var(--font-heading)',
@@ -241,7 +285,7 @@ export default function HomeSections() {
           >
             Find out if AI agents can find your business
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '40px', fontSize: '15px' }}>
+          <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '40px', fontSize: '15px', lineHeight: 1.6 }}>
             Works with any website \u2014 ecommerce, SaaS, local business, healthcare, and more.
           </p>
           <Scanner />

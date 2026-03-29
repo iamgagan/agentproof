@@ -74,10 +74,10 @@ export default function Navbar({ transparent = false }: NavbarProps) {
               <Link
                 key={link.label}
                 href={link.href}
+                className="nav-link"
                 style={{
                   fontFamily: 'var(--font-body)', fontSize: '14px',
                   color: 'var(--text-secondary)', textDecoration: 'none',
-                  transition: 'color 0.2s',
                 }}
               >
                 {link.label}

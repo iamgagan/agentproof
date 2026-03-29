@@ -58,24 +58,8 @@ export function StaggerItem({ children, style }: AnimatedSectionProps) {
   );
 }
 
-export function GlowCard({ children, style }: { children: ReactNode; style?: React.CSSProperties }) {
-  return (
-    <motion.div
-      whileHover={{
-        borderColor: 'rgba(0, 229, 204, 0.3)',
-        boxShadow: '0 0 30px rgba(0, 229, 204, 0.06)',
-      }}
-      transition={{ duration: 0.25 }}
-      style={{
-        padding: '28px 24px',
-        backgroundColor: 'var(--bg-surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '16px',
-        transition: 'all 0.3s ease',
-        ...style,
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
+/**
+ * GlowCard is now a CSS class `.glow-card` in globals.css.
+ * Use `<div className="glow-card">` instead of this component
+ * for better performance (no JS hover tracking).
+ */

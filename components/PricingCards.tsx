@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Check } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { FadeInUp, StaggerContainer, StaggerItem } from './AnimatedSection';
 
 const FREE_FEATURES = [
@@ -43,7 +43,7 @@ export default function PricingCards({ success, canceled, proPriceId }: PricingC
   }
 
   return (
-    <div style={{ padding: '60px 24px 80px', maxWidth: '920px', margin: '0 auto', width: '100%' }}>
+    <div className="dot-grid-bg" style={{ padding: '60px 24px 80px', maxWidth: '920px', margin: '0 auto', width: '100%' }}>
       {success && (
         <FadeInUp>
           <div style={{
@@ -118,15 +118,10 @@ export default function PricingCards({ success, canceled, proPriceId }: PricingC
       >
         {/* Free Plan */}
         <StaggerItem>
-          <motion.div
-            whileHover={{
-              borderColor: 'rgba(255,255,255,0.12)',
-              boxShadow: '0 0 30px rgba(255,255,255,0.02)',
-            }}
+          <div
+            className="glow-card"
             style={{
               padding: '36px 32px',
-              backgroundColor: 'var(--bg-surface)',
-              border: '1px solid var(--border)',
               borderRadius: '20px',
               height: '100%',
               display: 'flex',
@@ -180,25 +175,22 @@ export default function PricingCards({ success, canceled, proPriceId }: PricingC
                 Current Plan
               </a>
             </div>
-          </motion.div>
+          </div>
         </StaggerItem>
 
         {/* Pro Plan */}
         <StaggerItem>
-          <motion.div
-            whileHover={{
-              borderColor: 'rgba(0, 229, 204, 0.5)',
-              boxShadow: '0 0 50px rgba(0, 229, 204, 0.08)',
-            }}
+          <div
+            className="glow-card"
             style={{
               padding: '36px 32px',
-              backgroundColor: 'var(--bg-surface)',
               border: '2px solid var(--accent-teal)',
               borderRadius: '20px',
               position: 'relative',
               height: '100%',
               display: 'flex',
               flexDirection: 'column',
+              boxShadow: '0 0 40px rgba(0, 229, 204, 0.06)',
             }}
           >
             <div style={{
@@ -275,7 +267,7 @@ export default function PricingCards({ success, canceled, proPriceId }: PricingC
                 </p>
               )}
             </div>
-          </motion.div>
+          </div>
         </StaggerItem>
       </StaggerContainer>
     </div>

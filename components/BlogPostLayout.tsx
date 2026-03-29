@@ -2,7 +2,6 @@
 
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import Navbar from './Navbar';
 import { FadeInUp } from './AnimatedSection';
@@ -32,9 +31,9 @@ export default function BlogPostLayout({ post, children }: { post: Post; childre
       <main style={{ flex: 1 }}>
         {/* Hero header area */}
         <div
+          className="section-divider-top dot-grid-bg"
           style={{
             padding: '48px 24px 40px',
-            borderBottom: '1px solid var(--border)',
             backgroundColor: 'var(--bg-surface)',
           }}
         >
@@ -124,17 +123,11 @@ export default function BlogPostLayout({ post, children }: { post: Post; childre
 
           {/* Bottom CTA */}
           <FadeInUp delay={0.25}>
-            <motion.div
-              whileHover={{
-                borderColor: 'rgba(0, 229, 204, 0.25)',
-                boxShadow: '0 0 40px rgba(0, 229, 204, 0.05)',
-              }}
+            <div
+              className="glow-card"
               style={{
                 marginTop: '48px',
                 padding: '36px',
-                backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
                 textAlign: 'center',
               }}
             >
@@ -178,7 +171,7 @@ export default function BlogPostLayout({ post, children }: { post: Post; childre
               >
                 Scan My Site &rarr;
               </Link>
-            </motion.div>
+            </div>
           </FadeInUp>
         </div>
       </main>

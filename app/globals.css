@@ -30,50 +30,92 @@
   --border: #1E293B;
 }
 
+/* ── Base resets ── */
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Score gauge animation */
+/* ── Selection ── */
+::selection {
+  background: rgba(0, 229, 204, 0.25);
+  color: #F8FAFC;
+}
+
+/* ── Scrollbar (WebKit) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* ── Focus rings ── */
+:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 2px;
+}
+
+/* ── Link hover effects ── */
+a {
+  transition: color 0.2s ease;
+}
+
+/* ── Score gauge animation ── */
 @keyframes gauge-fill {
   from { stroke-dashoffset: 283; }
   to { stroke-dashoffset: var(--gauge-offset); }
 }
-
 .gauge-arc {
   animation: gauge-fill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Scan progress animation */
+/* ── Scan animations ── */
 @keyframes scan-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
-
 .scan-pulse {
   animation: scan-pulse 1.5s ease-in-out infinite;
 }
 
-/* Scan progress bar animation */
 @keyframes scan-progress {
   0% { transform: translateX(-100%); }
   50% { transform: translateX(150%); }
   100% { transform: translateX(350%); }
 }
 
-/* Results page responsive grid */
+/* ── Results page responsive grid ── */
 .results-grid {
   grid-template-columns: minmax(0, 1fr) 280px;
 }
-
 @media (max-width: 900px) {
   .results-grid {
     grid-template-columns: 1fr;
@@ -84,9 +126,179 @@ html, body {
   }
 }
 
-/* Category card glow on hover */
+/* ── Gradient section dividers ── */
+.section-divider-top {
+  position: relative;
+}
+.section-divider-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 204, 0.2) 30%, rgba(99, 102, 241, 0.2) 70%, transparent);
+}
+
+/* ── Gradient border card (CSS technique) ── */
+.glow-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 17px;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent 40%, rgba(0, 229, 204, 0.15), rgba(99, 102, 241, 0.1));
+  mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.glow-card:hover {
+  border-color: rgba(0, 229, 204, 0.15);
+  box-shadow: 0 0 40px rgba(0, 229, 204, 0.06), 0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Subtle dot grid background for sections ── */
+.dot-grid-bg {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ── Gradient mesh ambient background ── */
+.ambient-glow {
+  position: relative;
+  overflow: hidden;
+}
+.ambient-glow::after {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 204, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Timeline connector for steps ── */
+.timeline-step {
+  position: relative;
+}
+.timeline-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 48px;
+  bottom: -24px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(0, 229, 204, 0.3), rgba(0, 229, 204, 0.05));
+}
+
+/* ── Shimmer loading effect ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.03) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ── Footer gradient fade ── */
+.footer-gradient {
+  position: relative;
+}
+.footer-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 204, 0.15) 30%, rgba(99, 102, 241, 0.12) 70%, transparent);
+}
+
+/* ── Nav link hover underline ── */
+.nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--accent-teal);
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+.nav-link:hover {
+  color: var(--text-primary) !important;
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Stat counter pulse ── */
+@keyframes stat-pulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(0, 229, 204, 0.1); }
+  50% { text-shadow: 0 0 30px rgba(0, 229, 204, 0.2); }
+}
+.stat-value {
+  animation: stat-pulse 4s ease-in-out infinite;
+}
+
+/* ── Blog card hover arrow ── */
+.blog-card .blog-arrow {
+  transform: translateX(0);
+  transition: transform 0.25s ease;
+}
+.blog-card:hover .blog-arrow {
+  transform: translateX(4px);
+}
+
+/* ── Category card (legacy, kept for results page) ── */
 .category-card:hover {
   box-shadow: 0 0 20px rgba(0, 229, 204, 0.08);
   border-color: rgba(0, 229, 204, 0.2);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* ── Input glow on focus ── */
+input:focus {
+  border-color: var(--accent-teal) !important;
+  box-shadow: 0 0 0 3px rgba(0, 229, 204, 0.1);
+}
+
+/* ── Button press effect ── */
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* ── Gradient text utility ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-teal), #00B8A3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
