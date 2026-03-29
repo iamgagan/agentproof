@@ -41,8 +41,7 @@ function PricingContent() {
     }
   }
 
-  const monthlyPriceId = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID;
-  const yearlyPriceId = process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID;
+  const proPriceId = process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -88,7 +87,7 @@ function PricingContent() {
             Upgrade to Pro
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '16px', maxWidth: '500px', margin: '0 auto' }}>
-            Get actionable fixes, protocol files, and benchmarks to make your store AI-agent ready.
+            Get actionable fixes, protocol files, and benchmarks to make your business AI-agent ready.
           </p>
         </div>
 
@@ -185,11 +184,11 @@ function PricingContent() {
               Pro
             </h2>
             <div style={{ marginBottom: '8px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '36px', fontWeight: 700, color: 'var(--text-primary)' }}>$200</span>
-              <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}> / month</span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '36px', fontWeight: 700, color: 'var(--text-primary)' }}>$199</span>
+              <span style={{ color: 'var(--text-muted)', fontSize: '14px' }}> one-time</span>
             </div>
             <p style={{ fontSize: '13px', color: 'var(--accent-teal)', marginBottom: '24px' }}>
-              or $1,000/year (save $1,400)
+              Lifetime access — no recurring fees
             </p>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {PRO_FEATURES.map((f) => (
@@ -205,10 +204,10 @@ function PricingContent() {
                 </li>
               ))}
             </ul>
-            <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {monthlyPriceId && (
+            <div style={{ marginTop: '24px' }}>
+              {proPriceId ? (
                 <button
-                  onClick={() => handleCheckout(monthlyPriceId)}
+                  onClick={() => handleCheckout(proPriceId)}
                   style={{
                     width: '100%',
                     padding: '14px',
@@ -221,28 +220,9 @@ function PricingContent() {
                     cursor: 'pointer',
                   }}
                 >
-                  Subscribe Monthly — $200/mo
+                  Get Pro — $199 One-Time
                 </button>
-              )}
-              {yearlyPriceId && (
-                <button
-                  onClick={() => handleCheckout(yearlyPriceId)}
-                  style={{
-                    width: '100%',
-                    padding: '14px',
-                    backgroundColor: 'var(--bg-elevated)',
-                    color: 'var(--accent-teal)',
-                    border: '1px solid var(--accent-teal)',
-                    borderRadius: '10px',
-                    fontWeight: 600,
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Subscribe Yearly — $1,000/yr (save 58%)
-                </button>
-              )}
-              {!monthlyPriceId && !yearlyPriceId && (
+              ) : (
                 <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px' }}>
                   Pricing coming soon. Contact us for early access.
                 </p>

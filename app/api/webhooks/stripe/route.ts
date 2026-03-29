@@ -33,26 +33,7 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         const clerkUserId = session.metadata?.clerkUserId;
         if (clerkUserId) {
-          await setClerkPlan(clerkUserId, 'pro', session.subscription as string);
-        }
-        break;
-      }
-
-      case 'customer.subscription.deleted': {
-        const subscription = event.data.object as Stripe.Subscription;
-        const clerkUserId = subscription.metadata?.clerkUserId;
-        if (clerkUserId) {
-          await setClerkPlan(clerkUserId, 'free', null);
-        }
-        break;
-      }
-
-      case 'customer.subscription.updated': {
-        const subscription = event.data.object as Stripe.Subscription;
-        const clerkUserId = subscription.metadata?.clerkUserId;
-        if (clerkUserId && subscription.status === 'past_due') {
-          // Keep pro but could flag for follow-up
-          console.warn(`Subscription past_due for user ${clerkUserId}`);
+          await setClerkPlan(clerkUserId, 'pro', session.payment_intent as string);
         }
         break;
       }

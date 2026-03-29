@@ -23,15 +23,12 @@ export async function POST(req: NextRequest) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://agent-proof.com';
 
   const session = await stripe.checkout.sessions.create({
-    mode: 'subscription',
+    mode: 'payment',
     payment_method_types: ['card'],
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${appUrl}/pricing?success=true`,
     cancel_url: `${appUrl}/pricing?canceled=true`,
     customer_email: email ?? undefined,
-    subscription_data: {
-      metadata: { clerkUserId: userId },
-    },
     metadata: { clerkUserId: userId },
   });
 
