@@ -30,81 +30,84 @@ export default function FixPanel({ scanId }: FixPanelProps) {
       setCopiedId(fix.issueId);
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setCopiedId(null), 2000);
-    }).catch(() => {
-      // Clipboard API unavailable — select the text as fallback (no-op for now)
-    });
+    }).catch(() => {});
   }
 
   if (loading) return (
-    <div style={{ padding: '20px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
+    <div style={{ padding: '8px', fontSize: '11px', fontFamily: 'var(--font-mono)' }}>
       Generating fixes...
     </div>
   );
 
   if (error) return (
-    <div style={{ padding: '20px', color: 'var(--danger)', fontFamily: 'var(--font-body)', fontSize: '14px' }}>
-      Could not load fixes. Please try refreshing the page.
+    <div className="win-sunken" style={{ padding: '8px', background: '#FFFFFF', fontSize: '11px' }}>
+      <span style={{ color: '#FF0000' }}>Error:</span> Could not load fixes. Please try refreshing the page.
     </div>
   );
 
   if (fixes.length === 0) return (
-    <div style={{ padding: '20px', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', fontSize: '14px' }}>
+    <div className="win-sunken" style={{ padding: '8px', background: '#FFFFFF', fontSize: '11px' }}>
       No auto-fixes available for your current issues.
     </div>
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }} data-testid="fix-panel">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }} data-testid="fix-panel">
       {fixes.map(fix => (
-        <div
-          key={fix.issueId}
-          style={{
-            backgroundColor: 'var(--bg-elevated)',
-            border: '1px solid var(--border)',
-            borderRadius: '12px',
-            overflow: 'hidden',
-          }}
-        >
+        <div key={fix.issueId} className="win-window">
           {/* Header */}
-          <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+          <div style={{
+            padding: '4px 8px',
+            background: 'var(--win-face)',
+            borderBottom: '1px solid var(--win-shadow)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: '8px',
+          }}>
             <div>
-              <p style={{ fontFamily: 'var(--font-heading)', fontWeight: '600', fontSize: '14px', color: 'var(--text-primary)', margin: '0 0 4px' }}>
+              <p style={{ fontWeight: 700, fontSize: '11px', margin: '0 0 2px' }}>
                 {fix.title}
               </p>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.5' }}>
+              <p style={{ fontSize: '11px', color: '#000000', margin: 0, lineHeight: 1.4 }}>
                 {fix.instruction}
               </p>
             </div>
             {fix.docsUrl?.startsWith('https://') && (
               <a href={fix.docsUrl} target="_blank" rel="noopener noreferrer"
-                style={{ fontSize: '12px', color: 'var(--accent-teal)', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                Docs ↗
+                style={{ fontSize: '11px', color: '#0000FF', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                Docs
               </a>
             )}
           </div>
 
-          {/* Code block */}
+          {/* Code block - sunken textarea style */}
           <div style={{ position: 'relative' }}>
-            <pre style={{
-              margin: 0, padding: '16px', overflowX: 'auto',
-              fontFamily: 'var(--font-mono)', fontSize: '12px',
-              color: 'var(--text-secondary)', lineHeight: '1.6',
-              backgroundColor: 'var(--bg-primary)',
-              maxHeight: '200px',
+            <pre className="win-sunken" style={{
+              margin: '4px',
+              padding: '4px 6px',
+              overflowX: 'auto',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: '#000000',
+              lineHeight: 1.5,
+              background: '#FFFFFF',
+              maxHeight: '180px',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
             }}>
               {fix.code}
             </pre>
             <button
               onClick={() => copyCode(fix)}
+              className="win-btn"
               style={{
-                position: 'absolute', top: '8px', right: '8px',
-                padding: '4px 10px',
-                backgroundColor: copiedId === fix.issueId ? 'var(--success)' : 'var(--bg-elevated)',
-                color: copiedId === fix.issueId ? '#fff' : 'var(--text-secondary)',
-                border: '1px solid var(--border)',
-                borderRadius: '6px',
-                fontFamily: 'var(--font-mono)', fontSize: '11px',
-                cursor: 'pointer',
+                position: 'absolute',
+                top: '8px',
+                right: '8px',
+                minWidth: '50px',
+                padding: '2px 8px',
+                fontSize: '10px',
               }}
               data-testid={`copy-fix-${fix.issueId}`}
             >

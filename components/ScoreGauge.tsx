@@ -1,128 +1,96 @@
 // components/ScoreGauge.tsx
-import { gradeColor, scoreColor } from '@/lib/utils';
 
 interface ScoreGaugeProps {
-  score: number;        // 0–100
-  grade: string;        // A–F
+  score: number;
+  grade: string;
   gradeLabel: string;
-  size?: number;        // default 200
+  size?: number;
 }
 
 export default function ScoreGauge({
   score,
   grade,
   gradeLabel,
-  size = 200,
 }: ScoreGaugeProps) {
-  const radius = 45;
-  const circumference = 2 * Math.PI * radius; // 282.74
-  const offset = circumference - (score / 100) * circumference;
-  const color = scoreColor(score);
+  const percentage = score;
+  const gradeColorValue =
+    grade === 'A' ? '#008000' :
+    grade === 'B' ? '#000080' :
+    grade === 'C' ? '#808000' :
+    grade === 'D' ? '#FF8000' :
+    '#FF0000';
 
   return (
-    <div data-testid="score-gauge" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-      <div style={{ position: 'relative', width: size, height: size }}>
-        <svg
-          width={size}
-          height={size}
-          viewBox="0 0 100 100"
-          style={{ transform: 'rotate(-90deg)' }}
-        >
-          {/* Background track */}
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="none"
-            stroke="var(--border)"
-            strokeWidth={8}
-          />
-          {/* Score arc */}
-          <circle
-            cx="50"
-            cy="50"
-            r={radius}
-            fill="none"
-            stroke={color}
-            strokeWidth={8}
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            className="gauge-arc"
-            style={{ '--gauge-offset': offset } as React.CSSProperties}
-          />
-        </svg>
-
-        {/* Center content */}
+    <div data-testid="score-gauge" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+      {/* Large score display */}
+      <div className="win-sunken" style={{
+        background: '#FFFFFF',
+        padding: '16px 24px',
+        textAlign: 'center',
+        minWidth: '160px',
+      }}>
         <div
+          data-testid="score-value"
           style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 700,
+            fontSize: '48px',
+            color: gradeColorValue,
+            lineHeight: 1,
           }}
         >
-          <span
-            data-testid="score-value"
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: '700',
-              fontSize: `${size * 0.22}px`,
-              color: color,
-              lineHeight: '1',
-              letterSpacing: '-0.04em',
-            }}
-          >
-            {score}
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: `${size * 0.08}px`,
-              color: 'var(--text-muted)',
-              marginTop: '4px',
-            }}
-          >
-            / 100
-          </span>
+          {score}
+        </div>
+        <div style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          color: 'var(--text-muted)',
+          marginTop: '2px',
+        }}>
+          / 100
+        </div>
+      </div>
+
+      {/* Win98 progress bar */}
+      <div style={{ width: '100%' }}>
+        <div style={{ fontSize: '11px', marginBottom: '2px', textAlign: 'center' }}>
+          Agent Readiness:
+        </div>
+        <div className="win-progress" style={{ width: '100%' }}>
+          <div
+            className="win-progress-bar"
+            style={{ width: `${percentage}%` }}
+          />
         </div>
       </div>
 
       {/* Grade badge */}
-      <div
-        style={{
-          display: 'inline-flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-        }}
-      >
+      <div className="win-raised" style={{
+        padding: '6px 16px',
+        textAlign: 'center',
+        background: 'var(--win-face)',
+      }}>
         <span
           data-testid="grade-value"
           style={{
             fontFamily: 'var(--font-heading)',
-            fontWeight: '700',
-            fontSize: '48px',
-            color: gradeColor(grade),
-            lineHeight: '1',
-            letterSpacing: '-0.04em',
+            fontWeight: 700,
+            fontSize: '28px',
+            color: gradeColorValue,
+            lineHeight: 1,
           }}
         >
           {grade}
         </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '12px',
-            color: 'var(--text-muted)',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-          }}
-        >
+        <div style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: '10px',
+          color: 'var(--text-muted)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+        }}>
           {gradeLabel}
-        </span>
+        </div>
       </div>
     </div>
   );

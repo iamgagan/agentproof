@@ -1,24 +1,5 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-heading',
-  weight: ['500', '600', '700'],
-});
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-body',
-  weight: ['400', '500'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  weight: ['400', '500'],
-});
 
 export const metadata: Metadata = {
   title: 'AgentProof — AI Agent Readiness Scanner for Ecommerce',
@@ -39,15 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en">
       <body
         style={{
-          fontFamily: 'var(--font-body), system-ui, sans-serif',
-          backgroundColor: 'var(--bg-primary)',
-          color: 'var(--text-primary)',
+          fontFamily: '"Tahoma", "MS Sans Serif", Arial, sans-serif',
+          backgroundColor: '#C0C0C0',
+          color: '#000000',
+          fontSize: '11px',
           minHeight: '100vh',
         }}
       >

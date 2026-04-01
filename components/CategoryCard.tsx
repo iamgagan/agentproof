@@ -12,160 +12,135 @@ interface CategoryCardProps {
 export default function CategoryCard({ categoryKey, result }: CategoryCardProps) {
   const [expanded, setExpanded] = useState(false);
   const percentage = result.percentage;
-  const color = percentage >= 80 ? 'var(--success)' : percentage >= 40 ? 'var(--warning)' : 'var(--danger)';
+  const color =
+    percentage >= 80 ? '#008000' :
+    percentage >= 40 ? '#808000' :
+    '#FF0000';
 
   return (
     <div
-      className="category-card"
       data-testid={`category-card-${categoryKey}`}
-      style={{
-        backgroundColor: 'var(--bg-surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '16px',
-        overflow: 'hidden',
-      }}
+      style={{ marginBottom: '2px' }}
     >
-      {/* Card header — clickable to expand */}
-      <button
+      {/* Tree view row */}
+      <div
         onClick={() => setExpanded(!expanded)}
         style={{
-          width: '100%',
-          padding: '24px',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          textAlign: 'left',
           display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
+          alignItems: 'center',
+          gap: '4px',
+          padding: '2px 4px',
+          cursor: 'pointer',
+          background: expanded ? '#000080' : 'transparent',
+          color: expanded ? '#FFFFFF' : '#000000',
+          fontFamily: 'var(--font-body)',
+          fontSize: '11px',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            <h3
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontWeight: '600',
-                fontSize: '16px',
-                color: 'var(--text-primary)',
-                marginBottom: '4px',
-              }}
-            >
-              {categoryLabel(categoryKey)}
-            </h3>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-body)' }}>
-              {categoryDescription(categoryKey)}
-            </p>
-          </div>
-          <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '16px' }}>
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontWeight: '500',
-                fontSize: '20px',
-                color: color,
-              }}
-            >
-              {result.score}
-              <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>/{result.maxScore}</span>
-            </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-              {percentage}%
-            </div>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div
-          style={{
-            height: '4px',
-            backgroundColor: 'var(--border)',
-            borderRadius: '4px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: `${percentage}%`,
-              backgroundColor: color,
-              borderRadius: '4px',
-              transition: 'width 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
-          />
-        </div>
-
-        {/* Expand toggle */}
-        {result.issues.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '12px', color: 'var(--accent-teal)', fontFamily: 'var(--font-body)' }}>
-              {expanded ? '▲ Hide' : `▼ Show ${result.issues.length} issue${result.issues.length > 1 ? 's' : ''}`}
-            </span>
-          </div>
+        {/* Tree toggle */}
+        {result.issues.length > 0 ? (
+          <span className="win-tree-toggle" style={{
+            color: '#000000',
+            background: '#FFFFFF',
+          }}>
+            {expanded ? '-' : '+'}
+          </span>
+        ) : (
+          <span style={{ width: '9px', display: 'inline-block' }} />
         )}
-      </button>
+
+        {/* Category icon */}
+        <span style={{ fontFamily: 'var(--font-mono)', width: '16px', textAlign: 'center' }}>
+          &#128196;
+        </span>
+
+        {/* Name */}
+        <span style={{ fontWeight: 700, flex: '1' }}>
+          {categoryLabel(categoryKey)}
+        </span>
+
+        {/* Score */}
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          color: expanded ? '#FFFFFF' : color,
+          fontWeight: 700,
+        }}>
+          {result.score}/{result.maxScore}
+        </span>
+
+        {/* Percentage */}
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          color: expanded ? '#C0C0C0' : 'var(--text-muted)',
+          width: '40px',
+          textAlign: 'right',
+        }}>
+          {percentage}%
+        </span>
+      </div>
+
+      {/* Win98 progress bar (mini) */}
+      <div style={{ marginLeft: '29px', marginTop: '1px', marginBottom: '2px' }}>
+        <div style={{
+          border: '1px solid var(--win-shadow)',
+          height: '10px',
+          background: '#FFFFFF',
+          padding: '1px',
+        }}>
+          <div style={{
+            height: '100%',
+            width: `${percentage}%`,
+            background: color === '#008000'
+              ? 'repeating-linear-gradient(90deg, #008000 0px, #008000 6px, transparent 6px, transparent 8px)'
+              : color === '#808000'
+              ? 'repeating-linear-gradient(90deg, #808000 0px, #808000 6px, transparent 6px, transparent 8px)'
+              : 'repeating-linear-gradient(90deg, #FF0000 0px, #FF0000 6px, transparent 6px, transparent 8px)',
+          }} />
+        </div>
+      </div>
 
       {/* Expanded issues */}
       {expanded && result.issues.length > 0 && (
-        <div
-          style={{
-            borderTop: '1px solid var(--border)',
-            padding: '16px 24px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-          }}
-        >
+        <div style={{
+          marginLeft: '29px',
+          borderLeft: '1px dotted var(--win-shadow)',
+          paddingLeft: '8px',
+        }}>
           {result.issues.map((issue) => (
             <div
               key={issue.id}
+              className="win-sunken"
               style={{
-                padding: '16px',
-                backgroundColor: 'var(--bg-elevated)',
-                borderRadius: '10px',
-                borderLeft: `3px solid ${issue.severity === 'critical' ? 'var(--danger)' : issue.severity === 'warning' ? 'var(--warning)' : 'var(--text-muted)'}`,
+                padding: '6px 8px',
+                background: '#FFFFFF',
+                marginBottom: '4px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <span
-                  style={{
-                    fontSize: '11px',
-                    fontFamily: 'var(--font-mono)',
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                    backgroundColor: issue.severity === 'critical' ? 'rgba(239,68,68,0.15)' : issue.severity === 'warning' ? 'rgba(234,179,8,0.15)' : 'rgba(100,116,139,0.15)',
-                    color: issue.severity === 'critical' ? 'var(--danger)' : issue.severity === 'warning' ? 'var(--warning)' : 'var(--text-muted)',
-                    textTransform: 'uppercase' as const,
-                    letterSpacing: '0.06em',
-                  }}
-                >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                <span style={{
+                  fontSize: '10px',
+                  fontFamily: 'var(--font-mono)',
+                  padding: '0 4px',
+                  background: issue.severity === 'critical' ? '#FF0000' : issue.severity === 'warning' ? '#808000' : '#808080',
+                  color: '#FFFFFF',
+                  textTransform: 'uppercase',
+                }}>
                   {issue.severity}
                 </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontWeight: '600',
-                    fontSize: '14px',
-                    color: 'var(--text-primary)',
-                  }}
-                >
+                <span style={{ fontWeight: 700, fontSize: '11px' }}>
                   {issue.title}
                 </span>
               </div>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', lineHeight: '1.6', marginBottom: '8px' }}>
+              <p style={{ fontSize: '11px', lineHeight: 1.4, marginBottom: '4px' }}>
                 {issue.description}
               </p>
-              <div
-                style={{
-                  fontSize: '13px',
-                  color: 'var(--accent-teal)',
-                  fontFamily: 'var(--font-body)',
-                  padding: '8px 12px',
-                  backgroundColor: 'rgba(0, 229, 204, 0.05)',
-                  borderRadius: '6px',
-                  border: '1px solid rgba(0, 229, 204, 0.1)',
-                }}
-              >
+              <div style={{
+                fontSize: '11px',
+                color: '#000080',
+                padding: '4px 6px',
+                background: '#F0F0FF',
+                border: '1px solid #C0C0E0',
+              }}>
                 <strong>Fix:</strong> {issue.fix}
               </div>
             </div>

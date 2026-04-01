@@ -1,33 +1,54 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #0A0A0F;
-  --color-bg-surface: #12121A;
-  --color-bg-elevated: #1A1A2E;
-  --color-accent-teal: #00E5CC;
-  --color-accent-indigo: #6366F1;
-  --color-success: #22C55E;
-  --color-warning: #EAB308;
-  --color-danger: #EF4444;
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #94A3B8;
-  --color-text-muted: #64748B;
-  --color-border: #1E293B;
+  --color-bg-primary: #C0C0C0;
+  --color-bg-surface: #C0C0C0;
+  --color-bg-elevated: #FFFFFF;
+  --color-accent-teal: #000080;
+  --color-accent-indigo: #000080;
+  --color-success: #008000;
+  --color-warning: #808000;
+  --color-danger: #FF0000;
+  --color-text-primary: #000000;
+  --color-text-secondary: #000000;
+  --color-text-muted: #808080;
+  --color-border: #808080;
 }
 
 :root {
-  --bg-primary: #0A0A0F;
-  --bg-surface: #12121A;
-  --bg-elevated: #1A1A2E;
-  --accent-teal: #00E5CC;
-  --accent-indigo: #6366F1;
-  --success: #22C55E;
-  --warning: #EAB308;
-  --danger: #EF4444;
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --border: #1E293B;
+  /* Win98 core palette */
+  --bg-primary: #C0C0C0;
+  --bg-surface: #C0C0C0;
+  --bg-elevated: #FFFFFF;
+  --bg-window: #FFFFFF;
+  --accent-teal: #000080;
+  --accent-indigo: #000080;
+  --success: #008000;
+  --warning: #808000;
+  --danger: #FF0000;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #808080;
+  --border: #808080;
+
+  /* Win98 specific */
+  --win-face: #C0C0C0;
+  --win-highlight: #FFFFFF;
+  --win-shadow: #808080;
+  --win-dark-shadow: #000000;
+  --win-light: #DFDFDF;
+  --win-title-active: linear-gradient(90deg, #000080, #1084D0);
+  --win-title-inactive: linear-gradient(90deg, #808080, #B0B0B0);
+  --win-title-text: #FFFFFF;
+  --win-link: #0000FF;
+  --win-visited: #800080;
+  --win-selected-bg: #000080;
+  --win-selected-text: #FFFFFF;
+
+  /* Font stacks */
+  --font-heading: "Tahoma", "MS Sans Serif", Arial, sans-serif;
+  --font-body: "Tahoma", "MS Sans Serif", Arial, sans-serif;
+  --font-mono: "Fixedsys", "Courier New", Courier, monospace;
 }
 
 * {
@@ -39,10 +60,360 @@
 html, body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-body);
+  font-size: 11px;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
-/* Score gauge animation */
+/* ═══════════════════════════════════════════
+   Win98 3D Border Utilities
+   ═══════════════════════════════════════════ */
+
+/* Raised panel (button face, toolbar, window frame) */
+.win-raised {
+  border: 2px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) var(--win-dark-shadow) var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-light), inset -1px -1px 0 var(--win-shadow);
+}
+
+/* Sunken panel (input fields, status bar sections) */
+.win-sunken {
+  border: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow), inset -1px -1px 0 var(--win-light);
+}
+
+/* Etched groove (group boxes) */
+.win-groove {
+  border: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Window Chrome
+   ═══════════════════════════════════════════ */
+
+.win-window {
+  background: var(--win-face);
+  border: 2px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) var(--win-dark-shadow) var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-light), inset -1px -1px 0 var(--win-shadow);
+  padding: 3px;
+}
+
+.win-title-bar {
+  background: linear-gradient(90deg, #000080, #1084D0);
+  padding: 3px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  margin-bottom: 2px;
+}
+
+.win-title-bar span {
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0;
+  padding-left: 2px;
+}
+
+.win-title-buttons {
+  display: flex;
+  gap: 2px;
+}
+
+.win-title-btn {
+  width: 16px;
+  height: 14px;
+  background: var(--win-face);
+  border: 1px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) var(--win-dark-shadow) var(--win-highlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-family: "Marlett", sans-serif;
+  cursor: default;
+  padding: 0;
+  line-height: 1;
+  color: #000000;
+}
+
+.win-title-btn:active {
+  border-color: var(--win-dark-shadow) var(--win-highlight) var(--win-highlight) var(--win-dark-shadow);
+}
+
+.win-body {
+  background: var(--win-face);
+  padding: 8px;
+}
+
+.win-body-white {
+  background: #FFFFFF;
+  padding: 8px;
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Button
+   ═══════════════════════════════════════════ */
+
+.win-btn {
+  background: var(--win-face);
+  border: 2px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) var(--win-dark-shadow) var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-light), inset -1px -1px 0 var(--win-shadow);
+  padding: 4px 16px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  cursor: pointer;
+  min-width: 75px;
+  text-align: center;
+  color: #000000;
+}
+
+.win-btn:active {
+  border-color: var(--win-dark-shadow) var(--win-highlight) var(--win-highlight) var(--win-dark-shadow);
+  box-shadow: inset 1px 1px 0 var(--win-shadow), inset -1px -1px 0 var(--win-light);
+  padding: 5px 15px 3px 17px;
+}
+
+.win-btn:disabled {
+  color: var(--win-shadow);
+  text-shadow: 1px 1px 0 var(--win-highlight);
+  cursor: default;
+}
+
+.win-btn:focus-visible {
+  outline: 1px dotted #000000;
+  outline-offset: -4px;
+}
+
+/* Default button (has extra black border) */
+.win-btn-default {
+  border: 3px solid #000000;
+  padding: 3px 15px;
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Input
+   ═══════════════════════════════════════════ */
+
+.win-input {
+  background: #FFFFFF;
+  border: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow), inset -1px -1px 0 var(--win-light);
+  padding: 3px 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #000000;
+  outline: none;
+}
+
+.win-input:focus {
+  /* Win98 doesn't change border on focus */
+}
+
+.win-input::placeholder {
+  color: var(--win-shadow);
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Menu Bar
+   ═══════════════════════════════════════════ */
+
+.win-menubar {
+  background: var(--win-face);
+  padding: 2px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--win-shadow);
+}
+
+.win-menu-item {
+  padding: 2px 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #000000;
+  cursor: default;
+  text-decoration: none;
+}
+
+.win-menu-item:hover {
+  background: var(--win-selected-bg);
+  color: var(--win-selected-text);
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Status Bar
+   ═══════════════════════════════════════════ */
+
+.win-statusbar {
+  background: var(--win-face);
+  border-top: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+.win-status-section {
+  border: 1px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  padding: 1px 6px;
+  flex-shrink: 0;
+}
+
+.win-status-section-grow {
+  border: 1px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  padding: 1px 6px;
+  flex: 1;
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Tabs
+   ═══════════════════════════════════════════ */
+
+.win-tab {
+  background: var(--win-face);
+  border: 1px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) transparent var(--win-highlight);
+  padding: 3px 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  cursor: pointer;
+  position: relative;
+  bottom: -1px;
+}
+
+.win-tab-active {
+  border-bottom-color: var(--win-face);
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Progress Bar
+   ═══════════════════════════════════════════ */
+
+.win-progress {
+  border: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow);
+  height: 18px;
+  background: var(--win-face);
+  padding: 1px;
+}
+
+.win-progress-bar {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #000080 0px,
+    #000080 8px,
+    transparent 8px,
+    transparent 10px
+  );
+}
+
+/* ═══════════════════════════════════════════
+   Win98 Tree View
+   ═══════════════════════════════════════════ */
+
+.win-tree {
+  background: #FFFFFF;
+  border: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow), inset -1px -1px 0 var(--win-light);
+  padding: 2px;
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+.win-tree-item {
+  padding: 1px 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.win-tree-item:hover {
+  background: var(--win-selected-bg);
+  color: var(--win-selected-text);
+}
+
+.win-tree-toggle {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--win-shadow);
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-family: monospace;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════
+   Win98 List View
+   ═══════════════════════════════════════════ */
+
+.win-listview {
+  background: #FFFFFF;
+  border: 2px solid;
+  border-color: var(--win-shadow) var(--win-highlight) var(--win-highlight) var(--win-shadow);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow), inset -1px -1px 0 var(--win-light);
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+.win-listview-header {
+  display: flex;
+  background: var(--win-face);
+  border-bottom: 1px solid var(--win-shadow);
+}
+
+.win-listview-header-cell {
+  padding: 2px 8px;
+  border-right: 1px solid var(--win-shadow);
+  border-bottom: 1px solid var(--win-shadow);
+  font-weight: 700;
+  cursor: default;
+  border-top: 1px solid var(--win-highlight);
+}
+
+.win-listview-row {
+  display: flex;
+  border-bottom: 1px solid var(--win-light);
+}
+
+.win-listview-row:hover {
+  background: var(--win-selected-bg);
+  color: var(--win-selected-text);
+}
+
+.win-listview-cell {
+  padding: 1px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════
+   Score gauge animation (kept for compatibility)
+   ═══════════════════════════════════════════ */
+
 @keyframes gauge-fill {
   from { stroke-dashoffset: 283; }
   to { stroke-dashoffset: var(--gauge-offset); }
@@ -62,7 +433,6 @@ html, body {
   animation: scan-pulse 1.5s ease-in-out infinite;
 }
 
-/* Scan progress bar animation */
 @keyframes scan-progress {
   0% { transform: translateX(-100%); }
   50% { transform: translateX(150%); }
@@ -83,9 +453,31 @@ html, body {
   }
 }
 
-/* Category card glow on hover */
-.category-card:hover {
-  box-shadow: 0 0 20px rgba(0, 229, 204, 0.08);
-  border-color: rgba(0, 229, 204, 0.2);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+/* Win98 link style */
+a {
+  color: var(--win-link);
+}
+a:visited {
+  color: var(--win-visited);
+}
+
+/* Scrollbar styling (Win98 vibe) */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track {
+  background: repeating-conic-gradient(var(--win-face) 0% 25%, var(--win-light) 0% 50%) 50% / 2px 2px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--win-face);
+  border: 2px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) var(--win-dark-shadow) var(--win-highlight);
+}
+::-webkit-scrollbar-button {
+  background: var(--win-face);
+  border: 1px solid;
+  border-color: var(--win-highlight) var(--win-dark-shadow) var(--win-dark-shadow) var(--win-highlight);
+  height: 16px;
+  width: 16px;
 }

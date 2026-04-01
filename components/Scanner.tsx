@@ -12,11 +12,11 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
   const router = useRouter();
 
   const stages = [
-    'Fetching homepage…',
-    'Discovering product pages…',
-    'Analyzing structured data…',
-    'Checking AI crawler access…',
-    'Calculating readiness score…',
+    'Fetching homepage...',
+    'Discovering product pages...',
+    'Analyzing structured data...',
+    'Checking AI crawler access...',
+    'Calculating readiness score...',
   ];
 
   async function handleSubmit(e: React.FormEvent) {
@@ -30,7 +30,6 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
     }
 
     startTransition(async () => {
-      // Cycle through stages while scanning
       let stageIndex = 0;
       setScanStage(stages[0]);
       const stageInterval = setInterval(() => {
@@ -66,119 +65,63 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
 
   return (
     <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-      <div
-        style={{
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'stretch',
-          flexWrap: 'wrap',
-        }}
-      >
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => { setUrl(e.target.value); setError(''); }}
-          placeholder={placeholder}
-          disabled={isPending}
-          data-testid="url-input"
-          style={{
-            flex: '1',
-            minWidth: '280px',
-            padding: '16px 20px',
-            borderRadius: '12px',
-            border: error ? '1.5px solid var(--danger)' : '1.5px solid var(--border)',
-            backgroundColor: 'var(--bg-surface)',
-            color: 'var(--text-primary)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '15px',
-            outline: 'none',
-            transition: 'border-color 0.2s',
-          }}
-          onFocus={(e) => {
-            if (!error) e.target.style.borderColor = 'var(--accent-teal)';
-          }}
-          onBlur={(e) => {
-            if (!error) e.target.style.borderColor = 'var(--border)';
-          }}
-        />
-        <button
-          type="submit"
+      {/* Group box */}
+      <fieldset className="win-groove" style={{ padding: '12px', background: 'var(--win-face)' }}>
+        <legend style={{ fontFamily: 'var(--font-body)', fontSize: '11px', padding: '0 4px' }}>
+          Enter Store URL
+        </legend>
 
-          disabled={isPending || !url.trim() || !validateUrl(url).valid}
-          data-testid="scan-button"
-          style={{
-            padding: '16px 28px',
-            borderRadius: '12px',
-            border: 'none',
-            background: isPending
-              ? 'var(--bg-elevated)'
-              : 'linear-gradient(135deg, var(--accent-teal), #00B8A3)',
-            color: isPending ? 'var(--text-muted)' : '#0A0A0F',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: '600',
-            fontSize: '15px',
-            cursor: isPending ? 'not-allowed' : 'pointer',
-            whiteSpace: 'nowrap',
-            transition: 'opacity 0.2s',
-          }}
-        >
-          {isPending ? 'Scanning…' : 'Scan My Store →'}
-        </button>
-      </div>
-
-      {/* Loading animation */}
-      {isPending && scanStage && (
-        <div
-          data-testid="scan-status"
-          style={{
-            marginTop: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-          }}
-        >
-          <div
-            className="scan-pulse"
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent-teal)',
-              flexShrink: 0,
-            }}
+        <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <label style={{ fontFamily: 'var(--font-body)', fontSize: '11px', flexShrink: 0 }}>
+            URL:
+          </label>
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => { setUrl(e.target.value); setError(''); }}
+            placeholder={placeholder}
+            disabled={isPending}
+            data-testid="url-input"
+            className="win-input"
+            style={{ flex: 1, minWidth: '200px', fontSize: '11px' }}
           />
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '13px',
-              color: 'var(--accent-teal)',
-            }}
+          <button
+            type="submit"
+            disabled={isPending || !url.trim() || !validateUrl(url).valid}
+            data-testid="scan-button"
+            className={`win-btn ${!isPending ? 'win-btn-default' : ''}`}
+            style={{ minWidth: '120px' }}
           >
-            {scanStage}
-          </span>
+            {isPending ? 'Scanning...' : 'Scan My Store'}
+          </button>
         </div>
-      )}
+      </fieldset>
 
-      {/* Progress bar */}
+      {/* Win98 progress bar while scanning */}
       {isPending && (
-        <div
-          style={{
-            marginTop: '8px',
-            height: '2px',
-            backgroundColor: 'var(--border)',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: '40%',
-              background: 'linear-gradient(90deg, var(--accent-teal), var(--accent-indigo))',
-              borderRadius: '2px',
-              animation: 'scan-progress 2s ease-in-out infinite',
-            }}
-          />
+        <div style={{ marginTop: '8px' }}>
+          <div className="win-progress" style={{ width: '100%' }}>
+            <div
+              className="win-progress-bar"
+              style={{
+                width: '60%',
+                animation: 'scan-progress 2s ease-in-out infinite',
+              }}
+            />
+          </div>
+          {scanStage && (
+            <div
+              data-testid="scan-status"
+              style={{
+                marginTop: '4px',
+                fontFamily: 'var(--font-body)',
+                fontSize: '11px',
+                color: '#000000',
+              }}
+            >
+              {scanStage}
+            </div>
+          )}
         </div>
       )}
 
@@ -187,8 +130,8 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
         <p
           data-testid="scan-error"
           style={{
-            marginTop: '10px',
-            fontSize: '13px',
+            marginTop: '6px',
+            fontSize: '11px',
             color: 'var(--danger)',
             fontFamily: 'var(--font-body)',
           }}
@@ -197,16 +140,14 @@ export default function Scanner({ placeholder = 'https://yourstore.com' }: { pla
         </p>
       )}
 
-      <p
-        style={{
-          marginTop: '12px',
-          fontSize: '13px',
-          color: 'var(--text-muted)',
-          fontFamily: 'var(--font-body)',
-          textAlign: 'center',
-        }}
-      >
-        Free · No signup · Results in ~15 seconds
+      <p style={{
+        marginTop: '6px',
+        fontSize: '11px',
+        color: 'var(--text-muted)',
+        fontFamily: 'var(--font-body)',
+        textAlign: 'center',
+      }}>
+        Free &middot; No signup &middot; Results in ~15 seconds
       </p>
     </form>
   );

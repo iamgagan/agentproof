@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 
+const PRO_STORAGE_KEY = 'agentproof_pro_email';
+
 interface WaitlistFormProps {
   onSuccess?: (email: string) => void;
 }
@@ -22,7 +24,8 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps = {}) {
       const data = await res.json();
       if (!res.ok) { setStatus('error'); return; }
       setStatus(data.alreadyRegistered ? 'duplicate' : 'success');
-      onSuccess?.(email); // unlock Pro gate regardless of duplicate status
+      localStorage.setItem(PRO_STORAGE_KEY, email);
+      onSuccess?.(email);
     } catch {
       setStatus('error');
     }
@@ -30,22 +33,23 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps = {}) {
 
   if (status === 'success') {
     return (
-      <div style={{ padding: '20px', textAlign: 'center', color: 'var(--accent-teal)', fontFamily: 'var(--font-heading)', fontWeight: '600' }}>
-        ✓ You're on the list — we'll notify you when Pro launches.
+      <div className="win-sunken" style={{ padding: '8px', textAlign: 'center', background: '#FFFFFF', fontSize: '11px' }}>
+        <span style={{ color: '#008000', fontWeight: 700 }}>OK</span> - You&apos;re on the list. We&apos;ll notify you when Pro launches.
       </div>
     );
   }
 
   if (status === 'duplicate') {
     return (
-      <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', fontSize: '14px' }}>
-        You're already on the waitlist. We'll be in touch!
+      <div className="win-sunken" style={{ padding: '8px', textAlign: 'center', background: '#FFFFFF', fontSize: '11px' }}>
+        You&apos;re already on the waitlist. We&apos;ll be in touch!
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} data-testid="waitlist-form" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+    <form onSubmit={handleSubmit} data-testid="waitlist-form" style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+      <label style={{ fontSize: '11px', flexShrink: 0 }}>Email:</label>
       <input
         type="email"
         value={email}
@@ -53,41 +57,19 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps = {}) {
         placeholder="your@email.com"
         required
         data-testid="waitlist-email-input"
-        style={{
-          flex: '1 1 220px',
-          padding: '12px 16px',
-          backgroundColor: 'var(--bg-elevated)',
-          border: '1px solid var(--border)',
-          borderRadius: '10px',
-          color: 'var(--text-primary)',
-          fontFamily: 'var(--font-body)',
-          fontSize: '14px',
-          outline: 'none',
-          minWidth: '0',
-        }}
+        className="win-input"
+        style={{ flex: '1 1 180px', minWidth: 0, fontSize: '11px' }}
       />
       <button
         type="submit"
         disabled={status === 'loading'}
         data-testid="waitlist-submit-btn"
-        style={{
-          padding: '12px 24px',
-          backgroundColor: 'var(--accent-teal)',
-          color: '#0A0A0F',
-          border: 'none',
-          borderRadius: '10px',
-          fontFamily: 'var(--font-heading)',
-          fontWeight: '600',
-          fontSize: '14px',
-          cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-          opacity: status === 'loading' ? 0.7 : 1,
-          flexShrink: 0,
-        }}
+        className="win-btn"
       >
-        {status === 'loading' ? 'Joining...' : 'Join the Pro waitlist →'}
+        {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
       </button>
       {status === 'error' && (
-        <p style={{ width: '100%', textAlign: 'center', color: 'var(--danger)', fontSize: '13px', fontFamily: 'var(--font-body)' }}>
+        <p style={{ width: '100%', textAlign: 'center', color: 'var(--danger)', fontSize: '11px' }}>
           Something went wrong. Please try again.
         </p>
       )}
