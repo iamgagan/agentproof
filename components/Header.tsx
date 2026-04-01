@@ -3,90 +3,47 @@ import { UserButton } from '@clerk/nextjs';
 
 export default function Header() {
   return (
-    <>
-      <style>{`
-        .header-nav-link {
-          color: var(--text-secondary);
-          text-decoration: none;
-          font-size: 14px;
-          font-family: var(--font-body);
-        }
-        @media (max-width: 640px) {
-          .header-nav-link { display: none; }
-        }
-      `}</style>
-      <header
-        style={{
-          borderBottom: '1px solid var(--border)',
-          backgroundColor: 'rgba(10, 10, 15, 0.8)',
-          backdropFilter: 'blur(12px)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '0 24px',
-            height: '64px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, var(--accent-teal), var(--accent-indigo))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: '500',
-                fontSize: '14px',
-                color: '#0A0A0F',
-              }}
-            >
-              AP
-            </div>
-            <span
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontWeight: '700',
-                fontSize: '18px',
-                color: 'var(--text-primary)',
-                letterSpacing: '-0.02em',
-              }}
-            >
-              AgentProof
-            </span>
-          </a>
-
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <a href="#how-it-works" className="header-nav-link">
-              How it works
-            </a>
-            <a href="#what-we-check" className="header-nav-link">
-              What we check
-            </a>
-            <a href="/blog" className="header-nav-link">
-              Blog
-            </a>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: { width: '32px', height: '32px' },
-                },
-              }}
-            />
-          </nav>
+    <header className="win-window" style={{ padding: 0 }}>
+      {/* Title Bar */}
+      <div className="win-title-bar">
+        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span role="img" aria-label="cat">&#128049;</span>
+          AgentProof - AI Agent Readiness Scanner
+        </span>
+        <div className="win-title-buttons">
+          <button className="win-title-btn" aria-label="Minimize">_</button>
+          <button className="win-title-btn" aria-label="Maximize">&#9633;</button>
+          <button className="win-title-btn" aria-label="Close">&#10005;</button>
         </div>
-      </header>
-    </>
+      </div>
+
+      {/* Menu Bar */}
+      <div className="win-menubar">
+        <a href="/" className="win-menu-item">
+          <u>F</u>ile
+        </a>
+        <a href="/#what-we-check" className="win-menu-item">
+          <u>V</u>iew
+        </a>
+        <a href="/#how-it-works" className="win-menu-item">
+          <u>S</u>can
+        </a>
+        <a href="/blog" className="win-menu-item">
+          <u>B</u>log
+        </a>
+        <a href="/help" className="win-menu-item">
+          <u>H</u>elp
+        </a>
+        <div style={{ marginLeft: 'auto', paddingRight: '4px', display: 'flex', alignItems: 'center' }}>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: { width: '16px', height: '16px' },
+              },
+            }}
+          />
+        </div>
+      </div>
+    </header>
   );
 }

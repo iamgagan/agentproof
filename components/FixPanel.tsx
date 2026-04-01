@@ -20,7 +20,11 @@ export default function FixPanel({ scanId }: Props) {
       .catch(() => setLoading(false));
   }, [scanId]);
 
-  if (loading) return <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Loading fixes...</p>;
+  if (loading) return (
+    <p style={{ fontSize: '12px', color: '#808080', fontFamily: 'MS Sans Serif, Tahoma, sans-serif' }}>
+      Loading fixes...
+    </p>
+  );
   if (fixes.length === 0) return null;
 
   const toggle = (id: string) => {
@@ -37,89 +41,147 @@ export default function FixPanel({ scanId }: Props) {
     setTimeout(() => setCopied(null), 2000);
   };
 
-  const severityColor = (s: string) =>
-    s === 'critical' ? 'var(--danger)' : s === 'warning' ? 'var(--warning)' : 'var(--text-muted)';
+  const severityBadge = (s: string) => {
+    const config = {
+      critical: { label: 'CRITICAL', color: '#FFFFFF', bg: '#FF0000' },
+      warning:  { label: 'WARNING',  color: '#000000', bg: '#FFFF00' },
+      info:     { label: 'INFO',     color: '#000000', bg: '#C0C0C0' },
+    };
+    const c = config[s as keyof typeof config] ?? config.info;
+    return (
+      <span style={{
+        display: 'inline-block',
+        padding: '1px 4px',
+        fontSize: '10px',
+        fontWeight: 'bold',
+        fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+        color: c.color,
+        backgroundColor: c.bg,
+        border: '1px solid #808080',
+        textTransform: 'uppercase' as const,
+      }}>
+        {c.label}
+      </span>
+    );
+  };
 
   return (
     <section>
-      <h2 style={{ fontFamily: 'var(--font-heading)', fontWeight: '600', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '16px' }}>
+      <div style={{
+        fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+        fontSize: '13px',
+        fontWeight: 'bold',
+        color: '#000000',
+        marginBottom: '8px',
+      }}>
         Auto-Generated Fixes
-      </h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        {fixes.map((fix) => (
-          <div key={fix.issueId} style={{
-            backgroundColor: 'var(--bg-surface)',
-            border: '1px solid var(--border)',
-            borderRadius: '10px',
-            overflow: 'hidden',
-          }}>
-            <button
-              onClick={() => toggle(fix.issueId)}
-              style={{
-                width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '14px 16px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {fixes.map((fix) => {
+          const isOpen = expanded.has(fix.issueId);
+          return (
+            <div key={fix.issueId} className="win-window">
+              {/* Title bar / toggle */}
+              <div
+                className="win-title-bar"
+                onClick={() => toggle(fix.issueId)}
+                style={{ cursor: 'pointer' }}
+              >
                 <span style={{
-                  fontSize: '10px', fontFamily: 'var(--font-mono)', fontWeight: '600',
-                  color: severityColor(fix.severity), textTransform: 'uppercase',
-                  padding: '2px 6px', borderRadius: '4px',
-                  backgroundColor: fix.severity === 'critical' ? 'rgba(239,68,68,0.1)' : fix.severity === 'warning' ? 'rgba(234,179,8,0.1)' : 'rgba(100,116,139,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: '#FFFFFF',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
                 }}>
-                  {fix.severity}
-                </span>
-                <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontFamily: 'var(--font-body)' }}>
+                  <span>{isOpen ? '\u25BC' : '\u25B6'}</span>
                   {fix.title}
                 </span>
-              </div>
-              <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
-                {expanded.has(fix.issueId) ? '\u25B2' : '\u25BC'}
-              </span>
-            </button>
-
-            {expanded.has(fix.issueId) && (
-              <div style={{ padding: '0 16px 16px', borderTop: '1px solid var(--border)' }}>
-                <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '12px 0 8px', lineHeight: '1.5' }}>
-                  {fix.instructions}
-                </p>
-                <div style={{ position: 'relative' }}>
-                  <pre style={{
-                    backgroundColor: 'var(--bg-primary)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '8px',
-                    padding: '14px',
-                    overflow: 'auto',
-                    maxHeight: '400px',
-                    fontSize: '11px',
-                    lineHeight: '1.5',
-                    fontFamily: 'var(--font-mono)',
-                    color: 'var(--text-secondary)',
-                  }}>
-                    <code>{fix.codeSnippet}</code>
-                  </pre>
+                <div className="win-title-buttons">
                   <button
-                    onClick={() => copySnippet(fix.issueId, fix.codeSnippet)}
-                    style={{
-                      position: 'absolute', top: '8px', right: '8px',
-                      padding: '4px 10px', fontSize: '11px', fontFamily: 'var(--font-mono)',
-                      backgroundColor: copied === fix.issueId ? 'var(--success)' : 'var(--bg-elevated)',
-                      color: copied === fix.issueId ? '#fff' : 'var(--text-secondary)',
-                      border: '1px solid var(--border)', borderRadius: '6px', cursor: 'pointer',
-                    }}
+                    className="win-title-btn"
+                    onClick={(e) => { e.stopPropagation(); toggle(fix.issueId); }}
+                    aria-label="Toggle"
                   >
-                    {copied === fix.issueId ? 'Copied!' : 'Copy'}
+                    {isOpen ? '\u2212' : '+'}
                   </button>
                 </div>
-                {fix.platform && (
-                  <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', fontStyle: 'italic' }}>
-                    Platform detected: {fix.platform}
-                  </p>
+              </div>
+
+              {/* Body content */}
+              <div className="win-body" style={{
+                padding: '8px',
+                fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+              }}>
+                {/* Severity badge row */}
+                <div style={{ marginBottom: '6px' }}>
+                  {severityBadge(fix.severity)}
+                </div>
+
+                {isOpen && (
+                  <>
+                    {/* Instructions */}
+                    <p style={{
+                      fontSize: '11px',
+                      color: '#000000',
+                      lineHeight: '1.5',
+                      marginBottom: '8px',
+                    }}>
+                      {fix.instructions}
+                    </p>
+
+                    {/* Code snippet */}
+                    <div style={{ position: 'relative' }}>
+                      <pre className="win-sunken" style={{
+                        background: '#FFFFFF',
+                        padding: '8px',
+                        overflow: 'auto',
+                        maxHeight: '400px',
+                        fontSize: '11px',
+                        lineHeight: '1.4',
+                        fontFamily: 'Fixedsys, Courier New, monospace',
+                        color: '#000000',
+                      }}>
+                        <code>{fix.codeSnippet}</code>
+                      </pre>
+                      <button
+                        className="win-btn"
+                        onClick={() => copySnippet(fix.issueId, fix.codeSnippet)}
+                        style={{
+                          position: 'absolute',
+                          top: '6px',
+                          right: '6px',
+                          padding: '2px 8px',
+                          fontSize: '10px',
+                          fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+                          cursor: 'pointer',
+                          backgroundColor: copied === fix.issueId ? '#008000' : undefined,
+                          color: copied === fix.issueId ? '#FFFFFF' : undefined,
+                        }}
+                      >
+                        {copied === fix.issueId ? 'Copied!' : 'Copy'}
+                      </button>
+                    </div>
+
+                    {/* Platform note */}
+                    {fix.platform && (
+                      <p style={{
+                        fontSize: '10px',
+                        color: '#808080',
+                        marginTop: '6px',
+                        fontStyle: 'italic',
+                      }}>
+                        Platform detected: {fix.platform}
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </section>
   );

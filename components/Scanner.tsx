@@ -73,137 +73,103 @@ export default function Scanner({ placeholder = 'https://yourbusiness.com' }: { 
 
   return (
     <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-      <div
+      {/* Win98 group box (fieldset) */}
+      <fieldset
+        className="win-groove"
         style={{
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'stretch',
-          flexWrap: 'wrap',
+          padding: '12px 12px 10px',
+          margin: 0,
         }}
       >
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => { setUrl(e.target.value); setError(''); }}
-          placeholder={placeholder}
-          disabled={isPending}
+        <legend
           style={{
-            flex: '1',
-            minWidth: '280px',
-            padding: '16px 20px',
-            borderRadius: '12px',
-            border: error ? '1.5px solid var(--danger)' : '1.5px solid var(--border)',
-            backgroundColor: 'var(--bg-surface)',
-            color: 'var(--text-primary)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '15px',
-            outline: 'none',
-            transition: 'border-color 0.2s',
-          }}
-          onFocus={(e) => {
-            if (!error) e.target.style.borderColor = 'var(--accent-teal)';
-          }}
-          onBlur={(e) => {
-            if (!error) e.target.style.borderColor = 'var(--border)';
-          }}
-        />
-        <button
-          type="submit"
-          disabled={isPending || !url.trim() || !validateUrl(url).valid}
-          style={{
-            padding: '16px 28px',
-            borderRadius: '12px',
-            border: 'none',
-            background: isPending
-              ? 'var(--bg-elevated)'
-              : 'linear-gradient(135deg, var(--accent-teal), #00B8A3)',
-            color: isPending ? 'var(--text-muted)' : '#0A0A0F',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: '600',
-            fontSize: '15px',
-            cursor: isPending ? 'not-allowed' : 'pointer',
-            whiteSpace: 'nowrap',
-            transition: 'opacity 0.2s',
+            fontFamily: 'var(--font-body)',
+            fontSize: '11px',
+            color: '#000',
+            padding: '0 4px',
           }}
         >
-          {isPending ? 'Scanning…' : isSignedIn ? 'Scan My Site →' : 'Sign Up to Scan →'}
-        </button>
-      </div>
+          Enter Store URL
+        </legend>
 
-      {/* Loading animation */}
-      {isPending && scanStage && (
         <div
           style={{
-            marginTop: '16px',
             display: 'flex',
+            gap: '8px',
             alignItems: 'center',
-            gap: '12px',
+            flexWrap: 'wrap',
           }}
         >
-          <div
-            className="scan-pulse"
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => { setUrl(e.target.value); setError(''); }}
+            placeholder={placeholder}
+            disabled={isPending}
+            className="win-input"
             style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent-teal)',
-              flexShrink: 0,
+              flex: 1,
+              minWidth: '240px',
+              fontFamily: 'var(--font-mono)',
             }}
           />
-          <span
+          <button
+            type="submit"
+            disabled={isPending || !url.trim() || !validateUrl(url).valid}
+            className={`win-btn ${!isPending && url.trim() && validateUrl(url).valid ? 'win-btn-default' : ''}`}
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            {isPending ? 'Scanning...' : isSignedIn ? 'Scan My Site' : 'Sign Up to Scan'}
+          </button>
+        </div>
+
+        {/* Win98 progress bar during scan */}
+        {isPending && (
+          <div style={{ marginTop: '10px' }}>
+            {scanStage && (
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '11px',
+                  color: '#000',
+                  marginBottom: '4px',
+                }}
+              >
+                {scanStage}
+              </div>
+            )}
+            <div className="win-progress" style={{ width: '100%' }}>
+              <div
+                className="win-progress-bar"
+                style={{
+                  width: '40%',
+                  animation: 'scan-progress 2s ease-in-out infinite',
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Error message */}
+        {error && (
+          <p
             style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '13px',
-              color: 'var(--accent-teal)',
+              marginTop: '8px',
+              fontSize: '11px',
+              color: '#FF0000',
+              fontFamily: 'var(--font-body)',
             }}
           >
-            {scanStage}
-          </span>
-        </div>
-      )}
-
-      {/* Progress bar */}
-      {isPending && (
-        <div
-          style={{
-            marginTop: '8px',
-            height: '2px',
-            backgroundColor: 'var(--border)',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: '40%',
-              background: 'linear-gradient(90deg, var(--accent-teal), var(--accent-indigo))',
-              borderRadius: '2px',
-              animation: 'scan-progress 2s ease-in-out infinite',
-            }}
-          />
-        </div>
-      )}
-
-      {/* Error message */}
-      {error && (
-        <p
-          style={{
-            marginTop: '10px',
-            fontSize: '13px',
-            color: 'var(--danger)',
-            fontFamily: 'var(--font-body)',
-          }}
-        >
-          {error}
-        </p>
-      )}
+            {error}
+          </p>
+        )}
+      </fieldset>
 
       <p
         style={{
-          marginTop: '12px',
-          fontSize: '13px',
-          color: 'var(--text-muted)',
+          marginTop: '8px',
+          fontSize: '11px',
+          color: '#808080',
           fontFamily: 'var(--font-body)',
           textAlign: 'center',
         }}

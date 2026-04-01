@@ -8,106 +8,86 @@ interface IssueListProps {
 export default function IssueList({ issues }: IssueListProps) {
   if (issues.length === 0) {
     return (
-      <div style={{ padding: '32px', textAlign: 'center', color: 'var(--success)', fontFamily: 'var(--font-body)' }}>
-        ✓ No critical issues found
+      <div className="win-sunken" style={{ padding: '16px', textAlign: 'center', background: '#FFFFFF' }}>
+        <span style={{ fontFamily: 'MS Sans Serif, Tahoma, sans-serif', fontSize: '12px', color: '#008000' }}>
+          OK &mdash; No critical issues found
+        </span>
       </div>
     );
   }
 
   const severityConfig = {
-    critical: { label: 'Critical', color: 'var(--danger)',      bg: 'rgba(239,68,68,0.1)' },
-    warning:  { label: 'Warning',  color: 'var(--warning)',     bg: 'rgba(234,179,8,0.1)' },
-    info:     { label: 'Info',     color: 'var(--text-muted)',  bg: 'rgba(100,116,139,0.1)' },
+    critical: { label: 'CRITICAL', color: '#FFFFFF', bg: '#FF0000' },
+    warning:  { label: 'WARNING',  color: '#000000', bg: '#FFFF00' },
+    info:     { label: 'INFO',     color: '#000000', bg: '#C0C0C0' },
   };
 
   return (
-    <ol style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div className="win-listview" style={{ width: '100%' }}>
+      {/* Header row */}
+      <div className="win-listview-header">
+        <div className="win-listview-header-cell" style={{ width: '36px', textAlign: 'center' }}>#</div>
+        <div className="win-listview-header-cell" style={{ width: '80px' }}>Severity</div>
+        <div className="win-listview-header-cell" style={{ width: '160px' }}>Category</div>
+        <div className="win-listview-header-cell" style={{ flex: 1 }}>Issue</div>
+        <div className="win-listview-header-cell" style={{ width: '64px', textAlign: 'right' }}>Pts Lost</div>
+      </div>
+
+      {/* Issue rows */}
       {issues.map((issue, i) => {
         const cfg = severityConfig[issue.severity];
         return (
-          <li
-            key={issue.id}
-            style={{
-              display: 'flex',
-              gap: '16px',
-              padding: '20px',
-              backgroundColor: 'var(--bg-elevated)',
-              borderRadius: '12px',
-              border: '1px solid var(--border)',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '13px',
-                color: 'var(--text-muted)',
-                paddingTop: '2px',
-                flexShrink: 0,
-                width: '20px',
-              }}
-            >
-              {i + 1}.
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
-                <span
-                  style={{
-                    fontSize: '11px',
-                    fontFamily: 'var(--font-mono)',
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                    backgroundColor: cfg.bg,
-                    color: cfg.color,
-                    textTransform: 'uppercase' as const,
-                    letterSpacing: '0.06em',
-                    flexShrink: 0,
-                  }}
-                >
+          <div key={issue.id}>
+            {/* Main row */}
+            <div className="win-listview-row">
+              <div className="win-listview-cell" style={{ width: '36px', textAlign: 'center' }}>
+                {i + 1}
+              </div>
+              <div className="win-listview-cell" style={{ width: '80px' }}>
+                <span style={{
+                  display: 'inline-block',
+                  padding: '1px 4px',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+                  color: cfg.color,
+                  backgroundColor: cfg.bg,
+                  border: '1px solid #808080',
+                  textTransform: 'uppercase' as const,
+                }}>
                   {cfg.label}
                 </span>
-                <span
-                  style={{
-                    fontSize: '12px',
-                    color: 'var(--text-muted)',
-                    fontFamily: 'var(--font-mono)',
-                  }}
-                >
-                  {categoryLabel(issue.category)}
-                </span>
-                {issue.pointsLost > 0 && (
-                  <span style={{ fontSize: '12px', color: 'var(--danger)', fontFamily: 'var(--font-mono)', marginLeft: 'auto' }}>
-                    −{issue.pointsLost} pts
-                  </span>
-                )}
               </div>
-              <h4
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: '600',
-                  fontSize: '15px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '6px',
-                }}
-              >
+              <div className="win-listview-cell" style={{ width: '160px' }}>
+                {categoryLabel(issue.category)}
+              </div>
+              <div className="win-listview-cell" style={{ flex: 1, fontWeight: 'bold' }}>
                 {issue.title}
-              </h4>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', lineHeight: '1.6', marginBottom: '10px' }}>
-                {issue.impact}
-              </p>
-              <div
-                style={{
-                  fontSize: '13px',
-                  color: 'var(--accent-teal)',
-                  fontFamily: 'var(--font-body)',
-                  lineHeight: '1.5',
-                }}
-              >
-                → {issue.fix}
+              </div>
+              <div className="win-listview-cell" style={{ width: '64px', textAlign: 'right', color: '#FF0000' }}>
+                {issue.pointsLost > 0 ? `−${issue.pointsLost}` : '0'}
               </div>
             </div>
-          </li>
+
+            {/* Detail sub-row */}
+            <div style={{
+              padding: '6px 8px 8px 44px',
+              borderBottom: '1px solid #C0C0C0',
+              backgroundColor: '#FFFFFF',
+              fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+              fontSize: '11px',
+              lineHeight: '1.5',
+            }}>
+              <div style={{ color: '#000080', marginBottom: '2px' }}>
+                <strong>Impact:</strong> {issue.impact}
+              </div>
+              <div style={{ color: '#008000' }}>
+                <strong>Fix:</strong> {issue.fix}
+              </div>
+            </div>
+          </div>
         );
       })}
-    </ol>
+    </div>
   );
 }

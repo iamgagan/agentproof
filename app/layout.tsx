@@ -1,25 +1,6 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-heading',
-  weight: ['500', '600', '700'],
-});
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-body',
-  weight: ['400', '500'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  weight: ['400', '500'],
-});
 
 export const metadata: Metadata = {
   title: 'AgentProof — AI Agent Readiness Scanner',
@@ -47,76 +28,106 @@ export default function RootLayout({
       signUpFallbackRedirectUrl="/"
       appearance={{
         variables: {
-          colorPrimary: '#00E5CC',
-          colorBackground: '#12121A',
-          colorInputBackground: '#1A1A2E',
-          colorInputText: '#F8FAFC',
-          colorText: '#F8FAFC',
-          colorTextOnPrimaryBackground: '#0A0A0F',
-          colorTextSecondary: '#94A3B8',
-          colorNeutral: '#F8FAFC',
-          borderRadius: '10px',
+          colorPrimary: '#000080',
+          colorBackground: '#C0C0C0',
+          colorInputBackground: '#FFFFFF',
+          colorInputText: '#000000',
+          colorText: '#000000',
+          colorTextOnPrimaryBackground: '#FFFFFF',
+          colorTextSecondary: '#000000',
+          colorNeutral: '#000000',
+          borderRadius: '0px',
         },
         elements: {
           formFieldInput: {
-            backgroundColor: '#1A1A2E',
-            borderColor: '#2D3748',
-            color: '#F8FAFC',
+            backgroundColor: '#FFFFFF',
+            borderColor: '#808080',
+            color: '#000000',
+            fontFamily: '"Tahoma", "MS Sans Serif", sans-serif',
+            fontSize: '11px',
           },
-          formFieldLabel: { color: '#94A3B8' },
+          formFieldLabel: {
+            color: '#000000',
+            fontFamily: '"Tahoma", "MS Sans Serif", sans-serif',
+            fontSize: '11px',
+          },
           formFieldInput__identifier: {
-            backgroundColor: '#1A1A2E',
-            borderColor: '#2D3748',
-            color: '#F8FAFC',
+            backgroundColor: '#FFFFFF',
+            borderColor: '#808080',
+            color: '#000000',
           },
-          card: { backgroundColor: '#12121A', boxShadow: 'none' },
-          cardBox: { backgroundColor: '#12121A', boxShadow: 'none' },
-          headerTitle: { color: '#F8FAFC' },
-          headerSubtitle: { color: '#94A3B8' },
+          card: {
+            backgroundColor: '#C0C0C0',
+            boxShadow: 'none',
+            border: '2px outset #C0C0C0',
+          },
+          cardBox: {
+            backgroundColor: '#C0C0C0',
+            boxShadow: 'none',
+          },
+          headerTitle: {
+            color: '#000000',
+            fontFamily: '"Tahoma", "MS Sans Serif", sans-serif',
+          },
+          headerSubtitle: {
+            color: '#000000',
+            fontFamily: '"Tahoma", "MS Sans Serif", sans-serif',
+          },
           socialButtonsBlockButton: {
-            backgroundColor: '#1A1A2E',
-            borderColor: '#2D3748',
-            color: '#F8FAFC',
+            backgroundColor: '#C0C0C0',
+            borderColor: '#808080',
+            color: '#000000',
+            border: '2px outset #C0C0C0',
           },
-          socialButtonsBlockButtonText: { color: '#F8FAFC' },
-          dividerLine: { backgroundColor: '#2D3748' },
-          dividerText: { color: '#64748B' },
-          footerActionLink: { color: '#00E5CC' },
-          footerActionText: { color: '#94A3B8' },
+          socialButtonsBlockButtonText: { color: '#000000' },
+          dividerLine: { backgroundColor: '#808080' },
+          dividerText: { color: '#808080' },
+          footerActionLink: { color: '#000080' },
+          footerActionText: { color: '#000000' },
           formButtonPrimary: {
-            backgroundColor: '#00E5CC',
-            color: '#0A0A0F',
-            fontWeight: '600',
+            backgroundColor: '#C0C0C0',
+            color: '#000000',
+            fontWeight: '400',
+            fontFamily: '"Tahoma", "MS Sans Serif", sans-serif',
+            fontSize: '11px',
+            border: '2px outset #C0C0C0',
+            borderRadius: '0px',
+            boxShadow: 'none',
           },
-          identityPreviewText: { color: '#F8FAFC' },
-          identityPreviewEditButtonIcon: { color: '#00E5CC' },
-          formFieldInputPlaceholder: { color: '#64748B' },
-          badge: { backgroundColor: '#1A1A2E', color: '#94A3B8' },
+          identityPreviewText: { color: '#000000' },
+          identityPreviewEditButtonIcon: { color: '#000080' },
+          formFieldInputPlaceholder: { color: '#808080' },
+          badge: { backgroundColor: '#C0C0C0', color: '#000000' },
           developmentModeChip: { display: 'none' },
-          userButtonPopoverCard: { backgroundColor: '#12121A', borderColor: '#2D3748' },
-          userButtonPopoverMain: { backgroundColor: '#12121A' },
-          userButtonPopoverFooter: { backgroundColor: '#12121A', borderColor: '#2D3748' },
-          userButtonPopoverActionButton: { color: '#F8FAFC' },
-          userButtonPopoverActionButtonText: { color: '#F8FAFC' },
-          userButtonPopoverActionButtonIcon: { color: '#94A3B8' },
-          userPreviewMainIdentifier: { color: '#F8FAFC' },
-          userPreviewSecondaryIdentifier: { color: '#94A3B8' },
-          userButtonPopoverActions: { backgroundColor: '#12121A' },
-          menuButton: { color: '#F8FAFC' },
-          menuItem: { color: '#F8FAFC' },
-          menuList: { backgroundColor: '#12121A' },
+          userButtonPopoverCard: {
+            backgroundColor: '#C0C0C0',
+            borderColor: '#808080',
+            border: '2px outset #C0C0C0',
+          },
+          userButtonPopoverMain: { backgroundColor: '#C0C0C0' },
+          userButtonPopoverFooter: {
+            backgroundColor: '#C0C0C0',
+            borderColor: '#808080',
+          },
+          userButtonPopoverActionButton: { color: '#000000' },
+          userButtonPopoverActionButtonText: { color: '#000000' },
+          userButtonPopoverActionButtonIcon: { color: '#000000' },
+          userPreviewMainIdentifier: { color: '#000000' },
+          userPreviewSecondaryIdentifier: { color: '#808080' },
+          userButtonPopoverActions: { backgroundColor: '#C0C0C0' },
+          menuButton: { color: '#000000' },
+          menuItem: { color: '#000000' },
+          menuList: { backgroundColor: '#C0C0C0' },
         },
       }}
     >
-      <html
-        lang="en"
-        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
-      >
+      <html lang="en">
         <body
           style={{
-            fontFamily: 'var(--font-body), system-ui, sans-serif',
-            backgroundColor: 'var(--bg-primary)',
-            color: 'var(--text-primary)',
+            fontFamily: '"Tahoma", "MS Sans Serif", sans-serif',
+            backgroundColor: '#C0C0C0',
+            color: '#000000',
+            fontSize: '11px',
             minHeight: '100vh',
           }}
         >

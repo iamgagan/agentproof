@@ -18,125 +18,117 @@ export default function ProGate({ isPro, featureName, children, compact }: ProGa
 
   if (compact) {
     return (
-      <div
-        style={{
-          width: '100%',
-          padding: '20px',
-          backgroundColor: 'var(--bg-surface)',
-          border: '1px solid var(--border)',
-          borderRadius: '12px',
-          textAlign: 'center',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '0.7rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            color: '#6366F1',
-            marginBottom: '6px',
-          }}
-        >
+      <div className="win-raised" style={{
+        padding: '12px',
+        background: 'var(--win-face)',
+        textAlign: 'center',
+        fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+      }}>
+        <div style={{
+          fontSize: '10px',
+          fontWeight: 'bold',
+          color: '#800080',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          marginBottom: '4px',
+        }}>
           Pro Feature
         </div>
-        <h3
-          style={{
-            fontSize: '1rem',
-            fontWeight: 600,
-            color: '#F8FAFC',
-            marginBottom: '6px',
-          }}
-        >
+        <div style={{
+          fontSize: '12px',
+          fontWeight: 'bold',
+          color: '#000000',
+          marginBottom: '4px',
+        }}>
           {featureName}
-        </h3>
-        <p
-          style={{
-            fontSize: '0.75rem',
-            color: '#94A3B8',
-            marginBottom: '12px',
-          }}
-        >
+        </div>
+        <div style={{
+          fontSize: '11px',
+          color: '#808080',
+          marginBottom: '8px',
+        }}>
           Upgrade to unlock this feature.
-        </p>
+        </div>
         <button
+          className="win-btn"
           onClick={() => router.push('/pricing')}
           style={{
-            background: 'linear-gradient(135deg, #00E5CC, #6366F1)',
-            color: '#0A0A0F',
-            border: 'none',
-            padding: '8px 20px',
-            borderRadius: '8px',
-            fontWeight: 600,
-            fontSize: '0.8rem',
+            fontSize: '11px',
+            padding: '4px 16px',
             cursor: 'pointer',
+            fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
           }}
         >
-          Upgrade to Pro — $200/mo
+          Upgrade to Pro &mdash; $200/mo
         </button>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        padding: '2rem',
-        backgroundColor: 'var(--bg-surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '12px',
-        textAlign: 'center',
-        marginBottom: '1rem',
-      }}
-    >
-      <div
-        style={{
-          fontSize: '0.75rem',
-          fontWeight: 600,
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          color: '#6366F1',
-          marginBottom: '0.5rem',
-        }}
-      >
-        Pro Feature
+    <div className="win-window" style={{ maxWidth: '400px', margin: '0 auto 16px' }}>
+      {/* Title bar with purple gradient */}
+      <div className="win-title-bar" style={{
+        background: 'linear-gradient(90deg, #800080, #FF00FF)',
+      }}>
+        <span style={{ fontWeight: 'bold', color: '#FFFFFF', fontSize: '12px' }}>
+          {featureName}
+        </span>
+        <div className="win-title-buttons">
+          <button className="win-title-btn" aria-label="Close">×</button>
+        </div>
       </div>
-      <h3
-        style={{
-          fontSize: '1.25rem',
-          fontWeight: 600,
-          color: '#F8FAFC',
-          marginBottom: '0.5rem',
-        }}
-      >
-        {featureName}
-      </h3>
-      <p
-        style={{
-          fontSize: '0.875rem',
-          color: '#94A3B8',
-          marginBottom: '1.5rem',
-          maxWidth: '320px',
-          margin: '0 auto 1.5rem',
-        }}
-      >
-        Upgrade to Pro to unlock auto-generated fixes, protocol files, benchmarks, and more.
-      </p>
-      <button
-        onClick={() => router.push('/pricing')}
-        style={{
-          background: 'linear-gradient(135deg, #00E5CC, #6366F1)',
-          color: '#0A0A0F',
-          border: 'none',
-          padding: '0.75rem 2rem',
-          borderRadius: '8px',
-          fontWeight: 600,
-          fontSize: '0.875rem',
-          cursor: 'pointer',
-        }}
-      >
-        Upgrade to Pro — $200/mo
-      </button>
+
+      {/* Body */}
+      <div className="win-body" style={{
+        padding: '20px',
+        textAlign: 'center',
+        fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+      }}>
+        <div style={{
+          fontSize: '11px',
+          fontWeight: 'bold',
+          color: '#800080',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          marginBottom: '8px',
+        }}>
+          Pro Feature
+        </div>
+
+        <div style={{
+          fontSize: '14px',
+          fontWeight: 'bold',
+          color: '#000000',
+          marginBottom: '8px',
+        }}>
+          {featureName}
+        </div>
+
+        <p style={{
+          fontSize: '11px',
+          color: '#808080',
+          marginBottom: '16px',
+          maxWidth: '280px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+          Upgrade to Pro to unlock auto-generated fixes, protocol files, benchmarks, and more.
+        </p>
+
+        <button
+          className="win-btn win-btn-default"
+          onClick={() => router.push('/pricing')}
+          style={{
+            fontSize: '12px',
+            padding: '6px 24px',
+            cursor: 'pointer',
+            fontFamily: 'MS Sans Serif, Tahoma, sans-serif',
+          }}
+        >
+          Upgrade to Pro &mdash; $200/mo
+        </button>
+      </div>
     </div>
   );
 }

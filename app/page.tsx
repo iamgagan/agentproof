@@ -14,243 +14,184 @@ const CATEGORY_KEYS = [
 
 const CATEGORY_ICONS: Record<string, string> = {
   structuredData:    '{ }',
-  productQuality:    '◈',
-  protocolReadiness: '⬡',
-  merchantSignals:   '◎',
-  aiDiscoverability: '◉',
+  productQuality:    '[]',
+  protocolReadiness: '<>',
+  merchantSignals:   '::',
+  aiDiscoverability: '>>',
 };
 
 const STATS = [
   { value: '4,700%', label: 'YoY increase in AI agent traffic to business websites', source: 'Adobe' },
   { value: '87%', label: 'of businesses lack basic AI agent readiness', source: 'est.' },
-  { value: '$3–5T', label: 'projected agentic commerce market by 2030', source: 'McKinsey' },
+  { value: '$3-5T', label: 'projected agentic commerce market by 2030', source: 'McKinsey' },
 ];
 
 export default function HomePage() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {/* ── HERO (with Navbar, video bg, CTA, scanner) ── */}
+    <div className="win-window" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* ── HERO (with Win98 Navbar, scanner) ── */}
       <HeroSection />
 
-      <main style={{ flex: 1 }}>
-        {/* ── PROBLEM / STATS ── */}
-        <section
-          style={{
-            padding: '80px 24px',
-            backgroundColor: 'var(--bg-surface)',
-            borderTop: '1px solid var(--border)',
-            borderBottom: '1px solid var(--border)',
-          }}
-        >
-          <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-            <p
-              style={{
-                fontSize: '15px',
-                color: 'var(--text-muted)',
-                fontFamily: 'var(--font-body)',
-                maxWidth: '640px',
-                margin: '0 auto 48px',
-                lineHeight: '1.7',
-              }}
-            >
+      <main style={{ flex: 1, padding: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {/* ── STATS / MARKET INTELLIGENCE ── */}
+        <div className="win-window">
+          <div className="win-title-bar">
+            <span>Market Intelligence</span>
+            <div className="win-title-buttons">
+              <button className="win-title-btn" aria-label="Minimize">_</button>
+              <button className="win-title-btn" aria-label="Maximize">&#9633;</button>
+              <button className="win-title-btn" aria-label="Close">X</button>
+            </div>
+          </div>
+          <div className="win-body" style={{ padding: '12px' }}>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#000000', marginBottom: '12px', textAlign: 'center' }}>
               Your organic traffic is shrinking because AI agents are answering queries directly.
               When someone asks ChatGPT for a recommendation, does your business show up?
             </p>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '24px',
-              }}
-            >
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '8px' }}>
               {STATS.map((stat) => (
                 <div
                   key={stat.value}
-                  style={{
-                    padding: '32px 24px',
-                    backgroundColor: 'var(--bg-elevated)',
-                    borderRadius: '16px',
-                    border: '1px solid var(--border)',
-                  }}
+                  className="win-sunken"
+                  style={{ padding: '12px', background: '#FFFFFF', textAlign: 'center' }}
                 >
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontWeight: '700',
-                      fontSize: '42px',
-                      color: 'var(--accent-teal)',
-                      letterSpacing: '-0.03em',
-                      marginBottom: '8px',
-                    }}
-                  >
+                  <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: '18px', color: '#000080', marginBottom: '4px' }}>
                     {stat.value}
                   </div>
-                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', lineHeight: '1.5' }}>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#000000', lineHeight: '1.5' }}>
                     {stat.label}
                   </p>
-                  <p style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginTop: '8px' }}>
-                    — {stat.source}
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--win-shadow)', marginTop: '4px' }}>
+                    -- {stat.source}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
         {/* ── WHAT WE CHECK ── */}
-        <section
-          id="what-we-check"
-          style={{ padding: '80px 24px', maxWidth: '1100px', margin: '0 auto' }}
-        >
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: '700',
-              fontSize: 'clamp(24px, 4vw, 36px)',
-              letterSpacing: '-0.02em',
-              color: 'var(--text-primary)',
-              textAlign: 'center',
-              marginBottom: '12px',
-            }}
-          >
-            Why your business might be invisible
-          </h2>
-          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', marginBottom: '48px', fontSize: '15px' }}>
-            We check 5 areas where AI agents decide whether to recommend you — or your competitor.
-          </p>
+        <div className="win-window" id="what-we-check">
+          <div className="win-title-bar">
+            <span>What We Check</span>
+            <div className="win-title-buttons">
+              <button className="win-title-btn" aria-label="Minimize">_</button>
+              <button className="win-title-btn" aria-label="Maximize">&#9633;</button>
+              <button className="win-title-btn" aria-label="Close">X</button>
+            </div>
+          </div>
+          <div className="win-body" style={{ padding: '8px' }}>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#000000', marginBottom: '8px', textAlign: 'center' }}>
+              We check 5 areas where AI agents decide whether to recommend you — or your competitor.
+            </p>
+            <div className="win-listview">
+              {/* Header */}
+              <div className="win-listview-header">
+                <div className="win-listview-header-cell" style={{ width: '36px', textAlign: 'center' }}>#</div>
+                <div className="win-listview-header-cell" style={{ width: '44px', textAlign: 'center' }}>Icon</div>
+                <div className="win-listview-header-cell" style={{ width: '200px' }}>Category</div>
+                <div className="win-listview-header-cell" style={{ flex: 1 }}>Description</div>
+              </div>
+              {/* Rows */}
+              {CATEGORY_KEYS.map((key, i) => (
+                <div key={key} className="win-listview-row">
+                  <div className="win-listview-cell" style={{ width: '36px', textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
+                    {i + 1}
+                  </div>
+                  <div className="win-listview-cell" style={{ width: '44px', textAlign: 'center', fontFamily: 'var(--font-mono)' }}>
+                    {CATEGORY_ICONS[key]}
+                  </div>
+                  <div className="win-listview-cell" style={{ width: '200px', fontWeight: 700 }}>
+                    {categoryLabel(key)}
+                  </div>
+                  <div className="win-listview-cell" style={{ flex: 1 }}>
+                    {categoryDescription(key)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '16px',
-            }}
-          >
-            {CATEGORY_KEYS.map((key) => (
+        {/* ── HOW IT WORKS ── */}
+        <div className="win-window" id="how-it-works">
+          <div className="win-title-bar">
+            <span>How It Works</span>
+            <div className="win-title-buttons">
+              <button className="win-title-btn" aria-label="Minimize">_</button>
+              <button className="win-title-btn" aria-label="Maximize">&#9633;</button>
+              <button className="win-title-btn" aria-label="Close">X</button>
+            </div>
+          </div>
+          <div className="win-body" style={{ padding: '12px' }}>
+            {[
+              { n: '1', title: 'Enter any website URL', desc: 'Works with any business — ecommerce, SaaS, local business, healthcare, travel, real estate, and more.' },
+              { n: '2', title: 'We auto-detect & analyze', desc: 'We identify your business type and scan for structured data, AI crawler access, protocol support, and content quality.' },
+              { n: '3', title: 'Get your score + fix list', desc: 'Receive a 0-100 Agent Readiness Score with a prioritized list of exactly what to fix and how.' },
+            ].map((step) => (
               <div
-                key={key}
-                className="category-card"
+                key={step.n}
                 style={{
-                  padding: '28px 24px',
-                  backgroundColor: 'var(--bg-surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '16px',
-                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  gap: '12px',
+                  alignItems: 'flex-start',
+                  marginBottom: step.n === '3' ? 0 : '12px',
+                  paddingBottom: step.n === '3' ? 0 : '12px',
+                  borderBottom: step.n === '3' ? 'none' : '1px solid var(--win-shadow)',
                 }}
               >
                 <div
+                  className="win-sunken"
                   style={{
+                    background: '#FFFFFF',
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '22px',
-                    color: 'var(--accent-teal)',
-                    marginBottom: '12px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: '#000080',
+                    padding: '4px 8px',
+                    flexShrink: 0,
+                    textAlign: 'center',
+                    minWidth: '32px',
                   }}
                 >
-                  {CATEGORY_ICONS[key]}
+                  Step {step.n}
                 </div>
-                <h3
-                  style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontWeight: '600',
-                    fontSize: '16px',
-                    color: 'var(--text-primary)',
-                    marginBottom: '8px',
-                  }}
-                >
-                  {categoryLabel(key)}
-                </h3>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', lineHeight: '1.6' }}>
-                  {categoryDescription(key)}
-                </p>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '11px', color: '#000000', marginBottom: '2px' }}>
+                    {step.title}
+                  </div>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#000000', lineHeight: '1.5' }}>
+                    {step.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
-        </section>
-
-        {/* ── HOW IT WORKS ── */}
-        <section
-          id="how-it-works"
-          style={{
-            padding: '80px 24px',
-            backgroundColor: 'var(--bg-surface)',
-            borderTop: '1px solid var(--border)',
-            borderBottom: '1px solid var(--border)',
-          }}
-        >
-          <div style={{ maxWidth: '760px', margin: '0 auto', textAlign: 'center' }}>
-            <h2
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontWeight: '700',
-                fontSize: 'clamp(24px, 4vw, 36px)',
-                letterSpacing: '-0.02em',
-                color: 'var(--text-primary)',
-                marginBottom: '48px',
-              }}
-            >
-              How it works
-            </h2>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', textAlign: 'left' }}>
-              {[
-                { n: '01', title: 'Enter any website URL', desc: 'Works with any business — ecommerce, SaaS, local business, healthcare, travel, real estate, and more.' },
-                { n: '02', title: 'We auto-detect & analyze', desc: 'We identify your business type and scan for structured data, AI crawler access, protocol support, and content quality.' },
-                { n: '03', title: 'Get your score + fix list', desc: 'Receive a 0-100 Agent Readiness Score with a prioritized list of exactly what to fix and how.' },
-              ].map((step) => (
-                <div
-                  key={step.n}
-                  style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}
-                >
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '13px',
-                      color: 'var(--accent-teal)',
-                      backgroundColor: 'rgba(0, 229, 204, 0.08)',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(0, 229, 204, 0.2)',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {step.n}
-                  </div>
-                  <div>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', fontWeight: '600', fontSize: '18px', color: 'var(--text-primary)', marginBottom: '6px' }}>
-                      {step.title}
-                    </h3>
-                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        </div>
 
         {/* ── BOTTOM CTA ── */}
-        <section style={{ padding: '80px 24px', textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
-          <h2
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: '700',
-              fontSize: 'clamp(24px, 4vw, 36px)',
-              letterSpacing: '-0.02em',
-              color: 'var(--text-primary)',
-              marginBottom: '12px',
-            }}
-          >
-            Find out if AI agents can find your business
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-body)', marginBottom: '40px', fontSize: '15px' }}>
-            Works with any website — ecommerce, SaaS, local business, healthcare, and more.
-          </p>
-          <Scanner />
-        </section>
+        <div className="win-window">
+          <div className="win-title-bar">
+            <span>Scan Your Site</span>
+            <div className="win-title-buttons">
+              <button className="win-title-btn" aria-label="Minimize">_</button>
+              <button className="win-title-btn" aria-label="Maximize">&#9633;</button>
+              <button className="win-title-btn" aria-label="Close">X</button>
+            </div>
+          </div>
+          <div className="win-body" style={{ padding: '16px', textAlign: 'center', maxWidth: '540px', margin: '0 auto' }}>
+            <p style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '13px', color: '#000000', marginBottom: '8px' }}>
+              Find out if AI agents can find your business
+            </p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#000000', marginBottom: '12px' }}>
+              Works with any website — ecommerce, SaaS, local business, healthcare, and more.
+            </p>
+            <Scanner />
+          </div>
+        </div>
       </main>
 
+      {/* ── FOOTER ── */}
       <Footer />
     </div>
   );

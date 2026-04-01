@@ -66,42 +66,36 @@ export default async function ScanResultPage({ params }: Props) {
   const isMegaBrand = megaBrands.includes(cleanDomain);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="win-window" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />
 
-      <main style={{ flex: 1, padding: '48px 24px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
+      <main className="win-face" style={{ flex: 1, padding: '8px 12px' }}>
         {/* Page header */}
-        <div style={{ marginBottom: '48px', textAlign: 'center' }}>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'var(--text-muted)', marginBottom: '8px' }}>
-            Agent Readiness Report
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-heading)',
-              fontWeight: '700',
-              fontSize: 'clamp(22px, 4vw, 32px)',
-              letterSpacing: '-0.02em',
-              color: 'var(--text-primary)',
-              marginBottom: '8px',
-            }}
-          >
+        <div style={{ marginBottom: '12px', textAlign: 'center' }}>
+          <h1 style={{ fontWeight: 700, fontSize: '16px', marginBottom: '4px' }}>
             {domain}
           </h1>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
             {result.vertical && (
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--accent-teal)', backgroundColor: 'rgba(0,229,204,0.08)', padding: '4px 10px', borderRadius: '6px', border: '1px solid rgba(0,229,204,0.2)' }}>
+              <span style={{ fontSize: '11px' }}>
                 {VERTICAL_LABELS[result.vertical] ?? 'Business'}
               </span>
             )}
             {result.metadata.platform && (
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)', backgroundColor: 'var(--bg-elevated)', padding: '4px 10px', borderRadius: '6px', border: '1px solid var(--border)', textTransform: 'capitalize' }}>
+              <span style={{
+                fontSize: '11px',
+                color: '#fff',
+                backgroundColor: 'navy',
+                padding: '1px 6px',
+                textTransform: 'capitalize',
+              }}>
                 {result.metadata.platform}
               </span>
             )}
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: '11px' }}>
               Scanned in {formatScanTime(result.metadata.totalRequestsTime)}
             </span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: '11px' }}>
               {new Date(result.timestamp).toLocaleDateString()}
             </span>
           </div>
@@ -109,75 +103,42 @@ export default async function ScanResultPage({ params }: Props) {
 
         {/* Mega-brand context note */}
         {isMegaBrand && (
-          <div
-            style={{
-              padding: '14px 20px',
-              backgroundColor: 'rgba(99, 102, 241, 0.08)',
-              border: '1px solid rgba(99, 102, 241, 0.25)',
-              borderRadius: '10px',
-              marginBottom: '24px',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '10px',
-            }}
-          >
-            <span style={{ fontSize: '16px', flexShrink: 0 }}>*</span>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              <strong style={{ color: 'var(--accent-indigo)' }}>Note:</strong> {domain} may still appear in AI agent responses due to massive brand recognition in training data and direct partnerships with AI platforms. This score measures <em>technical readiness</em> — the structured data, protocols, and crawler access that smaller brands need to be discoverable. Major retailers can afford low technical readiness; most brands cannot.
-            </p>
+          <div className="win-sunken" style={{ padding: '8px', marginBottom: '8px', fontSize: '12px' }}>
+            <strong>Note:</strong> {domain} may still appear in AI agent responses due to massive brand recognition in training data and direct partnerships with AI platforms. This score measures <em>technical readiness</em> — the structured data, protocols, and crawler access that smaller brands need to be discoverable. Major retailers can afford low technical readiness; most brands cannot.
           </div>
         )}
 
-        <div
-          className="results-grid"
-          style={{
-            display: 'grid',
-            gap: '32px',
-            alignItems: 'start',
-          }}
-        >
+        <div className="results-grid" style={{ display: 'grid', gap: '8px', alignItems: 'start' }}>
           {/* Left column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {/* AI Agent Simulation */}
             {result.agentSimulation && (
               <AgentSimulation simulation={result.agentSimulation} />
             )}
 
             {/* Category cards */}
-            <section>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: '600',
-                  fontSize: '18px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '16px',
-                }}
-              >
-                Category Breakdown
-              </h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {categoryEntries.map(([key, cat]) => (
-                  <CategoryCard key={key} categoryKey={key} result={cat} vertical={result.vertical} />
-                ))}
+            <div className="win-window">
+              <div className="win-title-bar">
+                <span className="win-title-text">Category Breakdown</span>
               </div>
-            </section>
+              <div className="win-body" style={{ padding: '8px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {categoryEntries.map(([key, cat]) => (
+                    <CategoryCard key={key} categoryKey={key} result={cat} vertical={result.vertical} />
+                  ))}
+                </div>
+              </div>
+            </div>
 
             {/* Top Issues */}
-            <section>
-              <h2
-                style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontWeight: '600',
-                  fontSize: '18px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '16px',
-                }}
-              >
-                Top Issues to Fix
-              </h2>
-              <IssueList issues={result.topIssues} />
-            </section>
+            <div className="win-window">
+              <div className="win-title-bar">
+                <span className="win-title-text">Top Issues to Fix</span>
+              </div>
+              <div className="win-body" style={{ padding: '8px' }}>
+                <IssueList issues={result.topIssues} />
+              </div>
+            </div>
 
             {/* Live AI Query Test (Pro) */}
             {result.liveAITest && (
@@ -213,22 +174,17 @@ export default async function ScanResultPage({ params }: Props) {
 
             {/* Scan errors (if any) */}
             {result.metadata.errors.length > 0 && (
-              <div
-                style={{
-                  padding: '16px',
-                  backgroundColor: 'rgba(239,68,68,0.05)',
-                  border: '1px solid rgba(239,68,68,0.2)',
-                  borderRadius: '10px',
-                }}
-              >
-                <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '8px' }}>
-                  Scan warnings
-                </p>
-                {result.metadata.errors.map((e, i) => (
-                  <p key={i} style={{ fontSize: '13px', color: 'var(--danger)', fontFamily: 'var(--font-body)' }}>
-                    • {e}
-                  </p>
-                ))}
+              <div className="win-window">
+                <div className="win-title-bar" style={{ backgroundColor: '#c00000' }}>
+                  <span className="win-title-text">Scan Warnings</span>
+                </div>
+                <div className="win-body" style={{ padding: '8px' }}>
+                  {result.metadata.errors.map((e, i) => (
+                    <p key={i} style={{ fontSize: '12px', color: '#c00000', margin: '2px 0' }}>
+                      {'\u2022'} {e}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -241,22 +197,21 @@ export default async function ScanResultPage({ params }: Props) {
           </div>
 
           {/* Right sidebar — sticky score */}
-          <div
-            style={{
-              position: 'sticky',
-              top: '88px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-              alignItems: 'center',
-            }}
-          >
-            <ScoreGauge
-              score={result.overallScore}
-              grade={result.grade}
-              gradeLabel={result.gradeLabel}
-              size={200}
-            />
+          <div style={{ position: 'sticky', top: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {/* Score */}
+            <div className="win-window">
+              <div className="win-title-bar">
+                <span className="win-title-text">Score</span>
+              </div>
+              <div className="win-body" style={{ padding: '12px', display: 'flex', justifyContent: 'center' }}>
+                <ScoreGauge
+                  score={result.overallScore}
+                  grade={result.grade}
+                  gradeLabel={result.gradeLabel}
+                  size={200}
+                />
+              </div>
+            </div>
 
             {/* Benchmark Comparison (Pro) */}
             <ProGate isPro={isPro} featureName="Industry Benchmarks" compact>
@@ -267,78 +222,57 @@ export default async function ScanResultPage({ params }: Props) {
             </ProGate>
 
             {/* Score summary table */}
-            <div
-              style={{
-                width: '100%',
-                padding: '20px',
-                backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '12px',
-              }}
-            >
-              {categoryEntries.map(([key, cat]) => (
-                <div
-                  key={key}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                    borderBottom: '1px solid var(--border)',
-                  }}
-                >
-                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: 'var(--font-body)' }}>
-                    {key === 'structuredData' ? 'Schema' :
-                     key === 'protocolReadiness' ? 'Protocols' :
-                     key === 'aiDiscoverability' ? 'Discoverability' :
-                     categoryLabel(key, result.vertical).split(' ').slice(0, 2).join(' ')}
-                  </span>
-                  <span
+            <div className="win-window">
+              <div className="win-body-white" style={{ padding: '8px' }}>
+                {categoryEntries.map(([key, cat]) => (
+                  <div
+                    key={key}
                     style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '13px',
-                      color: cat.percentage >= 80 ? 'var(--success)' : cat.percentage >= 40 ? 'var(--warning)' : 'var(--danger)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '4px 0',
+                      borderBottom: '1px solid #c0c0c0',
+                      fontSize: '12px',
                     }}
                   >
-                    {cat.score}/{cat.maxScore}
+                    <span>
+                      {key === 'structuredData' ? 'Schema' :
+                       key === 'protocolReadiness' ? 'Protocols' :
+                       key === 'aiDiscoverability' ? 'Discoverability' :
+                       categoryLabel(key, result.vertical).split(' ').slice(0, 2).join(' ')}
+                    </span>
+                    <span style={{
+                      fontWeight: 700,
+                      color: cat.percentage >= 80 ? '#008000' : cat.percentage >= 40 ? '#808000' : '#c00000',
+                    }}>
+                      {cat.score}/{cat.maxScore}
+                    </span>
+                  </div>
+                ))}
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', fontSize: '13px', fontWeight: 700 }}>
+                  <span>Total</span>
+                  <span style={{ color: gradeColor(result.grade) }}>
+                    {result.overallScore}/100
                   </span>
                 </div>
-              ))}
-              <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '12px' }}>
-                <span style={{ fontSize: '14px', fontFamily: 'var(--font-heading)', fontWeight: '600', color: 'var(--text-primary)' }}>
-                  Total
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontWeight: '500',
-                    fontSize: '14px',
-                    color: gradeColor(result.grade),
-                  }}
-                >
-                  {result.overallScore}/100
-                </span>
               </div>
             </div>
 
             {/* Scan another */}
             <a
               href="/"
+              className="win-btn"
               style={{
-                width: '100%',
                 display: 'block',
                 textAlign: 'center',
-                padding: '12px',
-                border: '1px solid var(--border)',
-                borderRadius: '10px',
-                color: 'var(--text-secondary)',
-                fontFamily: 'var(--font-body)',
-                fontSize: '14px',
                 textDecoration: 'none',
-                backgroundColor: 'var(--bg-surface)',
+                color: '#000',
+                fontSize: '12px',
+                padding: '6px 12px',
               }}
             >
-              ← Scan another site
+              Scan another site
             </a>
           </div>
         </div>

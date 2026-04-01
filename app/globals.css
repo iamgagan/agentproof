@@ -1,33 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #0A0A0F;
-  --color-bg-surface: #12121A;
-  --color-bg-elevated: #1A1A2E;
-  --color-accent-teal: #00E5CC;
-  --color-accent-indigo: #6366F1;
-  --color-success: #22C55E;
-  --color-warning: #EAB308;
-  --color-danger: #EF4444;
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #94A3B8;
-  --color-text-muted: #64748B;
-  --color-border: #1E293B;
+  --color-bg-primary: #C0C0C0;
+  --color-bg-surface: #C0C0C0;
+  --color-bg-elevated: #FFFFFF;
+  --color-accent-teal: #000080;
+  --color-accent-indigo: #000080;
+  --color-success: #008000;
+  --color-warning: #808000;
+  --color-danger: #FF0000;
+  --color-text-primary: #000000;
+  --color-text-secondary: #000000;
+  --color-text-muted: #808080;
+  --color-border: #808080;
 }
 
 :root {
-  --bg-primary: #0A0A0F;
-  --bg-surface: #12121A;
-  --bg-elevated: #1A1A2E;
-  --accent-teal: #00E5CC;
-  --accent-indigo: #6366F1;
-  --success: #22C55E;
-  --warning: #EAB308;
-  --danger: #EF4444;
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --border: #1E293B;
+  --bg-primary: #C0C0C0;
+  --bg-surface: #C0C0C0;
+  --bg-elevated: #FFFFFF;
+  --accent-teal: #000080;
+  --accent-indigo: #000080;
+  --success: #008000;
+  --warning: #808000;
+  --danger: #FF0000;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #808080;
+  --border: #808080;
+
+  --win-face: #C0C0C0;
+  --win-highlight: #FFFFFF;
+  --win-shadow: #808080;
+  --win-dark-shadow: #000000;
+  --text-muted: #808080;
+  --danger: #FF0000;
+  --success: #008000;
+  --warning: #808000;
+
+  --font-body: "Tahoma", "MS Sans Serif", sans-serif;
+  --font-heading: "Tahoma", "MS Sans Serif", sans-serif;
+  --font-mono: "Fixedsys", "Courier New", monospace;
 }
 
 * {
@@ -39,10 +52,323 @@
 html, body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-body);
+  font-size: 11px;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
 }
 
-/* Score gauge animation */
+/* ============================================
+   Win98 Utility Classes
+   ============================================ */
+
+/* Window container */
+.win-window {
+  background: var(--win-face);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-dark-shadow);
+  border-bottom: 2px solid var(--win-dark-shadow);
+  box-shadow:
+    inset 1px 1px 0 var(--win-face),
+    inset -1px -1px 0 var(--win-shadow);
+  padding: 2px;
+}
+
+/* Title bar */
+.win-title-bar {
+  background: linear-gradient(90deg, #000080, #1084D0);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  height: 22px;
+}
+
+/* Title bar buttons container */
+.win-title-buttons {
+  display: flex;
+  gap: 2px;
+}
+
+/* Individual title bar button (minimize, maximize, close) */
+.win-title-btn {
+  width: 16px;
+  height: 14px;
+  background: var(--win-face);
+  border-top: 1px solid var(--win-highlight);
+  border-left: 1px solid var(--win-highlight);
+  border-right: 1px solid var(--win-dark-shadow);
+  border-bottom: 1px solid var(--win-dark-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-family: var(--font-mono);
+  color: #000;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.win-title-btn:active {
+  border-top: 1px solid var(--win-dark-shadow);
+  border-left: 1px solid var(--win-dark-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+}
+
+/* Menu bar */
+.win-menubar {
+  background: var(--win-face);
+  border-bottom: 1px solid var(--win-shadow);
+  padding: 1px 0;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+/* Menu bar item */
+.win-menu-item {
+  padding: 2px 8px;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.win-menu-item:hover {
+  background: #000080;
+  color: #FFFFFF;
+}
+
+/* Status bar */
+.win-statusbar {
+  background: var(--win-face);
+  border-top: 1px solid var(--win-shadow);
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  min-height: 22px;
+}
+
+/* Status bar section (inset panel) */
+.win-status-section {
+  border-top: 1px solid var(--win-shadow);
+  border-left: 1px solid var(--win-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  padding: 1px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Growing status section (fills remaining space) */
+.win-status-section-grow {
+  border-top: 1px solid var(--win-shadow);
+  border-left: 1px solid var(--win-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  padding: 1px 6px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Button */
+.win-btn {
+  background: var(--win-face);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-dark-shadow);
+  border-bottom: 2px solid var(--win-dark-shadow);
+  box-shadow: inset -1px -1px 0 var(--win-shadow);
+  padding: 4px 16px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #000000;
+  cursor: pointer;
+  min-width: 75px;
+  text-align: center;
+}
+
+.win-btn:active {
+  border-top: 2px solid var(--win-dark-shadow);
+  border-left: 2px solid var(--win-dark-shadow);
+  border-right: 2px solid var(--win-highlight);
+  border-bottom: 2px solid var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-shadow);
+  padding: 5px 15px 3px 17px;
+}
+
+.win-btn:disabled {
+  color: var(--win-shadow);
+  text-shadow: 1px 1px 0 var(--win-highlight);
+  cursor: default;
+}
+
+/* Default (focused) button - has extra border */
+.win-btn-default {
+  outline: 1px dotted #000000;
+  outline-offset: -4px;
+}
+
+/* Text input */
+.win-input {
+  background: #FFFFFF;
+  border-top: 1px solid var(--win-shadow);
+  border-left: 1px solid var(--win-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow);
+  padding: 3px 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #000000;
+  outline: none;
+}
+
+.win-input:focus {
+  outline: none;
+}
+
+.win-input::placeholder {
+  color: var(--win-shadow);
+}
+
+/* Sunken panel (inset border) */
+.win-sunken {
+  border-top: 1px solid var(--win-shadow);
+  border-left: 1px solid var(--win-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow);
+}
+
+/* Raised panel (outset border) */
+.win-raised {
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-dark-shadow);
+  border-bottom: 2px solid var(--win-dark-shadow);
+  box-shadow: inset -1px -1px 0 var(--win-shadow);
+}
+
+/* Groove border (etched) */
+.win-groove {
+  border: 2px groove var(--win-face);
+}
+
+/* Progress bar container */
+.win-progress {
+  background: var(--win-face);
+  border-top: 1px solid var(--win-shadow);
+  border-left: 1px solid var(--win-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow);
+  height: 18px;
+  padding: 2px;
+}
+
+/* Progress bar fill */
+.win-progress-bar {
+  background: #000080;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* List view (table-like) */
+.win-listview {
+  background: #FFFFFF;
+  border-top: 1px solid var(--win-shadow);
+  border-left: 1px solid var(--win-shadow);
+  border-right: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-highlight);
+  box-shadow: inset 1px 1px 0 var(--win-dark-shadow);
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 11px;
+}
+
+/* List view header */
+.win-listview-header {
+  display: flex;
+  background: var(--win-face);
+  border-bottom: 1px solid var(--win-shadow);
+}
+
+/* List view header cell */
+.win-listview-header-cell {
+  padding: 2px 6px;
+  font-weight: 700;
+  border-right: 1px solid var(--win-shadow);
+  border-top: 1px solid var(--win-highlight);
+  border-left: 1px solid var(--win-highlight);
+  border-bottom: 1px solid var(--win-dark-shadow);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* List view row */
+.win-listview-row {
+  display: flex;
+  border-bottom: 1px solid #DFDFDF;
+}
+
+.win-listview-row:hover {
+  background: #000080;
+  color: #FFFFFF;
+}
+
+/* List view cell */
+.win-listview-cell {
+  padding: 1px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tree toggle (expand/collapse) */
+.win-tree-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--win-shadow);
+  background: #FFFFFF;
+  font-size: 7px;
+  line-height: 1;
+  cursor: pointer;
+  margin-right: 4px;
+  font-family: var(--font-mono);
+}
+
+/* Body backgrounds */
+.win-body {
+  background: var(--win-face);
+}
+
+.win-body-white {
+  background: #FFFFFF;
+}
+
+/* ============================================
+   Score gauge animation
+   ============================================ */
 @keyframes gauge-fill {
   from { stroke-dashoffset: 283; }
   to { stroke-dashoffset: var(--gauge-offset); }
@@ -52,7 +378,9 @@ html, body {
   animation: gauge-fill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Scan progress animation */
+/* ============================================
+   Scan animations
+   ============================================ */
 @keyframes scan-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -62,14 +390,15 @@ html, body {
   animation: scan-pulse 1.5s ease-in-out infinite;
 }
 
-/* Scan progress bar animation */
 @keyframes scan-progress {
   0% { transform: translateX(-100%); }
   50% { transform: translateX(150%); }
   100% { transform: translateX(350%); }
 }
 
-/* Results page responsive grid */
+/* ============================================
+   Results page responsive grid
+   ============================================ */
 .results-grid {
   grid-template-columns: minmax(0, 1fr) 280px;
 }
@@ -84,9 +413,46 @@ html, body {
   }
 }
 
-/* Category card glow on hover */
+/* ============================================
+   Category card hover — Win98 style
+   ============================================ */
 .category-card:hover {
-  box-shadow: 0 0 20px rgba(0, 229, 204, 0.08);
-  border-color: rgba(0, 229, 204, 0.2);
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  background: #D4D0C8;
+  border-color: var(--win-dark-shadow);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* ============================================
+   Win98 Scrollbar Styling
+   ============================================ */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: repeating-conic-gradient(var(--win-face) 0% 25%, #FFFFFF 0% 50%) 50% / 2px 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--win-face);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-dark-shadow);
+  border-bottom: 2px solid var(--win-dark-shadow);
+  box-shadow: inset -1px -1px 0 var(--win-shadow);
+}
+
+::-webkit-scrollbar-button {
+  background: var(--win-face);
+  border-top: 2px solid var(--win-highlight);
+  border-left: 2px solid var(--win-highlight);
+  border-right: 2px solid var(--win-dark-shadow);
+  border-bottom: 2px solid var(--win-dark-shadow);
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--win-face);
 }

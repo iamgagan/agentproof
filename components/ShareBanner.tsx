@@ -47,93 +47,70 @@ export default function ShareBanner({ score, grade, url, scanId }: ShareBannerPr
   }
 
   return (
-    <div
-      style={{
-        padding: '20px 24px',
-        background: 'linear-gradient(135deg, rgba(0,229,204,0.08), rgba(99,102,241,0.08))',
-        border: '1px solid rgba(0,229,204,0.15)',
-        borderRadius: '16px',
-      }}
-    >
-      <h3
-        style={{
-          fontFamily: 'var(--font-heading)',
-          fontWeight: '600',
-          fontSize: '16px',
-          color: 'var(--text-primary)',
-          marginBottom: '4px',
-        }}
-      >
-        Share your Agent Readiness Score
-      </h3>
-      <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', marginBottom: '14px' }}>
-        Challenge your competitors to beat your score
-      </p>
+    <div className="win-window">
+      {/* Title bar */}
+      <div className="win-title-bar">
+        <span>Share Your Score</span>
+        <div className="win-title-buttons">
+          <button className="win-title-btn" aria-label="Minimize">_</button>
+          <button className="win-title-btn" aria-label="Maximize">&#9633;</button>
+          <button className="win-title-btn" aria-label="Close">&#215;</button>
+        </div>
+      </div>
 
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <a
-          href={twitterUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            padding: '10px 20px',
-            backgroundColor: '#1DA1F2',
-            color: '#fff',
-            borderRadius: '8px',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: '600',
-            fontSize: '14px',
-            textDecoration: 'none',
-          }}
-        >
-          Share on X / Twitter
-        </a>
-        <a
-          href={linkedinUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            padding: '10px 20px',
-            backgroundColor: '#0A66C2',
-            color: '#fff',
-            borderRadius: '8px',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: '600',
-            fontSize: '14px',
-            textDecoration: 'none',
-          }}
-        >
-          Share on LinkedIn
-        </a>
-        <button
-          onClick={handleCopyLink}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            padding: '10px 20px',
-            backgroundColor: copied ? 'rgba(0,229,204,0.15)' : 'var(--bg-elevated)',
-            color: copied ? '#00E5CC' : 'var(--text-secondary)',
-            border: `1px solid ${copied ? '#00E5CC' : 'var(--border)'}`,
-            borderRadius: '8px',
-            fontFamily: 'var(--font-heading)',
-            fontWeight: '600',
-            fontSize: '14px',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-          }}
-        >
-          {copied ? 'Copied!' : 'Copy Link'}
-        </button>
+      {/* Window body */}
+      <div className="win-body" style={{ padding: '12px' }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: '#000', marginBottom: '4px', fontWeight: 'bold' }}>
+          Share your Agent Readiness Score
+        </p>
+        <p style={{ fontSize: '11px', color: '#808080', fontFamily: 'var(--font-body)', marginBottom: '12px' }}>
+          Challenge your competitors to beat your score
+        </p>
+
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          <a
+            href={twitterUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="win-btn"
+            style={{
+              flex: 1,
+              minWidth: '100px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            Share on X / Twitter
+          </a>
+          <a
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="win-btn"
+            style={{
+              flex: 1,
+              minWidth: '100px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            Share on LinkedIn
+          </a>
+          <button
+            onClick={handleCopyLink}
+            className={`win-btn ${copied ? '' : 'win-btn-default'}`}
+            style={{
+              flex: 1,
+              minWidth: '100px',
+            }}
+          >
+            {copied ? 'Copied!' : 'Copy Link'}
+          </button>
+        </div>
       </div>
     </div>
   );
