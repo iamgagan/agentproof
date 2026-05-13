@@ -28,3 +28,6 @@ next-env.d.ts
 # playwright
 playwright-report/
 test-results/
+
+# Local agent / tooling state
+.omc/
